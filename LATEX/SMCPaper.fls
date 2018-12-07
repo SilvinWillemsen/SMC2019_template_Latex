@@ -1,8 +1,8 @@
-PWD /Users/SilvinW/Documents/LATEX
+PWD /Users/SilvinW/repositories/SMC2019_template_Latex/LATEX
 INPUT /usr/local/texlive/2016/texmf.cnf
 INPUT /usr/local/texlive/2016/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/SilvinW/Documents/LATEX/SMCPaper.tex
+INPUT /Users/SilvinW/repositories/SMC2019_template_Latex/LATEX/SMCPaper.tex
 OUTPUT SMCPaper.log
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
