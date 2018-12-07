@@ -27,9 +27,7 @@ S.~Bilbao, \emph{Numerical Sound Synthesis, Finite Difference Schemes and
   Wiley and Sons, Ltd, 2009.
 
 \bibitem{Bilbao2009:ModularPercussion}
-B.~Bil, \emph{Numerical Sound Synthesis, Finite Difference Schemes and
-  Simulation in Musical Acoustics}.\hskip 1em plus 0.5em minus 0.4em\relax
-  Proceedings of the 12th International Conference on Digital Audio Effects
-  (DAFx-09), 2009.
+------, ``{A modular percussion synthesis environment},'' \emph{Proc. of the
+  12th Int. Conf. on Digital Audio Effects (DAFx-09)}, 2009.
 
 \end{thebibliography}

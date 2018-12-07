@@ -284,26 +284,32 @@ For prototyping \texttt{Matlab} was used. We then used C++ along with the JUCE f
 In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. In the case of the string, we obtain
 \begin{equation}
     \begin{aligned}\label{eq:stringImplementatino}
-        u_l^{n+1} = &\Big[2u_l^n - (1 - \sigma_0k) u_l^{n-1} \\
+        (1 &+ \sigma_0k)u_l^{n+1} = 2u_l^n - (1 - \sigma_0k) u_l^{n-1} \\
         & +\lambda^2(u_{l+1}^n - 2u_l^n + u_{l-1}^n)\\
         &- \mu^2(u_{l+2}^n - 4u_{l+1}^n + 6u_l^n - 4u_{l-1}^n + u_{l-2}^n) \\
         &+ \frac{2\sigma_1k}{h^2}(u_{l+1}^n - 2u_l^n + u_{l-1}^n\\
         &- u_{l+1}^{n-1} + 2u_l^{n-1} - u_{l-1}^{n-1})\\
-        &-k^2\delta_{l_e}F_\text{e}\Big] \frac{1}{1 + \sigma_0k},
+        &-k^2\delta_{l_e}F_\text{e},
     \end{aligned}
 \end{equation}
 where
 \begin{equation}\nonumber
-\lambda = \frac{\gamma k}{h}\text{,} \quad \mu =  \frac{\kappa k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}} = \delta(x-x_{l_\text{e}}) 
+\lambda = \frac{\gamma k}{h}\text{,} \quad \mu =  \frac{\kappa k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}} = \delta(x-x_{l_\text{e}}). 
 \end{equation}
-The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to: 
+The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to
 \begin{equation}
-    \gamma = 2 f_0.
+    \gamma = 2 f_0,
 \end{equation}
+and the stiffness can be calculated using
 
+\begin{equation}
+    \kappa = \frac{\sqrt{B}\gamma}{\pi},
+\end{equation}
+where $B$ is the inharmonicity coefficient [m$^{-2}$].
 The output is retrieved at $l = \text{floor}(0.75N)$ for all strings.
 
 \subsection{Plate}
+
 \begin{equation}
     \begin{aligned}\label{eq:plateImplementation}
         (1& + \sigma_0k)u_{l,m}^{n+1} = (2 - 4\phi + 20\mu^2)u_{l,m}^n\\
@@ -317,14 +323,8 @@ The output is retrieved at $l = \text{floor}(0.75N)$ for all strings.
 \end{equation}
 where
 \begin{equation}\nonumber
-    \mu = \frac{\kappa k}{h^2} \text{,} \quad \phi = \frac{2\sigma_1k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}, m_\text{e}} = \delta(x - x_{l_\text{e}}, y - y_{m_\text{e}})
+    \mu = \frac{\kappa k}{h^2} \text{,} \quad \phi = \frac{2\sigma_1k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}, m_\text{e}} = \delta(x - x_{l_\text{e}}, y - y_{m_\text{e}}).
 \end{equation}
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=1\columnwidth]{FDSPlateUPrev}
-%     \caption{Figure captions should be placed below the figure, 
-%     exactly like this.\label{fig:example}}
-%     \end{figure}
 
 \section{User Interaction}
 User-controlled variables:
