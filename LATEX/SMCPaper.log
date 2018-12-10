@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  7 DEC 2018 14:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  10 DEC 2018 10:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1238,21 +1238,21 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 89.
  (./SMCPaper.aux)
 \openout1 = `SMCPaper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 128.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
@@ -1265,7 +1265,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 144.
 )
-Package hyperref Info: Link coloring ON on input line 128.
+Package hyperref Info: Link coloring ON on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -1273,9 +1273,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count139
 )
-LaTeX Info: Redefining \ref on input line 128.
-LaTeX Info: Redefining \pageref on input line 128.
-LaTeX Info: Redefining \nameref on input line 128.
+LaTeX Info: Redefining \ref on input line 132.
+LaTeX Info: Redefining \pageref on input line 132.
+LaTeX Info: Redefining \nameref on input line 132.
  (./SMCPaper.out) (./SMCPaper.out)
 \@outlinefile=\write3
 \openout3 = `SMCPaper.out'.
@@ -1305,52 +1305,46 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 132.
-LaTeX Font Info:    Try loading font information for U+msa on input line 132.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 136.
+LaTeX Font Info:    Try loading font information for U+msa on input line 136.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 132.
+LaTeX Font Info:    Try loading font information for U+msb on input line 136.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 132.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 132.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 136.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 136.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Try loading font information for OMS+pcr on input line 132.
- (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omspcr.fd
-File: omspcr.fd 
-)
-LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 132.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 136.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/it' in size <7> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 136.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <7> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 136.
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--132
+Underfull \hbox (badness 10000) in paragraph at lines 136--136
 []\OT1/ptm/m/it/7 Copyright: []|  2018 Sil-vin Willemsen|  et al. This is
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--132
+Underfull \hbox (badness 10000) in paragraph at lines 136--136
 \OT1/ptm/m/it/7 an open-access ar-ti-cle dis-tributed un-der the terms of the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--132
+Underfull \hbox (badness 10000) in paragraph at lines 136--136
 [][][]$[]$[][][]\OT1/ptm/m/it/7 , which per-mits un-re-
  []
 
 
-Overfull \hbox (3.1652pt too wide) in paragraph at lines 187--188
+Overfull \hbox (3.1652pt too wide) in paragraph at lines 191--193
 \OT1/ptm/m/n/10 Adding con-nec-tions be-tween dif-fer-ent PMs, fur-ther re-ferred
  []
 
@@ -1359,57 +1353,66 @@ Overfull \hbox (3.1652pt too wide) in paragraph at lines 187--188
 
 
 ]
+Overfull \hbox (3.30539pt too wide) in paragraph at lines 240--242
+\OT1/ptm/m/n/10 For our im-ple-men-ta-tion, clamped bound-ary con-di-tions were
+ []
+
 Missing character: There is no â in font cmr7!
 Missing character: There is no ˆ in font cmr7!
 Missing character: There is no ’ in font cmr7!
- <FullPlate.png, id=127, 1778.3238pt x 555.7563pt>
+<FullPlate.png, id=140, 1778.3238pt x 555.7563pt>
 File: FullPlate.png Graphic file (type png)
  <use FullPlate.png>
-Package pdftex.def Info: FullPlate.png used on input line 286.
+Package pdftex.def Info: FullPlate.png used on input line 293.
 (pdftex.def)             Requested size: 489.95786pt x 153.11754pt.
 
-Overfull \hbox (0.57047pt too wide) in paragraph at lines 286--287
+Overfull \hbox (0.57047pt too wide) in paragraph at lines 293--294
  [][] 
  []
 
-
-Overfull \hbox (3.9263pt too wide) detected at line 330
+[2]
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 328.
+ (./SMCPaper.bbl)
+Overfull \hbox (3.9263pt too wide) detected at line 382
 [][] []
  []
 
-[2pdfTeX warning (ext4): destination with the same identifier (name{equation.5.28}) has been already used, duplicate ignored
+
+Underfull \vbox (badness 4378) has occurred while \output is active []
+
+ [3 <./FullPlate.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 388.
+ [4pdfTeX warning (ext4): destination with the same identifier (name{equation.10.32}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.330 \end{equation}
-                    ]
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 339.
- (./SMCPaper.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 368.
- [3 <./FullPlate.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 368.
+l.388 \end{document}
+                    
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 388.
  (./SMCPaper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 368.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 368.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 388.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 388.
 Package rerunfilecheck Info: File `SMCPaper.out' has not changed.
-(rerunfilecheck)             Checksum: 58D66A03835474FF38EDBB3AA9B47877;1124.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 368.
+(rerunfilecheck)             Checksum: FEBFC21ABEED622B813D4C906D801E36;1351.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 388.
  )
 (\end occurred when \ifx on line 41 was incomplete) 
 Here is how much of TeX's memory you used:
- 14125 strings out of 493014
- 243217 string characters out of 6133351
- 319735 words of memory out of 5000000
- 17481 multiletter control sequences out of 15000+600000
+ 14121 strings out of 493014
+ 243104 string characters out of 6133351
+ 318160 words of memory out of 5000000
+ 17474 multiletter control sequences out of 15000+600000
  20493 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,14n,42p,10441b,417s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 40i,14n,42p,10441b,364s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on SMCPaper.pdf (3 pages, 713001 bytes).
+Output written on SMCPaper.pdf (4 pages, 717709 bytes).
 PDF statistics:
- 222 PDF objects out of 1000 (max. 8388607)
- 199 compressed objects within 2 object streams
- 57 named destinations out of 1000 (max. 500000)
- 158 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 226 compressed objects within 3 object streams
+ 63 named destinations out of 1000 (max. 500000)
+ 182 words of extra memory for PDF output out of 10000 (max. 10000000)
 

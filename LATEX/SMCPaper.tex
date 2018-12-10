@@ -49,7 +49,7 @@
 \ifpdf % compiling with pdflatex
   \usepackage[pdftex,
     pdftitle={\papertitle},
-    pdfauthor={\firstauthor, \secondauthor, \thirdauthor},
+    pdfauthor={\firstauthor, \secondauthor, \thirdauthor, \fourthauthor},
     bookmarksnumbered, % use section numbers with bookmarks
     pdfstartview=XYZ % start with zoom=100% instead of full screen; 
                      % especially useful if working with a big screen :-)
@@ -100,17 +100,21 @@
 % Single address
 % To use with only one author or several with the same address
 % ---------------
-\oneauthor
-  {Silvin Willemsen, Nikolaj Andersson and Stefania Serafin} { \\ Multisensory Experience Lab, CREATE, Aalborg University Copenhagen \\ %
-    {\tt \href{mailto:sil@smcnetwork.org}{\{sil, nsa, sts\}@smcnetwork.org}}}
-
-%Two addresses
-%--------------
 % \twoauthors
-%   {\firstauthor} {Affiliation1 \\ %
-%     {\tt \href{mailto:author1@smcnetwork.org}{author1@smcnetwork.org}}}
-%   {\secondauthor} {Affiliation2 \\ %
-%     {\tt \href{mailto:author2@smcnetwork.org}{author2@smcnetwork.org}}}
+%   {Silvin Willemsen, Nikolaj Andersson and Stefania Serafin} { \\ Multisensory Experience Lab, CREATE, Aalborg University Copenhagen \\ %
+%     {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
+
+% Two addresses
+% --------------
+\twoauthors
+  {\firstauthor, \secondauthor, \thirdauthor} {Multisensory Experience Lab,\\
+   Aalborg University Copenhagen \\
+   Copenhagen, Denmark\\ %
+    {\tt \href{mailto:sil@create.aau.dk}{sil@create.aau.dk}}}
+  {\fourthauthor} {Acoustics and Fluid Dynamics Group/Music, \\
+  University of Edinburgh \\
+  Edinburgh, UK \\ %
+    {\tt \href{mailto:sbilbao@staffmail.ed.ac.uk}{sbilbao@staffmail.ed.ac.uk}}}
 
 % Three addresses
 % --------------
@@ -181,11 +185,11 @@ where $\Delta$ represents the 2D Laplacian (also see Equation \eqref{eq:2D}). Ju
 \begin{equation}\label{eq:plateExcitation}
     u_{tt} = ... + F_\text{e}E_\text{e},
 \end{equation}
-where $F_\text{e} = f_\text{e}/ \rho AL$ [m/s$^2$], with bowing force $f_\text{e}$ [N], density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m], and $E_\text{e}$ are an excitation function and the excitation area respectively. 
+where $F_\text{e} = f_\text{e}/ \rho AL$ [m/s$^2$], with bowing force $f_\text{e}$ [N], density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m] and $E_\text{e}$ are an excitation function and the excitation area respectively. 
 
 \subsection{Connections}\label{sec:connections}
 Adding connections between different PMs, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:plateExcitation}
-
+%% this paragraph is too wide for some reason
 \begin{align}
     u_{tt} &= ... + F_\alpha E_\alpha, \\
     u_{tt} &= ... + F_\beta E_\beta,
@@ -225,12 +229,15 @@ When approximating the PDEs shown in Section \ref{sec:PDE}, we use operators
 \subsection{Stiff String}\label{subsec:stiffStringFDS}
 Equation \eqref{eq:bowedString} can be approximated using
 \begin{equation}
-\begin{aligned}
+\begin{aligned}\label{eq:discreteString}
 \delta_{tt} u_l^n =&\gamma^2 \delta_{xx} u_l^n -\kappa^2\delta_{xx}\delta_{xx} u_l^n - 2\sigma_0\delta_{t\cdot} u_l^n  \\
 &+ 2\sigma_1\delta_{t-}\delta_{xx}u_l^n - \delta_{x_\text{B}}F_\text{B}\phi(v_\text{rel}),
 \end{aligned}
 \end{equation}
-where $\delta_{x_\text{B}} = \delta(x-x_\text{B})$ is the spatial Dirac delta function (1 at $x_\text{B}$, else 0).
+where $\delta_{x_\text{B}} = \delta(x-x_\text{B})$ is the spatial Dirac delta function (1 at $x_\text{B}$, else 0) and 
+\begin{equation}\label{eq:descreteRelativeVel}
+    v_\text{rel} = \delta_{t\cdot}u(x_\text{B})-v_\text{B}.
+\end{equation}
 For our implementation, clamped boundary conditions were used, defined as:
 \begin{equation}\label{boundary}
     u = u_x = 0 \quad \text{where} \quad l = \{0, N\}.
@@ -250,7 +257,7 @@ The closer $h$ is to this limit, the higher the quality of the implementation. T
 
 Equation \eqref{eq:plateExcitation} can be approximated using
 \begin{equation}
-    \begin{aligned}
+    \begin{aligned}\label{eq:plateFDS}
         \delta_{tt}u_{l,m}^n = &-\kappa^2 \delta_\Delta\delta_\Delta u_{l,m}^n - 2\sigma_0\delta_{t\cdot}u_{l,m}^n \\
         &- 2\sigma_1\delta_{t−}\delta_\Delta u_{l,m}^n + F_\text{e}E_\text{e}
     \end{aligned}
@@ -284,25 +291,16 @@ where $\sigma_\text{f} \in [0,1]$ is the damping coefficient of the finger.
 \begin{figure*}[t]
     \centering
     \includegraphics[width=2.1\columnwidth]{FullPlate}
-    \caption{A visualisation of Equation \eqref{eq:plateImplementation}. The dots and equations represent the locations $(l,m)$ and what these are multiplied with. (a) An overview. (b) The current time-step $n$. (c) The previous time-step $n-1$. \label{fig:example}}
+    \caption{A visualisation of the finite-difference scheme of the plate (also see Equation \eqref{eq:plateImplementation} in Appendix A). The dots and equations represent the locations $(l,m)$ and what these are multiplied with. (a) An overview. (b) The current time-step $n$. (c) The previous time-step $n-1$. \label{fig:plateFDS}}
  \end{figure*}
 \section{Implementation}
-For prototyping \texttt{Matlab} was used. We then used C++ along with the JUCE framework for implementing the objects and connections in real-time.
+%kind of a methods section
+In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. We used C++ along with the JUCE framework for implementing the objects and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+
+\textit{Note: In this paper we have used the simple case of a single point for bowing, excitation and connections. These can be extended to a bowing area, excitation area and area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:ModularPercussion}}.
+
 \subsection{String}
-In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. In the case of the string, we obtain
-\begin{equation}
-    \begin{aligned}\label{eq:stringImplementatino}
-        (1 &+ \sigma_0k)u_l^{n+1} = 2u_l^n - (1 - \sigma_0k - 2\phi) u_l^{n-1} \\
-        & +(\lambda^2 + \phi)(u_{l+1}^n - 2u_l^n + u_{l-1}^n)\\
-        &- \mu^2(u_{l+2}^n - 4u_{l+1}^n + 6u_l^n - 4u_{l-1}^n + u_{l-2}^n) \\
-        &+ \phi(u_{l+1}^{n-1} + u_{l-1}^{n-1})\\
-        &-k^2\delta_{l_e}F_\text{e},
-    \end{aligned}
-\end{equation}
-where
-\begin{equation}\nonumber
-\lambda = \frac{\gamma k}{h}, \;\; \mu =  \frac{\kappa k}{h^2}, \;\; \phi = \frac{2\sigma_1k}{h^2} \;\; \text{and} \;\; \delta_{l_\text{e}} = \delta(x-x_{l_\text{e}}). 
-\end{equation}
+In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:discreteString}.
 The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to
 \begin{equation}
     \gamma = 2 f_0,
@@ -315,23 +313,14 @@ and the stiffness can be calculated using
 where $B = 0.001$ is the inharmonicity coefficient [m$^{-2}$].
 The output is retrieved at $l = \text{floor}(0.75N)$ for all strings.
 
-\subsection{Plate}
-%move equation to appendix
+As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source]
+
 \begin{equation}
-    \begin{aligned}\label{eq:plateImplementation}
-        (1& + \sigma_0k)u_{l,m}^{n+1} = (2 - 4\phi + 20\mu^2)u_{l,m}^n\\
-    &-\mu^2 (u_{l,m + 2}^n + u_{l,m - 2}^n + u_{l + 2,m}^n + u_{l - 2,m}^n)\\
-    &- 2\mu^2(u_{l + 1,m + 1}^n + u_{l + 1,m - 1}^n + u_{l - 1,m + 1}^n + u_{l - 1,m - 1}^n)\\
-    &+ (8\mu^2 + \phi)(u_{l,m + 1}^n + u_{l,m - 1}^n + u_{l + 1,m}^n + u_{l - 1,m}^n)\\
-    &+ (\sigma_0 k - 1 + 4\phi) u_{l,m}^{n-1}\\
-    &- \phi(u_{l,m + 1}^{n-1} + u_{l,m - 1}^{n-1} + u_{l + 1,m}^{n-1} + u_{l - 1,m}^{n-1})\\
-    &+ k^2 \delta_{l_\text{e}, m_\text{e}}F_\text{e},
-\end{aligned}
+    f^{i+1} = f^i - \frac{f^i}{f'^i}
 \end{equation}
-where
-\begin{equation}\nonumber
-    \mu = \frac{\kappa k}{h^2} \text{,} \quad \phi = \frac{2\sigma_1k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}, m_\text{e}} = \delta(x - x_{l_\text{e}}, y - y_{m_\text{e}}).
-\end{equation}
+
+\subsection{Plate}
+A solved finite-difference scheme for Equation \eqref{eq:plateFDS} is presented by Equation \eqref{eq:plateImplementation} in Appendix A. A visualisation of this FDS can be found in Figure \ref{fig:plateFDS}.
 
 \section{User Interaction}
 User-controlled variables:
@@ -355,8 +344,6 @@ Something about the different prototype mappings, and the "final" mapping
 
 \section{Conclusion and Future Work}
 
-
-
 \begin{acknowledgments}
 We would like to thank...
 \end{acknowledgments} 
@@ -364,5 +351,38 @@ We would like to thank...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
 \bibliography{smc2019bib}
+
+\section{Appendix A}
+\subsection{Finite-Difference Scheme String}
+In the case of the string, we obtain
+\begin{equation}
+    \begin{aligned}\label{eq:stringImplementation}
+        (1 &+ \sigma_0k)u_l^{n+1} = 2u_l^n - (1 - \sigma_0k - 2\psi) u_l^{n-1} \\
+        & +(\lambda^2 + \psi)(u_{l+1}^n - 2u_l^n + u_{l-1}^n)\\
+        &- \mu^2(u_{l+2}^n - 4u_{l+1}^n + 6u_l^n - 4u_{l-1}^n + u_{l-2}^n) \\
+        &+ \psi(u_{l+1}^{n-1} + u_{l-1}^{n-1})\\
+        &-k^2\delta_{l_e}F_\text{B}\phi(v_\text{rel}),
+    \end{aligned}
+\end{equation}
+where
+\begin{equation}\nonumber
+\lambda = \frac{\gamma k}{h}, \;\; \mu =  \frac{\kappa k}{h^2}, \;\; \psi = \frac{2\sigma_1k}{h^2} \;\; \text{and} \;\; \delta_{l_\text{e}} = \delta(x-x_{l_\text{e}}). 
+\end{equation}
+\subsection{Finite-Difference Scheme Plate}
+\begin{equation}
+    \begin{aligned}\label{eq:plateImplementation}
+        (1& + \sigma_0k)u_{l,m}^{n+1} = (2 - 4\psi + 20\mu^2)u_{l,m}^n\\
+    &-\mu^2 (u_{l,m + 2}^n + u_{l,m - 2}^n + u_{l + 2,m}^n + u_{l - 2,m}^n)\\
+    &- 2\mu^2(u_{l + 1,m + 1}^n + u_{l + 1,m - 1}^n + u_{l - 1,m + 1}^n + u_{l - 1,m - 1}^n)\\
+    &+ (8\mu^2 + \psi)(u_{l,m + 1}^n + u_{l,m - 1}^n + u_{l + 1,m}^n + u_{l - 1,m}^n)\\
+    &+ (\sigma_0 k - 1 + 4\psi) u_{l,m}^{n-1}\\
+    &- \psi(u_{l,m + 1}^{n-1} + u_{l,m - 1}^{n-1} + u_{l + 1,m}^{n-1} + u_{l - 1,m}^{n-1})\\
+    &+ k^2 \delta_{l_\text{e}, m_\text{e}}F_\text{e},
+\end{aligned}
+\end{equation}
+where
+\begin{equation}\nonumber
+    \mu = \frac{\kappa k}{h^2} \text{,} \quad \psi = \frac{2\sigma_1k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}, m_\text{e}} = \delta(x - x_{l_\text{e}}, y - y_{m_\text{e}}).
+\end{equation}
 
 \end{document}
