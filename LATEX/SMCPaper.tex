@@ -258,8 +258,8 @@ The closer $h$ is to this limit, the higher the quality of the implementation. T
 Equation \eqref{eq:plateExcitation} can be approximated using
 \begin{equation}
     \begin{aligned}\label{eq:plateFDS}
-     \delta_{tt}u_{l,m}^n = &-\kappa^2 \delta_\Delta\delta_\Delta u_{l,m}^n - 2\sigma_0\delta_{t\cdot}u_{l,m}^n \\
-        &- 2\sigma_1\delta_{t−}\delta_\Delta u_{l,m}^n + F_\text{e}E_\text{e}
+        \delta_{tt}u_{l,m}^n = &-\kappa^2 \delta_\Delta\delta_\Delta u_{l,m}^n - 2\sigma_0\delta_{t\cdot}u_{l,m}^n \\
+        &+ 2\sigma_1\delta_{t−}\delta_\Delta u_{l,m}^n + F_\text{e}E_\text{e}
     \end{aligned}
 \end{equation}
 In the case of the plate, we set the number of horizontal and vertical points and calculate grid spacing $h$ from that using 

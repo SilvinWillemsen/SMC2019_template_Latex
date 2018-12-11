@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex SMCPaper"] 1544434233 "SMCPaper.aux" "SMCPaper.bbl" "SMCPaper" 1544434793
+["bibtex SMCPaper"] 1544434233 "SMCPaper.aux" "SMCPaper.bbl" "SMCPaper" 1544524283
   "/usr/local/texlive/2016/texmf-dist/bibtex/bst/IEEEtran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "SMCPaper.aux" 1544434792 5636 f20f92d70735ee06adcd5957ae37b80f ""
+  "SMCPaper.aux" 1544524283 5636 f20f92d70735ee06adcd5957ae37b80f ""
   "SMCPaper.bcf" 0 -1 0 ""
   "smc2019bib.bib" 1544175861 1414 cd43ebe2fce891cd3c8bc207ba5a6375 ""
   (generated)
   "SMCPaper.blg"
   "SMCPaper.bbl"
-["pdflatex"] 1544434789 "/Users/SilvinW/repositories/SMC2019_template_Latex/LATEX/SMCPaper.tex" "SMCPaper.pdf" "SMCPaper" 1544434793
-  "/Users/SilvinW/repositories/SMC2019_template_Latex/LATEX/SMCPaper.tex" 1544434789 19440 fd2aee050a09e282ca83424b9fa977c6 ""
+["pdflatex"] 1544524280 "/Users/SilvinW/repositories/SMC2019_template_Latex/LATEX/SMCPaper.tex" "SMCPaper.pdf" "SMCPaper" 1544524283
+  "/Users/SilvinW/repositories/SMC2019_template_Latex/LATEX/SMCPaper.tex" 1544524280 19440 0db6a82f7270f6ce50ef233ed98ef4a5 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -112,13 +112,13 @@
   "/usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt" 1478168753 3873397 d7097b3ecb6d977e7d73acf1f03b0bec ""
   "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
   "FullPlate.png" 1544174486 653380 6ecfb2e2662e3d0ce4491608cca67b3d ""
-  "SMCPaper.aux" 1544434792 5636 f20f92d70735ee06adcd5957ae37b80f ""
+  "SMCPaper.aux" 1544524283 5636 f20f92d70735ee06adcd5957ae37b80f ""
   "SMCPaper.bbl" 1544434233 1285 ca74f02b73c2612e1a630ae422e46680 "bibtex SMCPaper"
-  "SMCPaper.out" 1544434792 1351 febfc21abeed622b813d4c906d801e36 ""
-  "SMCPaper.tex" 1544434789 19440 fd2aee050a09e282ca83424b9fa977c6 ""
+  "SMCPaper.out" 1544524283 1351 febfc21abeed622b813d4c906d801e36 ""
+  "SMCPaper.tex" 1544524280 19440 0db6a82f7270f6ce50ef233ed98ef4a5 ""
   "smc2019.sty" 1544432299 6087 fa230c971fa98601ad9cc5062eafe075 ""
   (generated)
-  "SMCPaper.aux"
   "SMCPaper.pdf"
   "SMCPaper.out"
   "SMCPaper.log"
+  "SMCPaper.aux"
