@@ -162,30 +162,39 @@ The state $u = u(x,t)$ describes the transverse displacement of the string. The 
 \begin{equation}\label{eq:stiffString}
     u_{tt} = \gamma^2 u_{xx}-\kappa^2u_{xxxx} - 2\sigma_0u_{t} + 2\sigma_1u_{txx},
 \end{equation}
-where $\gamma$ is wave-speed [m/s], $\kappa$ is stiffness [?] and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are frequency-dependent and frequency-independent damping respectively.
+where $\gamma$ is wave-speed [m/s], $\kappa = \sqrt{EI/\rho AL^4}$ is a stiffness parameter
+%[$\sqrt{\text{kg}}\cdot$m$^{-2}\cdot$ s$^{-2}$]
+and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are frequency-dependent and frequency-independent damping respectively.
 
 We can add an excitation term to extend Equation \eqref{eq:stiffString} to a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} 
 \begin{align}
-    \label{eq:bowedString} u_{tt} &= ... - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}) \quad \text{where} \\
-    v_\text{rel} &= u_t(x_\text{B}) - v_\text{B},
+    \label{eq:bowedString} &u_{tt} = ... - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
+    &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}
 \end{align}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
-where $F_\text{B}$ is the bowing force [N], $v_\text{B}$ is the bowing velocity [m/s], $v_\text{rel}$ is the relative velocity, defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
+where $F_\text{B} = f_\text{B}/ \rho AL$ is the excitation function [m/s$^2$], with bowing force $f_\text{B}$ [N], material density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m]. The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}
-    \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} \exp(-av_\text{rel}^2+1/2).
+    \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} e^{-av_\text{rel}^2+1/2}.
 \end{equation}
-
+Furthermore,
+\begin{equation}
+    \delta(x-x_\text{B}) =
+\begin{cases}
+    1, & \text{if } x=x_\text{B}\\
+    0,              & \text{otherwise},
+\end{cases}
+\end{equation}
+which, when multiplied onto the excitation, applies it to point $x_\text{B}$ on the string.
 \subsection{Plate}\label{subsec:platePDE}
 In the case of a plate, the state $u = u(x,y,t)$ is now defined over two spatial dimensions. The PDE for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
-
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t},
 \end{equation}
-where $\Delta$ represents the 2D Laplacian (also see Equation \eqref{eq:2D}). Just like in the case of the string, an extra term can be added as an input:
+where $\kappa = \sqrt{Eh^2/12\rho(1-\nu)}/L_xL_y$ is again a stiffness parameter with Young's modulus $E$ [N/m$^2$], plate-thickness $h$ [m], material density $\rho$ [kg/m$^3$], unit-less Poisson's ratio $\nu = 0.3$, and horizontal and vertical length of the plate $L_x$ and $L_y$ [m]. Furthermore, $\Delta$ represents the 2D Laplacian (also see Equation \eqref{eq:2D}). Just like in the case of the string, an extra term can be added as an input:
 \begin{equation}\label{eq:plateExcitation}
     u_{tt} = ... + F_\text{e}E_\text{e},
 \end{equation}
-where $F_\text{e} = f_\text{e}/ \rho AL$ [m/s$^2$], with bowing force $f_\text{e}$ [N], density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m] and $E_\text{e}$ are an excitation function and the excitation area respectively. 
+where $F_\text{e} = f_\text{e} / \rho h L_xL_y $ with excitation force $f_\text{e}$ [N] and $E_\text{e}$ are an excitation function and the excitation area respectively. 
 
 \subsection{Connections}\label{sec:connections}
 Adding connections between different PMs, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:plateExcitation}
@@ -203,7 +212,7 @@ where $\omega_0$ and $\omega_1$ are the linear and non-linear spring coefficient
 
 
 \section{Finite-Difference Schemes}\label{sec:FDS}
-To be able to digitally implement the continuous equations mentioned in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{W}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, where $l \in [0,N]$ with $N$ being the total number of points and $h$ is the grid-spacing of the model which is calculated differently for each model (see sub-sections below). The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. In the case of a plate, the second spatial dimension is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
+To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{W}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, where $l \in [0,N]$ with $N$ being the total number of points and $h$ is the grid-spacing of the model which is calculated differently for each model (see sub-sections below). The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. In the case of a plate, the second spatial dimension is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
 Approximations for the derivatives in the equations found in Section \ref{sec:PDE} are described in the following way: 
 
 When approximating the PDEs shown in Section \ref{sec:PDE}, we use operators 
@@ -218,8 +227,8 @@ When approximating the PDEs shown in Section \ref{sec:PDE}, we use operators
         % u_{txx} &= \frac{1}{hk^2}\big(u_{l+1}^n - 2u_l^2 + u_{l-1}^n - u_{l+1}^{n-1} + 2u_l^{n-1} - u_{l-1}^{n-1}\big),\\
         % \Delta u &= \frac{1}{h^2}(u_{l, m+1}^{n} + u_{l, m-1}^{n}
         % + u_{l+1, m}^{n} + u_{l-1, m}^{n} - 4u_{l, m}^{n}),\\
-         \label{eq:2D}\delta_\Delta u_{l,m}^n &= \frac{1}{h^2}(u_{l,m+1}^n+u_{l,m-1}^n+u_{l+1,m}^n+ \\
-         & \qquad \quad u_{l-1,m}^n - 4u_{l,m}^n),
+         \label{eq:2D}\delta_\Delta u_{l,m}^n &= \frac{1}{h^2}\big(u_{l,m+1}^n+u_{l,m-1}^n+u_{l+1,m}^n+ \\
+         & \qquad \quad u_{l-1,m}^n - 4u_{l,m}^n\big).
             % \Delta \Delta u &= \frac{1}{h^2}(\Delta u_{l, m+1}^{n} + \Delta u_{l, m-1}^{n},\\
             % & \qquad\quad + \Delta u_{l+1, m}^{n} + \Delta u_{l-1, m}^{n} - 4\Delta u_{l, m}^{n}),\\
         %   \label{eq:biharmonic}   \Delta \Delta u &= u_{xxxx} + 2u_{xxyy} + u_{yyyy}.
@@ -229,7 +238,7 @@ When approximating the PDEs shown in Section \ref{sec:PDE}, we use operators
 \subsection{Stiff String}\label{subsec:stiffStringFDS}
 Equation \eqref{eq:bowedString} can be approximated using
 \begin{equation}
-\begin{aligned}\label{eq:discreteString}
+\begin{aligned}\label{eq:stiffStringFDS}
 \delta_{tt} u_l^n =&\gamma^2 \delta_{xx} u_l^n -\kappa^2\delta_{xx}\delta_{xx} u_l^n - 2\sigma_0\delta_{t\cdot} u_l^n  \\
 &+ 2\sigma_1\delta_{t-}\delta_{xx}u_l^n - \delta_{x_\text{B}}F_\text{B}\phi(v_\text{rel}),
 \end{aligned}
@@ -280,6 +289,18 @@ The relative displacement $\eta$ between $\alpha$ and $\beta$ can be calculated 
 \end{equation}
 which, in other words, is the difference between the state of element $\alpha$ at connection point $x_\alpha$ and the state of element $\beta$ at connection point $x_\beta$ scaled by their respective grid-spacings $h_\alpha$ and $h_\beta$.
 
+
+\section{Energy Analysis}
+
+\begin{equation}
+\begin{aligned}
+    &\mathfrak{H}\\
+    &\mathfrak{B}\\
+    &\mathfrak{T}\\
+    &\mathfrak{D}
+\end{aligned}
+\end{equation}
+
 \section{Pitch}
 We implemented a damping point in the model that acts as a finger on the (virtual) neck of the instrument controlling pitch. After $u^{n+1}$ is calculated, the following operation is performed at the point of damping:
 
@@ -300,7 +321,7 @@ In this section, we will present how to implement the FDSs presented in Section 
 \textit{Note: In this paper we have used the simple case of a single point for bowing, excitation and connections. These can be extended to a bowing area, excitation area and area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:ModularPercussion}}.
 
 \subsection{String}
-In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:discreteString}.
+In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
 The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to
 \begin{equation}
     \gamma = 2 f_0,
@@ -313,12 +334,17 @@ and the stiffness can be calculated using
 where $B = 0.001$ is the inharmonicity coefficient [m$^{-2}$].
 The output is retrieved at $l = \text{floor}(0.75N)$ for all strings.
 
-As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source]
+As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source]
 
-\begin{equation}
-    f^{i+1} = f^i - \frac{f^i}{f'^i}
+\begin{equation}\label{eq:newtonRaphson}
+    f(v_\text{rel})^{i+1} = f(v_\text{rel})^i - \frac{f(v_\text{rel})^i}{f'(v_\text{rel})^i}.
 \end{equation}
+This process continues until 
 
+\begin{equation} \nonumber
+    f^{i+1}-f^i < \epsilon,
+\end{equation}
+where $\epsilon = 10^{-4}$ is an arbitrary threshold. 
 \subsection{Plate}
 A solved finite-difference scheme for Equation \eqref{eq:plateFDS} is presented by Equation \eqref{eq:plateImplementation} in Appendix A. A visualisation of this FDS can be found in Figure \ref{fig:plateFDS}.
 
@@ -354,7 +380,7 @@ We would like to thank...
 
 \section{Appendix A}
 \subsection{Finite-Difference Scheme String}
-In the case of the string, we obtain
+Solving Equation \eqref{eq:stiffStringFDS} for $u_l^{n+1}$ we obtain
 \begin{equation}
     \begin{aligned}\label{eq:stringImplementation}
         (1 &+ \sigma_0k)u_l^{n+1} = 2u_l^n - (1 - \sigma_0k - 2\psi) u_l^{n-1} \\
@@ -368,7 +394,31 @@ where
 \begin{equation}\nonumber
 \lambda = \frac{\gamma k}{h}, \;\; \mu =  \frac{\kappa k}{h^2}, \;\; \psi = \frac{2\sigma_1k}{h^2} \;\; \text{and} \;\; \delta_{l_\text{e}} = \delta(x-x_{l_\text{e}}). 
 \end{equation}
+We can iteratively solve $v_\text{rel}$ using \eqref{eq:newtonRaphson}:
+\begin{equation}
+    \begin{aligned}
+    f(v_\text{rel}) = &F_\text{B} \sqrt{2a} v_\text{rel}e^{-a v_\text{rel}^2 + 1/2} \\
+    &+ \frac{2 v_\text{rel}}{k} + 2 \sigma_0 v_\text{rel} + b,
+    \end{aligned}
+\end{equation}
+and the derivative with respect to $v_\text{rel}$ is
+\begin{equation}
+    \begin{aligned}
+    f'(v_\text{rel}) = &F_\text{B} \sqrt{2a}(1 - 2a v_\text{rel}^2) e^{-a v_\text{rel}^2 + 1/2} \\
+    &+ \frac{2}{k} + 2 \sigma_0,
+    \end{aligned}
+\end{equation}
+where $a$ is a free variable (in our implementation set to $100$) and
+\begin{equation}
+    \begin{aligned}
+    b =&\frac{2}{k}v_\text{B} - \frac{2}{k^2}(u_{x_\text{B}}^n - u_{x_\text{B}}^{n-1}) - \frac{\gamma^2}{h^2} (u_{x_\text{B}+1}^n - 2 u_{x_\text{B}}^n + u_{x_\text{B} - 1}^n)\\
+    &+ \frac{k^2}{h^2} (u_{x_\text{B}+2}^n - 4 u_{x_\text{B}+1}^n + 6 u_{x_\text{B}}^n - 4 u_{x_\text{B}-1}^n + u_{x_\text{B}-2}^n)\\
+    &+ 2 \sigma_0 v_\text{B} - \frac{2 \sigma_1}{kh^2}((u_{x_\text{B}+1}^n - 2 u_{x_\text{B}}^n + u_{x_\text{B}-1}^n) \\
+    &- (u_{x_\text{B}+1}^{n-1} - 2 u_{x_\text{B}}^{n-1} + u_{x_\text{B}-1}^{n-1})).
+    \end{aligned}
+\end{equation}
 \subsection{Finite-Difference Scheme Plate}
+Solving Equation \eqref{eq:plateFDS} for $u_l^{n+1}$ we obtain
 \begin{equation}
     \begin{aligned}\label{eq:plateImplementation}
         (1& + \sigma_0k)u_{l,m}^{n+1} = (2 - 4\psi + 20\mu^2)u_{l,m}^n\\

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  11 DEC 2018 11:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  14 DEC 2018 13:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1344,7 +1344,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 136--136
  []
 
 
-Overfull \hbox (3.1652pt too wide) in paragraph at lines 191--193
+Overfull \hbox (6.63577pt too wide) in paragraph at lines 164--168
+\OT1/ptm/m/n/10 dependent and frequency-independent damp-ing re-spec-tively. 
+ []
+
+
+Overfull \hbox (3.3363pt too wide) in paragraph at lines 173--176
+\OT1/ptm/m/n/10 with bow-ing force $\OML/cmm/m/it/10 f[]$ \OT1/ptm/m/n/10 [N], ma-te-rial den-sity $\OML/cmm/m/it/10 ^^Z$ \OT1/ptm/m/n/10 [kg/m$[]$], cross-
+ []
+
+
+Overfull \hbox (2.57953pt too wide) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 pa-ram-e-ter with Young's mod-u-lus $\OML/cmm/m/it/10 E$ \OT1/ptm/m/n/10 [N/m$[]$], plate-thickness
+ []
+
+
+Overfull \hbox (3.1652pt too wide) in paragraph at lines 200--202
 \OT1/ptm/m/n/10 Adding con-nec-tions be-tween dif-fer-ent PMs, fur-ther re-ferred
  []
 
@@ -1353,66 +1368,68 @@ Overfull \hbox (3.1652pt too wide) in paragraph at lines 191--193
 
 
 ]
-Overfull \hbox (3.30539pt too wide) in paragraph at lines 240--242
+Overfull \hbox (3.30539pt too wide) in paragraph at lines 249--251
 \OT1/ptm/m/n/10 For our im-ple-men-ta-tion, clamped bound-ary con-di-tions were
  []
 
 Missing character: There is no â in font cmr7!
 Missing character: There is no ˆ in font cmr7!
 Missing character: There is no ’ in font cmr7!
-<FullPlate.png, id=140, 1778.3238pt x 555.7563pt>
+LaTeX Font Info:    Try loading font information for U+euf on input line 297.
+(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/ueuf.fd
+File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
+) <FullPlate.png, id=144, 1778.3238pt x 555.7563pt>
 File: FullPlate.png Graphic file (type png)
  <use FullPlate.png>
-Package pdftex.def Info: FullPlate.png used on input line 293.
+Package pdftex.def Info: FullPlate.png used on input line 314.
 (pdftex.def)             Requested size: 489.95786pt x 153.11754pt.
 
-Overfull \hbox (0.57047pt too wide) in paragraph at lines 293--294
+Overfull \hbox (0.57047pt too wide) in paragraph at lines 314--315
  [][] 
  []
 
 [2]
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 328.
- (./SMCPaper.bbl)
-Overfull \hbox (3.9263pt too wide) detected at line 382
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 354.
+ (./SMCPaper.bbl [3 <./FullPlate.png>])
+Overfull \hbox (8.00151pt too wide) detected at line 419
 [][] []
  []
 
 
-Underfull \vbox (badness 4378) has occurred while \output is active []
+Overfull \hbox (3.9263pt too wide) detected at line 432
+[][] []
+ []
 
- [3 <./FullPlate.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 388.
- [4pdfTeX warning (ext4): destination with the same identifier (name{equation.10.32}) has been already used, duplicate ignored
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 438.
+[4pdfTeX warning (ext4): destination with the same identifier (name{equation.11.34}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.388 \end{document}
-                    
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 388.
+l.438 \end{document}
+                    ]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 438.
  (./SMCPaper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 388.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 388.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 438.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 438.
 Package rerunfilecheck Info: File `SMCPaper.out' has not changed.
-(rerunfilecheck)             Checksum: FEBFC21ABEED622B813D4C906D801E36;1351.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 388.
+(rerunfilecheck)             Checksum: 4B1F4B80FE5D8A1CD4B24097C4D3B11D;1408.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 438.
  )
 (\end occurred when \ifx on line 41 was incomplete) 
 Here is how much of TeX's memory you used:
- 14121 strings out of 493014
- 243104 string characters out of 6133351
- 318160 words of memory out of 5000000
- 17474 multiletter control sequences out of 15000+600000
- 20493 words of font info for 48 fonts, out of 8000000 for 9000
+ 14143 strings out of 493014
+ 243475 string characters out of 6133351
+ 321194 words of memory out of 5000000
+ 17483 multiletter control sequences out of 15000+600000
+ 21201 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,14n,42p,10441b,364s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on SMCPaper.pdf (4 pages, 717709 bytes).
+ 40i,14n,42p,10441b,463s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on SMCPaper.pdf (4 pages, 730526 bytes).
 PDF statistics:
- 251 PDF objects out of 1000 (max. 8388607)
- 226 compressed objects within 3 object streams
- 63 named destinations out of 1000 (max. 500000)
- 182 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 273 PDF objects out of 1000 (max. 8388607)
+ 246 compressed objects within 3 object streams
+ 70 named destinations out of 1000 (max. 500000)
+ 190 words of extra memory for PDF output out of 10000 (max. 10000000)
 
