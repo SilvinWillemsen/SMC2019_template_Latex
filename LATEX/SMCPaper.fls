@@ -145,6 +145,8 @@ INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omspcr.fd
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omspcr.fd
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
@@ -159,10 +161,10 @@ INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
-INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
-INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/times/ptmri7t.vf
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
+INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
+INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/ueuf.fd
@@ -174,10 +176,10 @@ INPUT FullPlate.png
 INPUT ./FullPlate.png
 INPUT ./FullPlate.png
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm
-INPUT SMCPaper.bbl
-INPUT SMCPaper.bbl
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/vf/adobe/times/ptmri7t.vf
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
+INPUT SMCPaper.bbl
+INPUT SMCPaper.bbl
 INPUT SMCPaper.aux
 INPUT ./SMCPaper.out
 INPUT ./SMCPaper.out

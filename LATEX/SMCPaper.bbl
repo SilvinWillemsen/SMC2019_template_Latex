@@ -21,6 +21,17 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{Bilbao2018:Tutorial}
+S.~Bilbao, B.~Hamilton, R.~Harrison, and A.~Torin, ``Finite-difference schemes
+  in musical acoustics: A tutorial.'' \emph{Springer handbook of systematic
+  musicology}, 2018.
+
+\bibitem{sensel2018}
+\BIBentryALTinterwordspacing
+{Sensel Inc.} (2018) Sensel morph. [Online]. Available:
+  \url{https://sensel.com/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Bilbao2009:NumericalSoundSynthesis}
 S.~Bilbao, \emph{Numerical Sound Synthesis, Finite Difference Schemes and
   Simulation in Musical Acoustics}.\hskip 1em plus 0.5em minus 0.4em\relax John

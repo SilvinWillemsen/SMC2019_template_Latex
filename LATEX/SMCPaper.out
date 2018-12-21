@@ -8,16 +8,18 @@
 \BOOKMARK [2][-]{subsection.3.2}{3.2 Plate}{section.3}% 8
 \BOOKMARK [2][-]{subsection.3.3}{3.3 Connections}{section.3}% 9
 \BOOKMARK [1][-]{section.4}{ 4. Energy Analysis}{}% 10
-\BOOKMARK [1][-]{section.5}{ 5. Pitch}{}% 11
-\BOOKMARK [1][-]{section.6}{ 6. Implementation}{}% 12
-\BOOKMARK [2][-]{subsection.6.1}{6.1 String}{section.6}% 13
-\BOOKMARK [2][-]{subsection.6.2}{6.2 Plate}{section.6}% 14
-\BOOKMARK [1][-]{section.7}{ 7. User Interaction}{}% 15
-\BOOKMARK [2][-]{subsection.7.1}{7.1 Sensel Morph}{section.7}% 16
-\BOOKMARK [3][-]{subsubsection.7.1.1}{7.1.1 Mapping strategies}{subsection.7.1}% 17
-\BOOKMARK [1][-]{section.8}{ 8. Discussion}{}% 18
-\BOOKMARK [1][-]{section.9}{ 9. Conclusion and Future Work}{}% 19
-\BOOKMARK [1][-]{section.10}{ 10. References}{}% 20
-\BOOKMARK [1][-]{section.11}{ 11. Appendix A}{}% 21
-\BOOKMARK [2][-]{subsection.11.1}{11.1 Finite-Difference Scheme String}{section.11}% 22
-\BOOKMARK [2][-]{subsection.11.2}{11.2 Finite-Difference Scheme Plate}{section.11}% 23
+\BOOKMARK [1][-]{section.5}{ 5. Implementation}{}% 11
+\BOOKMARK [2][-]{subsection.5.1}{5.1 String}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.2}{5.2 Plate}{section.5}% 13
+\BOOKMARK [1][-]{section.6}{ 6. Instruments}{}% 14
+\BOOKMARK [2][-]{subsection.6.1}{6.1 Sitar}{section.6}% 15
+\BOOKMARK [2][-]{subsection.6.2}{6.2 Hurdy Gurdy}{section.6}% 16
+\BOOKMARK [2][-]{subsection.6.3}{6.3 Dulcimer}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.4}{6.4 Sensel Morph}{section.6}% 18
+\BOOKMARK [3][-]{subsubsection.6.4.1}{6.4.1 Mapping strategies}{subsection.6.4}% 19
+\BOOKMARK [1][-]{section.7}{ 7. Discussion}{}% 20
+\BOOKMARK [1][-]{section.8}{ 8. Conclusion and Future Work}{}% 21
+\BOOKMARK [1][-]{section.9}{ 9. References}{}% 22
+\BOOKMARK [1][-]{section.10}{ 10. Appendix A}{}% 23
+\BOOKMARK [2][-]{subsection.10.1}{10.1 Finite-Difference Scheme String}{section.10}% 24
+\BOOKMARK [2][-]{subsection.10.2}{10.2 Finite-Difference Scheme Plate}{section.10}% 25

@@ -110,7 +110,7 @@
   {\firstauthor, \secondauthor, \thirdauthor} {Multisensory Experience Lab,\\
    Aalborg University Copenhagen \\
    Copenhagen, Denmark\\ %
-    {\tt \href{mailto:sil@create.aau.dk}{sil@create.aau.dk}}}
+    {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
   {\fourthauthor} {Acoustics and Fluid Dynamics Group/Music, \\
   University of Edinburgh \\
   Edinburgh, UK \\ %
@@ -141,14 +141,16 @@ Lorum Ipsum
 %
 
 \section{Introduction}\label{sec:introduction}
-The behaviour of musical instruments can be well defined by partial differential equations (PDEs).
+The behaviour of musical instruments can be well defined by partial differential equations (PDEs) \cite{Bilbao2018:Tutorial}.
 
 Finite-difference schemes (FDSs)
 
 
 The physical models (PMs) used as a case study in this project are the stiff string and the plate.
 
-This paper is structured as follows: Section \ref{sec:PDE} will present the PMs used in our implementation, Section \ref{sec:FDS} will show the how to implement the PMs, Section \ref{sec:connections}
+On top of all this, we have used the expressive control surface Sensel Morph \cite{sensel2018}
+
+This paper is structured as follows: Section \ref{sec:PDE} describes the PMs used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:energy} will describe an energy analysis of a connected string-plate system, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of PMs inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
 
 \section{Models}\label{sec:PDE}
 In this section, the partial differential equations for the damped stiff string and the plate will be presented. 
@@ -177,7 +179,7 @@ where $F_\text{B} = f_\text{B}/ \rho AL$ is the excitation function [m/s$^2$], w
     \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} e^{-av_\text{rel}^2+1/2}.
 \end{equation}
 Furthermore,
-\begin{equation}
+\begin{equation} \label{eq:dirac}
     \delta(x-x_\text{B}) =
 \begin{cases}
     1, & \text{if } x=x_\text{B}\\
@@ -243,7 +245,7 @@ Equation \eqref{eq:bowedString} can be approximated using
 &+ 2\sigma_1\delta_{t-}\delta_{xx}u_l^n - \delta_{x_\text{B}}F_\text{B}\phi(v_\text{rel}),
 \end{aligned}
 \end{equation}
-where $\delta_{x_\text{B}} = \delta(x-x_\text{B})$ is the spatial Dirac delta function (1 at $x_\text{B}$, else 0) and 
+where $\delta_{x_\text{B}} = \delta(x-x_\text{B})$ (see Equation \eqref{eq:dirac}) and 
 \begin{equation}\label{eq:descreteRelativeVel}
     v_\text{rel} = \delta_{t\cdot}u(x_\text{B})-v_\text{B}.
 \end{equation}
@@ -290,7 +292,7 @@ The relative displacement $\eta$ between $\alpha$ and $\beta$ can be calculated 
 which, in other words, is the difference between the state of element $\alpha$ at connection point $x_\alpha$ and the state of element $\beta$ at connection point $x_\beta$ scaled by their respective grid-spacings $h_\alpha$ and $h_\beta$.
 
 
-\section{Energy Analysis}
+\section{Energy Analysis}\label{sec:energy}
 
 \begin{equation}
 \begin{aligned}
@@ -301,22 +303,15 @@ which, in other words, is the difference between the state of element $\alpha$ a
 \end{aligned}
 \end{equation}
 
-\section{Pitch}
-We implemented a damping point in the model that acts as a finger on the (virtual) neck of the instrument controlling pitch. After $u^{n+1}$ is calculated, the following operation is performed at the point of damping:
-
-\begin{equation}
-    u_{x_\text{f}}^{n+1} = u_{x_\text{f}}^{n+1}  \sigma_\text{f},
-\end{equation}
-where $\sigma_\text{f} \in [0,1]$ is the damping coefficient of the finger. 
 % put the figure here so it appears on the next page
 \begin{figure*}[t]
     \centering
     \includegraphics[width=2.1\columnwidth]{FullPlate}
     \caption{A visualisation of the finite-difference scheme of the plate (also see Equation \eqref{eq:plateImplementation} in Appendix A). The dots and equations represent the locations $(l,m)$ and what these are multiplied with. (a) An overview. (b) The current time-step $n$. (c) The previous time-step $n-1$. \label{fig:plateFDS}}
  \end{figure*}
-\section{Implementation}
+\section{Implementation}\label{sec:implementation}
 %kind of a methods section
-In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. We used C++ along with the JUCE framework for implementing the objects and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. We used C++ along with the JUCE framework for implementing the PMs and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
 
 \textit{Note: In this paper we have used the simple case of a single point for bowing, excitation and connections. These can be extended to a bowing area, excitation area and area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:ModularPercussion}}.
 
@@ -324,14 +319,26 @@ In this section, we will present how to implement the FDSs presented in Section 
 In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
 The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to
 \begin{equation}
-    \gamma = 2 f_0,
+    \gamma = 2 f_0.
 \end{equation}
-and the stiffness can be calculated using
 
+This can be altered in real-time to control the pitch
+
+% We implemented a damping point in the model that acts as a finger on the (virtual) neck of the instrument controlling pitch. After $u^{n+1}$ is calculated, the following operation is performed at the point of damping:
+
+% \begin{equation}
+%     u_{x_\text{f}}^{n+1} = u_{x_\text{f}}^{n+1}  \sigma_\text{f},
+% \end{equation}
+% where $\sigma_\text{f} \in [0,1]$ is the damping coefficient of the finger. 
+
+
+
+The stiffness can be calculated using
 \begin{equation}
     \kappa = \frac{\sqrt{B}\gamma}{\pi},
 \end{equation}
 where $B = 0.001$ is the inharmonicity coefficient [m$^{-2}$].
+
 The output is retrieved at $l = \text{floor}(0.75N)$ for all strings.
 
 As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source]
@@ -348,7 +355,19 @@ where $\epsilon = 10^{-4}$ is an arbitrary threshold.
 \subsection{Plate}
 A solved finite-difference scheme for Equation \eqref{eq:plateFDS} is presented by Equation \eqref{eq:plateImplementation} in Appendix A. A visualisation of this FDS can be found in Figure \ref{fig:plateFDS}.
 
-\section{User Interaction}
+\section{Instruments}\label{sec:instruments}
+
+In this section, several configurations of PMs and connections will be shown that are inspired by real-life instruments.
+
+In the implementation, the string-elements are subdivided into three types: bowed, plucked and sympathetic strings. One plate is used as a body for all instruments. Each element
+
+All instruments have 
+
+\subsection{Sitar}
+
+\subsection{Hurdy Gurdy}
+
+\subsection{Dulcimer}
 User-controlled variables:
 \begin{itemize}
     \item Bowing position
@@ -365,10 +384,10 @@ Something about the sensel morph
 \subsubsection{Mapping strategies}
 Something about the different prototype mappings, and the "final" mapping 
 
-\section{Discussion}
+\section{Discussion}\label{sec:discussion}
 
 
-\section{Conclusion and Future Work}
+\section{Conclusion and Future Work}\label{sec:conclusion}
 
 \begin{acknowledgments}
 We would like to thank...
