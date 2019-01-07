@@ -145,10 +145,9 @@ The behaviour of musical instruments can be well defined by partial differential
 
 Finite-difference schemes (FDSs)
 
-
 The physical models (PMs) used as a case study in this project are the stiff string and the plate.
 
-On top of all this, we have used the expressive control surface Sensel Morph \cite{sensel2018}
+On top of all this, we have used the expressive Sensel Morph \cite{sensel2018} control surface to control the PMs in real-time, something that to the best of the authors' knowledge has not been done before. 
 
 This paper is structured as follows: Section \ref{sec:PDE} describes the PMs used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:energy} will describe an energy analysis of a connected string-plate system, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of PMs inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
 
@@ -164,7 +163,7 @@ The state $u = u(x,t)$ describes the transverse displacement of the string. The 
 \begin{equation}\label{eq:stiffString}
     u_{tt} = \gamma^2 u_{xx}-\kappa^2u_{xxxx} - 2\sigma_0u_{t} + 2\sigma_1u_{txx},
 \end{equation}
-where $\gamma$ is wave-speed [m/s], $\kappa = \sqrt{EI/\rho AL^4}$ is a stiffness parameter
+where $\gamma = c/L$ is wave-speed with units of frequency[s$^{-1}$], $\kappa = \sqrt{EI/\rho AL^4}$ is a stiffness parameter
 %[$\sqrt{\text{kg}}\cdot$m$^{-2}\cdot$ s$^{-2}$]
 and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are frequency-dependent and frequency-independent damping respectively.
 
@@ -174,7 +173,7 @@ We can add an excitation term to extend Equation \eqref{eq:stiffString} to a bow
     &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}
 \end{align}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
-where $F_\text{B} = f_\text{B}/ \rho AL$ is the excitation function [m/s$^2$], with bowing force $f_\text{B}$ [N], material density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m]. The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
+where $F_\text{B} = f_\text{B}/ \rho AL$ is the excitation function [m/s$^2$] with bowing force $f_\text{B}$ [N], material density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m]. The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}
     \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} e^{-av_\text{rel}^2+1/2}.
 \end{equation}
@@ -186,7 +185,7 @@ Furthermore,
     0,              & \text{otherwise},
 \end{cases}
 \end{equation}
-which, when multiplied onto the excitation, applies it to point $x_\text{B}$ on the string.
+is referred to as the spatial Dirac delta function, which, when multiplied onto the excitation, applies it only to the point $x_\text{B}$ on the string.
 \subsection{Plate}\label{subsec:platePDE}
 In the case of a plate, the state $u = u(x,y,t)$ is now defined over two spatial dimensions. The PDE for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}\label{eq:platePDE}
@@ -311,7 +310,7 @@ which, in other words, is the difference between the state of element $\alpha$ a
  \end{figure*}
 \section{Implementation}\label{sec:implementation}
 %kind of a methods section
-In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. We used C++ along with the JUCE framework for implementing the PMs and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework for implementing the PMs and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
 
 \textit{Note: In this paper we have used the simple case of a single point for bowing, excitation and connections. These can be extended to a bowing area, excitation area and area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:ModularPercussion}}.
 
@@ -321,8 +320,8 @@ The wave-speed of the string is proportional to the fundamental frequency of the
 \begin{equation}
     \gamma = 2 f_0.
 \end{equation}
-
-This can be altered in real-time to control the pitch
+This can be altered in real-time to control the pitch.
+The stiffness parameters have been chosen to be $\sigma_0 = 0.1$ and $\sigma_1 = 0.005$. 
 
 % We implemented a damping point in the model that acts as a finger on the (virtual) neck of the instrument controlling pitch. After $u^{n+1}$ is calculated, the following operation is performed at the point of damping:
 
@@ -330,16 +329,13 @@ This can be altered in real-time to control the pitch
 %     u_{x_\text{f}}^{n+1} = u_{x_\text{f}}^{n+1}  \sigma_\text{f},
 % \end{equation}
 % where $\sigma_\text{f} \in [0,1]$ is the damping coefficient of the finger. 
-
-
-
 The stiffness can be calculated using
 \begin{equation}
     \kappa = \frac{\sqrt{B}\gamma}{\pi},
 \end{equation}
 where $B = 0.001$ is the inharmonicity coefficient [m$^{-2}$].
 
-The output is retrieved at $l = \text{floor}(0.75N)$ for all strings.
+The output is retrieved at an arbitrary point $l$.
 
 As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source]
 
@@ -353,21 +349,43 @@ This process continues until
 \end{equation}
 where $\epsilon = 10^{-4}$ is an arbitrary threshold. 
 \subsection{Plate}
-A solved finite-difference scheme for Equation \eqref{eq:plateFDS} is presented by Equation \eqref{eq:plateImplementation} in Appendix A. A visualisation of this FDS can be found in Figure \ref{fig:plateFDS}.
+A solved finite-difference scheme for Equation \eqref{eq:plateFDS} is presented by Equation \eqref{eq:plateImplementation} in Appendix A. A visualisation of this FDS can be found in Figure \ref{fig:plateFDS}. 
+
+We chose the number of points to be $N_x = 20$ and $N_y = 10$ as this was found to be a great speed/quality tradeoff. 
+\subsection{Connections}
+
+\subsection{Tuning}
+See \cite{Bilbao2009:NumericalSoundSynthesis} section 7.6.
 
 \section{Instruments}\label{sec:instruments}
 
-In this section, several configurations of PMs and connections will be shown that are inspired by real-life instruments.
+In this section, several configurations of PMs and connections that are inspired by real-life instruments will be shown.
 
-In the implementation, the string-elements are subdivided into three types: bowed, plucked and sympathetic strings. One plate is used as a body for all instruments. Each element
+In the implementation, the string-elements are subdivided into three types: bowed, plucked and sympathetic strings. These will all be connected to one plate which simulates the body of the instrument.
 
-All instruments have 
+The user can control the plate stiffness and increase it for more interaction between the strings.
 
-\subsection{Sitar}
+Apart from some parameters controlled by the mouse, the instruments are fully controlled by two Sensel Morphs (further referred to as Sensels).   
+
+Videos and sound examples can be found through the following link:...
+
+\subsection{Bowed Sitar}
+The elements it consists of are: 2 bowed strings, 5 plucked strings and 13 sympathetic strings all connected to one plate.
 
 \subsection{Hurdy Gurdy}
+The hurdy gurdy from the \textbf{1500s} [source] consisting of bowed and sympathetic/plucked strings. The bowing happens through a 'resined' wheel attached to a crank that bowes these strings as the crank is turned. The pitch of about half of the bowed strings can be changed using buttons that press on the strings at different positions.
+
+Our implementation consists of 5 bowed strings subdivided into 2 drone strings tuned to A2, E3 and 3 melody strings A3, E4 and A4 and 13 sympathetic strings all connected to one plate. 
+
+The Sensel is vertically subdivided into 5 rows that control 5 separate 'wheels' for each individual bowed string. The bowing velocity depends on the pressure by which the Sensel is pressed. The pitch (in the model this is the wave-speed $\gamma$) of the melody strings are changed by a midi controller.
 
 \subsection{Dulcimer}
+The dulcimer is an instrument that can be seen as an 'open piano' where the musician has the hammers in their hand like drumsticks. Just like the piano, the strings are grouped in pairs or triples %triplets?
+that are played simultaneously. 
+
+In our implementation, we have 40 hammered strings (which are plucked strings with a longer excitation length)
+
+
 User-controlled variables:
 \begin{itemize}
     \item Bowing position
@@ -377,7 +395,7 @@ User-controlled variables:
     \item Finger position (pitch)
 \end{itemize}
 
-The vertical velocity of the finger is linked to the bow velocity with a maximum of $V_\text{b} = 0.2$ m/s and the finger force is linked to the excitation function with a maximum of $100$ m/s$^2$.
+The vertical velocity of the finger is linked to the bow velocity with a maximum of $V_\text{B} = 0.2$ m/s and the finger force is linked to the excitation function with a maximum of $100$ m/s$^2$.
 
 \subsection{Sensel Morph}
 Something about the sensel morph

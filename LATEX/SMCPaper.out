@@ -11,15 +11,17 @@
 \BOOKMARK [1][-]{section.5}{ 5. Implementation}{}% 11
 \BOOKMARK [2][-]{subsection.5.1}{5.1 String}{section.5}% 12
 \BOOKMARK [2][-]{subsection.5.2}{5.2 Plate}{section.5}% 13
-\BOOKMARK [1][-]{section.6}{ 6. Instruments}{}% 14
-\BOOKMARK [2][-]{subsection.6.1}{6.1 Sitar}{section.6}% 15
-\BOOKMARK [2][-]{subsection.6.2}{6.2 Hurdy Gurdy}{section.6}% 16
-\BOOKMARK [2][-]{subsection.6.3}{6.3 Dulcimer}{section.6}% 17
-\BOOKMARK [2][-]{subsection.6.4}{6.4 Sensel Morph}{section.6}% 18
-\BOOKMARK [3][-]{subsubsection.6.4.1}{6.4.1 Mapping strategies}{subsection.6.4}% 19
-\BOOKMARK [1][-]{section.7}{ 7. Discussion}{}% 20
-\BOOKMARK [1][-]{section.8}{ 8. Conclusion and Future Work}{}% 21
-\BOOKMARK [1][-]{section.9}{ 9. References}{}% 22
-\BOOKMARK [1][-]{section.10}{ 10. Appendix A}{}% 23
-\BOOKMARK [2][-]{subsection.10.1}{10.1 Finite-Difference Scheme String}{section.10}% 24
-\BOOKMARK [2][-]{subsection.10.2}{10.2 Finite-Difference Scheme Plate}{section.10}% 25
+\BOOKMARK [2][-]{subsection.5.3}{5.3 Connections}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.4}{5.4 Tuning}{section.5}% 15
+\BOOKMARK [1][-]{section.6}{ 6. Instruments}{}% 16
+\BOOKMARK [2][-]{subsection.6.1}{6.1 Bowed Sitar}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.2}{6.2 Hurdy Gurdy}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.3}{6.3 Dulcimer}{section.6}% 19
+\BOOKMARK [2][-]{subsection.6.4}{6.4 Sensel Morph}{section.6}% 20
+\BOOKMARK [3][-]{subsubsection.6.4.1}{6.4.1 Mapping strategies}{subsection.6.4}% 21
+\BOOKMARK [1][-]{section.7}{ 7. Discussion}{}% 22
+\BOOKMARK [1][-]{section.8}{ 8. Conclusion and Future Work}{}% 23
+\BOOKMARK [1][-]{section.9}{ 9. References}{}% 24
+\BOOKMARK [1][-]{section.10}{ 10. Appendix A}{}% 25
+\BOOKMARK [2][-]{subsection.10.1}{10.1 Finite-Difference Scheme String}{section.10}% 26
+\BOOKMARK [2][-]{subsection.10.2}{10.2 Finite-Difference Scheme Plate}{section.10}% 27
