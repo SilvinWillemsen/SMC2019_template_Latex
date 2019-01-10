@@ -26,9 +26,9 @@
 
 
 %user defined variables
-\def\papertitle{Real-time control of advanced Physical Models using the Sensel Morph}
+\def\papertitle{Real-time Control of Advanced Physical Models using the Sensel Morph}
 \def\firstauthor{Silvin Willemsen}
-\def\secondauthor{Nikolaj Andersson}
+\def\secondauthor{Nikolaj Andersson }
 \def\thirdauthor{Stefania Serafin}
 \def\fourthauthor{Stefan Bilbao}
 
@@ -106,15 +106,11 @@
 
 % Two addresses
 % --------------
-\twoauthors
-  {\firstauthor, \secondauthor, \thirdauthor} {Multisensory Experience Lab,\\
+\oneauthor
+  {\firstauthor, \secondauthor and \thirdauthor} {Multisensory Experience Lab,\\
    Aalborg University Copenhagen \\
    Copenhagen, Denmark\\ %
     {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
-  {\fourthauthor} {Acoustics and Fluid Dynamics Group/Music, \\
-  University of Edinburgh \\
-  Edinburgh, UK \\ %
-    {\tt \href{mailto:sbilbao@staffmail.ed.ac.uk}{sbilbao@staffmail.ed.ac.uk}}}
 
 % Three addresses
 % --------------
@@ -149,7 +145,7 @@ The physical models (PMs) used as a case study in this project are the stiff str
 
 On top of all this, we have used the expressive Sensel Morph \cite{sensel2018} control surface to control the PMs in real-time, something that to the best of the authors' knowledge has not been done before. 
 
-This paper is structured as follows: Section \ref{sec:PDE} describes the PMs used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:energy} will describe an energy analysis of a connected string-plate system, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of PMs inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
+This paper is structured as follows: Section \ref{sec:PDE} describes the PMs used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of PMs inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
 
 \section{Models}\label{sec:PDE}
 In this section, the partial differential equations for the damped stiff string and the plate will be presented. 
@@ -159,21 +155,21 @@ In this section, the partial differential equations for the damped stiff string 
 % \end{equation}
 
 \subsection{Stiff string}\label{subsec:stiffStringPDE}
-The state $u = u(x,t)$ describes the transverse displacement of the string. The subscript for $u$ denotes a single derivative with respect to time $t$ or space $x$ respectively. The partial differential equation for the damped stiff string is defined as \cite{Bilbao2009:NumericalSoundSynthesis} 
+The state $u = u(x,t)$ describes the transverse displacement of the string. The partial differential equation for the damped stiff string is defined as \cite{Bilbao2009:NumericalSoundSynthesis} 
 \begin{equation}\label{eq:stiffString}
     u_{tt} = \gamma^2 u_{xx}-\kappa^2u_{xxxx} - 2\sigma_0u_{t} + 2\sigma_1u_{txx},
 \end{equation}
-where $\gamma = c/L$ is wave-speed with units of frequency[s$^{-1}$], $\kappa = \sqrt{EI/\rho AL^4}$ is a stiffness parameter
+where $\gamma$ is wave-speed with units of frequency [s$^{-1}$], $\kappa$ is a stiffness parameter
 %[$\sqrt{\text{kg}}\cdot$m$^{-2}\cdot$ s$^{-2}$]
-and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are frequency-dependent and frequency-independent damping respectively.
+and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are frequency-dependent and frequency-independent damping respectively. The subscript for $u$ denotes a single derivative with respect to time $t$ or space $x$ respectively.
 
-We can add an excitation term to extend Equation \eqref{eq:stiffString} to a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} 
+We can extend Equation \eqref{eq:stiffString} to a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} 
 \begin{align}
     \label{eq:bowedString} &u_{tt} = ... - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
     &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}
 \end{align}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
-where $F_\text{B} = f_\text{B}/ \rho AL$ is the excitation function [m/s$^2$] with bowing force $f_\text{B}$ [N], material density $\rho$ [kg/m$^3$], cross-sectional area $A$ [m$^2$] and string length $L$ [m]. The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
+where $F_\text{B} = f_\text{B}/ M_\text{s}$ is the excitation function [m/s$^2$] with bowing force $f_\text{B}$ [N] and total string mass $M_\text{s}$ [kg]. The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}
     \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} e^{-av_\text{rel}^2+1/2}.
 \end{equation}
@@ -191,56 +187,32 @@ In the case of a plate, the state $u = u(x,y,t)$ is now defined over two spatial
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t},
 \end{equation}
-where $\kappa = \sqrt{Eh^2/12\rho(1-\nu)}/L_xL_y$ is again a stiffness parameter with Young's modulus $E$ [N/m$^2$], plate-thickness $h$ [m], material density $\rho$ [kg/m$^3$], unit-less Poisson's ratio $\nu = 0.3$, and horizontal and vertical length of the plate $L_x$ and $L_y$ [m]. Furthermore, $\Delta$ represents the 2D Laplacian (also see Equation \eqref{eq:2D}). Just like in the case of the string, an extra term can be added as an input:
-\begin{equation}\label{eq:plateExcitation}
-    u_{tt} = ... + F_\text{e}E_\text{e},
-\end{equation}
-where $F_\text{e} = f_\text{e} / \rho h L_xL_y $ with excitation force $f_\text{e}$ [N] and $E_\text{e}$ are an excitation function and the excitation area respectively. 
+where $\kappa$ is again a stiffness parameter. Furthermore, $\Delta$ represents the 2D Laplacian.
 
 \subsection{Connections}\label{sec:connections}
-Adding connections between different PMs, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:plateExcitation}
+Adding connections between different PMs, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}
 %% this paragraph is too wide for some reason
 \begin{align}
     u_{tt} &= ... + F_\alpha E_\alpha, \\
     u_{tt} &= ... + F_\beta E_\beta,
 \end{align}
-where $F_\alpha$ and $F_\beta$ are the forces of the connection at connection areas $E_\alpha$ and $E_\beta$ respectively. If the a connection area consists of only one point, $E$ reduces to $\delta(x-x_c)$ where $x_c$ is the point of connection. We use the implementation as presented in \cite{Bilbao2009:ModularPercussion} where the connection between two elements is a non-linear spring. The forces it imposes on the elements it connects - denoted by $\alpha$ and $\beta$ - are defined as
+where $F_\alpha$ and $F_\beta$ are the forces of the connection at connection areas $E_\alpha$ and $E_\beta$ respectively. If a connection area consists of only one point, $E$ reduces to $\delta(x-x_\text{c})$ where $x_\text{c}$ is the point of connection. We use the implementation as presented in \cite{Bilbao2009:ModularPercussion} where the connection between two elements is a non-linear spring. The forces it imposes on the elements it connects - denoted by $\alpha$ and $\beta$ - are defined as
 \begin{align}
     F_\alpha &= -\omega_0^2\eta - \omega_1^4\eta^3 - 2\sigma_\times\eta_t,\\
     F_\beta &= -M_{\alpha/\beta}F_\alpha,
 \end{align}
-where $\omega_0$ and $\omega_1$ are the linear and non-linear spring coefficients respectively, $\sigma_\times$ is the damping factor, $M_{\alpha/\beta}$ is the mass ratio between the two elements and $\eta$ is the relative displacement between the connected elements at the point of connection. The subscript $t$ again denotes a time derivative.
+where $\omega_0$ and $\omega_1$ are the linear and non-linear spring coefficients respectively, $\sigma_\times$ is the damping factor, $M_{\alpha/\beta}$ is the mass ratio between the two elements and $\eta$ is the relative displacement between the connected elements at the point of connection. The subscript $t$ again denotes a derivative with respect to time.
 
 
 \section{Finite-Difference Schemes}\label{sec:FDS}
-To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{W}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, where $l \in [0,N]$ with $N$ being the total number of points and $h$ is the grid-spacing of the model which is calculated differently for each model (see sub-sections below). The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. In the case of a plate, the second spatial dimension is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
-Approximations for the derivatives in the equations found in Section \ref{sec:PDE} are described in the following way: 
-
-When approximating the PDEs shown in Section \ref{sec:PDE}, we use operators 
-% \begin{equation}
-    \begin{align}
-        \label{eq:secondSpacex}\delta_{xx}u_l^n &= \frac{1}{h^2}\big(u_{l+1}^n - 2u_l^n + u_{l-1}^n\big),\\
-        % \label{eq:secondSpacey}\delta_{yy}u_l^n &= \frac{1}{h^2}\big(u_{m+1}^n - 2u_m^n + u_{m-1}^n\big),\\
-        %  \label{eq:fourthSpace}\delta_xxxx &= \frac{1}{h^4}\big(u_{l+2}^n - 4u_{l+1}^2 + 6 u_{l}^n - 4u_{l-1}^n + u_{l-2}^n\big),\\
-        \label{eq:backwardsTime}\delta_{t-} u^n_l &= \frac{1}{k}\big(u_l^{n}-u_l^{n-1}\big),\\
-        \label{eq:centerTime}\delta_{t\cdot} u^n_l &= \frac{1}{2k}\big(u_l^{n+1}-u_l^{n-1}\big),\\
-        \label{eq:secondTime}\delta_{tt}u_l^n &= \frac{1}{k^2} \big(u_l^{n+1} - 2u_l^n + u_l^{n-1}\big),\\
-        % u_{txx} &= \frac{1}{hk^2}\big(u_{l+1}^n - 2u_l^2 + u_{l-1}^n - u_{l+1}^{n-1} + 2u_l^{n-1} - u_{l-1}^{n-1}\big),\\
-        % \Delta u &= \frac{1}{h^2}(u_{l, m+1}^{n} + u_{l, m-1}^{n}
-        % + u_{l+1, m}^{n} + u_{l-1, m}^{n} - 4u_{l, m}^{n}),\\
-         \label{eq:2D}\delta_\Delta u_{l,m}^n &= \frac{1}{h^2}\big(u_{l,m+1}^n+u_{l,m-1}^n+u_{l+1,m}^n+ \\
-         & \qquad \quad u_{l-1,m}^n - 4u_{l,m}^n\big).
-            % \Delta \Delta u &= \frac{1}{h^2}(\Delta u_{l, m+1}^{n} + \Delta u_{l, m-1}^{n},\\
-            % & \qquad\quad + \Delta u_{l+1, m}^{n} + \Delta u_{l-1, m}^{n} - 4\Delta u_{l, m}^{n}),\\
-        %   \label{eq:biharmonic}   \Delta \Delta u &= u_{xxxx} + 2u_{xxyy} + u_{yyyy}.
-    \end{align}
-% \end{equation}
+To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, where $l \in [0,N]$ with $N$ being the total number of points and $h$ is the grid-spacing of the model which is calculated differently for each model (see sub-sections below). The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. The plate is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
+Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}.
 
 \subsection{Stiff String}\label{subsec:stiffStringFDS}
 Equation \eqref{eq:bowedString} can be approximated using
 \begin{equation}
 \begin{aligned}\label{eq:stiffStringFDS}
-\delta_{tt} u_l^n =&\gamma^2 \delta_{xx} u_l^n -\kappa^2\delta_{xx}\delta_{xx} u_l^n - 2\sigma_0\delta_{t\cdot} u_l^n  \\
+\delta_{tt} u_l^n = &\gamma^2 \delta_{xx} u_l^n -\kappa^2\delta_{xx}\delta_{xx} u_l^n - 2\sigma_0\delta_{t\cdot} u_l^n  \\
 &+ 2\sigma_1\delta_{t-}\delta_{xx}u_l^n - \delta_{x_\text{B}}F_\text{B}\phi(v_\text{rel}),
 \end{aligned}
 \end{equation}
@@ -252,6 +224,7 @@ For our implementation, clamped boundary conditions were used, defined as:
 \begin{equation}\label{boundary}
     u = u_x = 0 \quad \text{where} \quad l = \{0, N\}.
   \end{equation}
+  
 For stability reasons, the grid-spacing needs to abide the following condition
 \begin{equation}
     h \geq \sqrt{\frac{\gamma^2 k^2 + 4 \sigma_1 k + \sqrt {(\gamma^2 k^2 + 4 \sigma_1 k)^2 + 16 \kappa^2 k^2}}{2}}.
@@ -261,23 +234,21 @@ The closer $h$ is to this limit, the higher the quality of the implementation. T
     N = h^{-1}.
 \end{equation}
 
-
 \subsection{Plate}
-  
-
-Equation \eqref{eq:plateExcitation} can be approximated using
+Equation \eqref{eq:platePDE} can be approximated using
 \begin{equation}
     \begin{aligned}\label{eq:plateFDS}
         \delta_{tt}u_{l,m}^n = &-\kappa^2 \delta_\Delta\delta_\Delta u_{l,m}^n - 2\sigma_0\delta_{t\cdot}u_{l,m}^n \\
-        &+ 2\sigma_1\delta_{t−}\delta_\Delta u_{l,m}^n + F_\text{e}E_\text{e}
+        &+ 2\sigma_1\delta_{t-}\delta_\Delta u_{l,m}^n
     \end{aligned}
 \end{equation}
-In the case of the plate, we set the number of horizontal and vertical points and calculate grid spacing $h$ from that using 
-
+As in the case of the stiff string, we chose to use clamped boundary conditions:
 \begin{equation}
-    h = \frac{\sqrt{N_x / N_y}}{N_x}.
+    \begin{aligned}
+        u = u_x = 0 \quad &\text{where} \quad \: l \, \, = \{0, N_x\} \quad \text{and} \\
+        u = u_y = 0 \quad &\text{where} \quad m = \{0, N_y\}
+    \end{aligned}
 \end{equation}
-
 \subsection{Connections}
 \begin{align}
     F_\alpha &= -\omega_0^2\mu_{t\cdot}\eta - \omega_1^4\eta^2\mu_{t\cdot}\eta - 2\sigma_\times\delta_{t\cdot}\eta,\\
@@ -291,31 +262,15 @@ The relative displacement $\eta$ between $\alpha$ and $\beta$ can be calculated 
 which, in other words, is the difference between the state of element $\alpha$ at connection point $x_\alpha$ and the state of element $\beta$ at connection point $x_\beta$ scaled by their respective grid-spacings $h_\alpha$ and $h_\beta$.
 
 
-\section{Energy Analysis}\label{sec:energy}
-
-\begin{equation}
-\begin{aligned}
-    &\mathfrak{H}\\
-    &\mathfrak{B}\\
-    &\mathfrak{T}\\
-    &\mathfrak{D}
-\end{aligned}
-\end{equation}
-
-% put the figure here so it appears on the next page
-\begin{figure*}[t]
-    \centering
-    \includegraphics[width=2.1\columnwidth]{FullPlate}
-    \caption{A visualisation of the finite-difference scheme of the plate (also see Equation \eqref{eq:plateImplementation} in Appendix A). The dots and equations represent the locations $(l,m)$ and what these are multiplied with. (a) An overview. (b) The current time-step $n$. (c) The previous time-step $n-1$. \label{fig:plateFDS}}
- \end{figure*}
 \section{Implementation}\label{sec:implementation}
 %kind of a methods section
 In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework for implementing the PMs and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
 
 \textit{Note: In this paper we have used the simple case of a single point for bowing, excitation and connections. These can be extended to a bowing area, excitation area and area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:ModularPercussion}}.
 
+The most important thing is to optimise the FDSs as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 \subsection{String}
-In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
+%In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
 The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to
 \begin{equation}
     \gamma = 2 f_0.
@@ -337,75 +292,76 @@ where $B = 0.001$ is the inharmonicity coefficient [m$^{-2}$].
 
 The output is retrieved at an arbitrary point $l$.
 
-As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source]
+As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source].
 
-\begin{equation}\label{eq:newtonRaphson}
-    f(v_\text{rel})^{i+1} = f(v_\text{rel})^i - \frac{f(v_\text{rel})^i}{f'(v_\text{rel})^i}.
-\end{equation}
-This process continues until 
-
-\begin{equation} \nonumber
-    f^{i+1}-f^i < \epsilon,
-\end{equation}
-where $\epsilon = 10^{-4}$ is an arbitrary threshold. 
 \subsection{Plate}
-A solved finite-difference scheme for Equation \eqref{eq:plateFDS} is presented by Equation \eqref{eq:plateImplementation} in Appendix A. A visualisation of this FDS can be found in Figure \ref{fig:plateFDS}. 
+We chose the number of points to be $N_x = 20$ and $N_y = 10$ as this was found to be a great speed/quality tradeoff.
 
-We chose the number of points to be $N_x = 20$ and $N_y = 10$ as this was found to be a great speed/quality tradeoff. 
+In the case of the plate, we set the number of horizontal and vertical points and calculate grid spacing $h$ from that using 
+
+\begin{equation}
+    h = \frac{\sqrt{N_x / N_y}}{N_x}.
+\end{equation}
+
+
 \subsection{Connections}
 
 \subsection{Tuning}
 See \cite{Bilbao2009:NumericalSoundSynthesis} section 7.6.
 
-\section{Instruments}\label{sec:instruments}
-
-In this section, several configurations of PMs and connections that are inspired by real-life instruments will be shown.
-
-In the implementation, the string-elements are subdivided into three types: bowed, plucked and sympathetic strings. These will all be connected to one plate which simulates the body of the instrument.
-
-The user can control the plate stiffness and increase it for more interaction between the strings.
-
-Apart from some parameters controlled by the mouse, the instruments are fully controlled by two Sensel Morphs (further referred to as Sensels).   
-
-Videos and sound examples can be found through the following link:...
-
-\subsection{Bowed Sitar}
-The elements it consists of are: 2 bowed strings, 5 plucked strings and 13 sympathetic strings all connected to one plate.
-
-\subsection{Hurdy Gurdy}
-The hurdy gurdy from the \textbf{1500s} [source] consisting of bowed and sympathetic/plucked strings. The bowing happens through a 'resined' wheel attached to a crank that bowes these strings as the crank is turned. The pitch of about half of the bowed strings can be changed using buttons that press on the strings at different positions.
-
-Our implementation consists of 5 bowed strings subdivided into 2 drone strings tuned to A2, E3 and 3 melody strings A3, E4 and A4 and 13 sympathetic strings all connected to one plate. 
-
-The Sensel is vertically subdivided into 5 rows that control 5 separate 'wheels' for each individual bowed string. The bowing velocity depends on the pressure by which the Sensel is pressed. The pitch (in the model this is the wave-speed $\gamma$) of the melody strings are changed by a midi controller.
-
-\subsection{Dulcimer}
-The dulcimer is an instrument that can be seen as an 'open piano' where the musician has the hammers in their hand like drumsticks. Just like the piano, the strings are grouped in pairs or triples %triplets?
-that are played simultaneously. 
-
-In our implementation, we have 40 hammered strings (which are plucked strings with a longer excitation length)
-
-
-User-controlled variables:
-\begin{itemize}
-    \item Bowing position
-    \item Bow force
-    \item Bow velocity
-    \item Connection points
-    \item Finger position (pitch)
-\end{itemize}
-
-The vertical velocity of the finger is linked to the bow velocity with a maximum of $V_\text{B} = 0.2$ m/s and the finger force is linked to the excitation function with a maximum of $100$ m/s$^2$.
+\subsection{Damping finger}
+%maybe it would be better to move the boundary to a different gridpoint and use interpolation for determination of the values around the boundary
+Another way to generate different pitches is to add damping to the model at several points that acts as a fretting finger. If the string is fretted st single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
+\begin{equation}
+u_l^n = 
+    \begin{cases}
+        0, & \text{if} \quad l = l_\text{f} - 1 \vee l = l_\text{f}\\
+        (1-\alpha_\text{f}^\epsilon) u_l^n &\text{if} \quad l = l_\text{f}
+    \end{cases}
+\end{equation}
+where $\alpha_\text{f} = x_\text{f}/h - l_\text{f}$ describes the fractional location of $x_\text{f}$ between two grid points. We found that the effect of damping between grid points does not linearly scale to pitch. We thus added $\epsilon = 7$ as a heuristic value to more properly map finger position to pitch.
 
 \subsection{Sensel Morph}
-Something about the sensel morph
+The Sensel Morph (or further referred to as Sensel) is an expressive touch controller 
 \subsubsection{Mapping strategies}
 Something about the different prototype mappings, and the "final" mapping 
 
+\section{Instruments}\label{sec:instruments}
+
+In this section, several configurations of strings, plates and connections that are inspired by real-life instruments will be presented. We subdivide string-elements into three types: bowed, plucked and sympathetic strings. All strings will be connected to one plate which simulates an instrument body. The user can control the plate stiffness and increase it to generate more interaction between the strings. Furthermore, the user can change the output-level of each element-type using. Apart from these parameters, which are controlled by the mouse, the instruments are fully controlled by two Sensels. The instruments we have chosen as our inspiration are the sitar, the hammered dulcimer and the hurdy gurdy. Videos and sound examples can be found through the following link:...
+
+\subsection{Bowed Sitar}
+The sitar is an originally Indian string instrument that has both fretted strings and sympathetic strings. Instead of picking the fretted strings, we extended the model to bow these strings. Our implementation consists of 2 bowed strings, 13 sympathetic strings and 5 plucked strings (as it is also possible to strum the sympathetic strings). One Sensel is vertically subdivided into two sections, one for each bowed string, The first finger registered by the Sensel is mapped to the bow and the second is mapped to a fretting finger on the string controlling pitch. The frets are not implemented as such (the pitch is continuous), but they are visualised for reference. The horizontal position of the first finger is mapped to the bowing position on the string, the vertical velocity  to the bow velocity with a maximum of $v_\text{B} = 0.2$ m/s and the finger force is linked to the excitation function with a maximum of $F_\text{B} = 100$ m/s$^2$. The other Sensel is subdivided into 5 sections mapped to the plucked strings. 
+
+\subsection{Hammered Dulcimer}
+The hammered dulcimer is an instrument that can be seen as an 'open piano' where the musician has the hammers in their hand. Just like the piano, the strings are grouped in pairs or triples %triplets?
+that are played simultaneously. 
+In our implementation, we have 20 pairs of plucked strings. The excitation (which are plucked strings with a longer excitation length) %need to work on a hammer model 
+One of each pair is connected to the plate which slightly detunes it 
+
+\subsection{Hurdy Gurdy}
+The hurdy gurdy is an instrument that consists of bowed and sympathetic strings. The bowing happens through a rosined wheel attached to a crank and bows these strings as the crank is turned. It is possible to change the pitch of a few bowed strings - the melody strings - using buttons that press tangent pins on the strings at different positions. The other strings, referred to as drone strings, are mostly tuned lower than the melody strings and provide the base notes of the instrument. The musician can place the bowed strings on rests that keep the wheel from interacting with it. 
+
+Our implementation consists of 5 bowed strings subdivided into 2 drone strings tuned to A2, E3 and 3 melody strings tuned to A3, E4 and A4 and 13 sympathetic strings. 
+
+The Sensel is vertically subdivided into 5 rows that control whether the strings are placed on the wheel. The bowing velocity is mapped to the average pressure of the fingers. The pitch (in the model this is the wave-speed $\gamma$) of the melody-strings are changed by a midi controller.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1.0\columnwidth]{LATEX/BowedSitar.png}
+\caption{The bowed sitar application.\label{fig:bowedSitar}}
+\end{figure}
+
+
 \section{Discussion}\label{sec:discussion}
 
+Body should not be plate.
 
 \section{Conclusion and Future Work}\label{sec:conclusion}
+Speed up more: AVX vector / GPU / multithreading such as \cite{Webb2015}
+
+Model instrument bodies
+
 
 \begin{acknowledgments}
 We would like to thank...
@@ -414,62 +370,4 @@ We would like to thank...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
 \bibliography{smc2019bib}
-
-\section{Appendix A}
-\subsection{Finite-Difference Scheme String}
-Solving Equation \eqref{eq:stiffStringFDS} for $u_l^{n+1}$ we obtain
-\begin{equation}
-    \begin{aligned}\label{eq:stringImplementation}
-        (1 &+ \sigma_0k)u_l^{n+1} = 2u_l^n - (1 - \sigma_0k - 2\psi) u_l^{n-1} \\
-        & +(\lambda^2 + \psi)(u_{l+1}^n - 2u_l^n + u_{l-1}^n)\\
-        &- \mu^2(u_{l+2}^n - 4u_{l+1}^n + 6u_l^n - 4u_{l-1}^n + u_{l-2}^n) \\
-        &+ \psi(u_{l+1}^{n-1} + u_{l-1}^{n-1})\\
-        &-k^2\delta_{l_e}F_\text{B}\phi(v_\text{rel}),
-    \end{aligned}
-\end{equation}
-where
-\begin{equation}\nonumber
-\lambda = \frac{\gamma k}{h}, \;\; \mu =  \frac{\kappa k}{h^2}, \;\; \psi = \frac{2\sigma_1k}{h^2} \;\; \text{and} \;\; \delta_{l_\text{e}} = \delta(x-x_{l_\text{e}}). 
-\end{equation}
-We can iteratively solve $v_\text{rel}$ using \eqref{eq:newtonRaphson}:
-\begin{equation}
-    \begin{aligned}
-    f(v_\text{rel}) = &F_\text{B} \sqrt{2a} v_\text{rel}e^{-a v_\text{rel}^2 + 1/2} \\
-    &+ \frac{2 v_\text{rel}}{k} + 2 \sigma_0 v_\text{rel} + b,
-    \end{aligned}
-\end{equation}
-and the derivative with respect to $v_\text{rel}$ is
-\begin{equation}
-    \begin{aligned}
-    f'(v_\text{rel}) = &F_\text{B} \sqrt{2a}(1 - 2a v_\text{rel}^2) e^{-a v_\text{rel}^2 + 1/2} \\
-    &+ \frac{2}{k} + 2 \sigma_0,
-    \end{aligned}
-\end{equation}
-where $a$ is a free variable (in our implementation set to $100$) and
-\begin{equation}
-    \begin{aligned}
-    b =&\frac{2}{k}v_\text{B} - \frac{2}{k^2}(u_{x_\text{B}}^n - u_{x_\text{B}}^{n-1}) - \frac{\gamma^2}{h^2} (u_{x_\text{B}+1}^n - 2 u_{x_\text{B}}^n + u_{x_\text{B} - 1}^n)\\
-    &+ \frac{k^2}{h^2} (u_{x_\text{B}+2}^n - 4 u_{x_\text{B}+1}^n + 6 u_{x_\text{B}}^n - 4 u_{x_\text{B}-1}^n + u_{x_\text{B}-2}^n)\\
-    &+ 2 \sigma_0 v_\text{B} - \frac{2 \sigma_1}{kh^2}((u_{x_\text{B}+1}^n - 2 u_{x_\text{B}}^n + u_{x_\text{B}-1}^n) \\
-    &- (u_{x_\text{B}+1}^{n-1} - 2 u_{x_\text{B}}^{n-1} + u_{x_\text{B}-1}^{n-1})).
-    \end{aligned}
-\end{equation}
-\subsection{Finite-Difference Scheme Plate}
-Solving Equation \eqref{eq:plateFDS} for $u_l^{n+1}$ we obtain
-\begin{equation}
-    \begin{aligned}\label{eq:plateImplementation}
-        (1& + \sigma_0k)u_{l,m}^{n+1} = (2 - 4\psi + 20\mu^2)u_{l,m}^n\\
-    &-\mu^2 (u_{l,m + 2}^n + u_{l,m - 2}^n + u_{l + 2,m}^n + u_{l - 2,m}^n)\\
-    &- 2\mu^2(u_{l + 1,m + 1}^n + u_{l + 1,m - 1}^n + u_{l - 1,m + 1}^n + u_{l - 1,m - 1}^n)\\
-    &+ (8\mu^2 + \psi)(u_{l,m + 1}^n + u_{l,m - 1}^n + u_{l + 1,m}^n + u_{l - 1,m}^n)\\
-    &+ (\sigma_0 k - 1 + 4\psi) u_{l,m}^{n-1}\\
-    &- \psi(u_{l,m + 1}^{n-1} + u_{l,m - 1}^{n-1} + u_{l + 1,m}^{n-1} + u_{l - 1,m}^{n-1})\\
-    &+ k^2 \delta_{l_\text{e}, m_\text{e}}F_\text{e},
-\end{aligned}
-\end{equation}
-where
-\begin{equation}\nonumber
-    \mu = \frac{\kappa k}{h^2} \text{,} \quad \psi = \frac{2\sigma_1k}{h^2} \quad \text{and} \quad \delta_{l_\text{e}, m_\text{e}} = \delta(x - x_{l_\text{e}}, y - y_{m_\text{e}}).
-\end{equation}
-
 \end{document}
