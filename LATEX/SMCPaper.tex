@@ -142,6 +142,8 @@ Finite-difference schemes (FDSs)
 
 The physical models (PMs) used as a case study in this project are the stiff string and the plate.
 
+Used Modular Percussion Synthesis Environment (Bilbao) + On the limits of real-time physical modelling synthesis with a modular environment (Webb + Bilbao) as a basis and extended it to be interactive and used melodic rather than percussive components/elements.
+
 On top of all this, we have used the expressive Sensel Morph \cite{sensel2018} control surface to control the PMs in real-time, something that to the best of the authors' knowledge has not been done before. 
 
 This paper is structured as follows: Section \ref{sec:PDE} describes the PMs used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of PMs inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
@@ -300,6 +302,8 @@ scaled by the excitation function over time with excitation duration $d_\text{e}
     \end{cases}
 \end{equation}
 A visualisation of this can be found in Figure \ref{fig:exctiation}.
+
+
 %% Discretised version
 % The distribution function is set to a raised cosine with width $w_\text{e}$
 
@@ -321,7 +325,7 @@ A visualisation of this can be found in Figure \ref{fig:exctiation}.
 \begin{figure}[t]
 \centering
 \includegraphics[width=1.0\columnwidth]{excitation.eps}
-\caption{A visualisation of the excitation used in our implementation presented in Equation \eqref{eq:excitedString}. The excitation width $w_\text{e}$ is shown in red and excitation duration $d_\text{e}$ in blue (also see Equations \eqref{eq:distribution} and \eqref{eq:excitation}). \label{fig:exctiation}}
+\caption{A visualisation of the excitation used in our implementation presented in Equation \eqref{eq:excitedString}. The location of excitation $x_\text{e}$ is shown in green, excitation width $w_\text{e}$ in red and excitation duration $d_\text{e}$ in blue (also see Equations \eqref{eq:distribution} and \eqref{eq:excitation}). \label{fig:exctiation}}
 \end{figure}
 
 \subsubsection{Pitch}
