@@ -10,7 +10,6 @@
 \usepackage[english]{babel}
 \usepackage{cite}
 \usepackage{physics}
-
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath} % popular packages from Am. Math. Soc. Please use the 
@@ -73,7 +72,7 @@
   \usepackage[dvips]{epsfig,graphicx}
   % declare the path(s) where your graphic files are and their extensions so 
   %you won't have to specify these with every instance of \includegraphics
-  \graphicspath{{./figures/}}
+  \graphicspath{{./LATEX/}}
   \DeclareGraphicsExtensions{.eps}
 
   \usepackage[figure,table]{hypcap}
@@ -163,6 +162,7 @@ where $\gamma$ is wave-speed with units of frequency [s$^{-1}$], $\kappa$ is a s
 %[$\sqrt{\text{kg}}\cdot$m$^{-2}\cdot$ s$^{-2}$]
 and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are frequency-dependent and frequency-independent damping respectively. The subscript for $u$ denotes a single derivative with respect to time $t$ or space $x$ respectively.
 
+
 We can extend Equation \eqref{eq:stiffString} to a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} 
 \begin{align}
     \label{eq:bowedString} &u_{tt} = ... - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
@@ -181,7 +181,14 @@ Furthermore,
     0,              & \text{otherwise},
 \end{cases}
 \end{equation}
-is referred to as the spatial Dirac delta function, which, when multiplied onto the excitation, applies it only to the point $x_\text{B}$ on the string.
+is referred to as the spatial Dirac delta function centered at $x_\text{B}$, which, when multiplied onto the excitation, applies it only to the point $x_\text{B}$ on the string.
+
+If the string is simply excited, we can extend Equation \eqref{eq:stiffString} to
+
+\begin{equation}
+    \label{eq:excitedString} u_{tt} = ... + F_eE_e,
+\end{equation}
+where excitation function $F_\text{e} = F_\text{e}(t) = f_\text{e} / M_\text{s}$ with excitation force $f_\text{e}$ [N] and distribution function $E_\text{e} = E_\text{e}(x)$. If the excitation is only applied to one point, the distribution function reduces to $\delta(x-x_\text{e})$.
 \subsection{Plate}\label{subsec:platePDE}
 In the case of a plate, the state $u = u(x,y,t)$ is now defined over two spatial dimensions. The PDE for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}\label{eq:platePDE}
@@ -271,28 +278,69 @@ In this section, we will present how to implement the FDSs presented in Section 
 The most important thing is to optimise the FDSs as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 \subsection{String}
 %In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
-The wave-speed of the string is proportional to the fundamental frequency of the stiff string according to
-\begin{equation}
-    \gamma = 2 f_0.
-\end{equation}
-This can be altered in real-time to control the pitch.
-The stiffness parameters have been chosen to be $\sigma_0 = 0.1$ and $\sigma_1 = 0.005$. 
 
-% We implemented a damping point in the model that acts as a finger on the (virtual) neck of the instrument controlling pitch. After $u^{n+1}$ is calculated, the following operation is performed at the point of damping:
-
-% \begin{equation}
-%     u_{x_\text{f}}^{n+1} = u_{x_\text{f}}^{n+1}  \sigma_\text{f},
-% \end{equation}
-% where $\sigma_\text{f} \in [0,1]$ is the damping coefficient of the finger. 
-The stiffness can be calculated using
-\begin{equation}
-    \kappa = \frac{\sqrt{B}\gamma}{\pi},
-\end{equation}
-where $B = 0.001$ is the inharmonicity coefficient [m$^{-2}$].
-
-The output is retrieved at an arbitrary point $l$.
 
 As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source].
+
+If simply excited we set the distribution function is to a raised cosine with width $w_\text{e}$ [m]
+
+\begin{equation} \label{eq:distribution}
+    E(x) = 
+    \begin{cases}
+        \hfil \frac{1 - \cos(\frac{2 \pi (x - x_\text{e})}{w_\text{e}})}{2}, & x_\text{e} -  \frac{w_\text{e}}{2} \leq x \leq x_\text{e} + \frac{w_\text{e}}{2} \\
+        \hfil 0, &\text{otherwise}
+    \end{cases}
+\end{equation}
+scaled by the excitation function over time with excitation duration $d_\text{e}$ [s]
+\begin{equation}\label{eq:excitation}
+    F(t) = 
+    \begin{cases}
+        \frac{1 - \cos(\frac{\pi (t - t_\text{e})}{d_\text{e}})}{2}, & t \geq t_\text{e} \wedge t < t_\text{e}+d_\text{e}\\
+        \hfil 0, &\text{otherwise}
+    \end{cases}
+\end{equation}
+A visualisation of this can be found in Figure \ref{fig:exctiation}.
+%% Discretised version
+% The distribution function is set to a raised cosine with width $w_\text{e}$
+
+% \begin{equation}
+%     E(l) = 
+%     \begin{cases}
+%         \hfil \frac{1 - \cos(\frac{2 \pi (l - l_\text{e})}{w_\text{e}})}{2}, & l_\text{e} -  \frac{w_\text{e}}{2} < l < l_\text{e} + \frac{l_\text{e}}{2} \\
+%         \hfil 0, &\text{otherwise}
+%     \end{cases}
+% \end{equation}
+% and scaled by the excitation function over time with excitation duration $d_\text{e}$ [s$^{-1}$]
+% \begin{equation}
+%     F(n) = 
+%     \begin{cases}
+%         \frac{1 - \cos(\frac{\pi (n - n_\text{e})}{d_\text{e}})}{2}, & n \geq n_\text{e} \wedge n < n_\text{e}+d_\text{e}\\
+%     \end{cases}
+% \end{equation}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1.0\columnwidth]{excitation.eps}
+\caption{A visualisation of the excitation used in our implementation presented in Equation \eqref{eq:excitedString}. The excitation width $w_\text{e}$ is shown in red and excitation duration $d_\text{e}$ in blue (also see Equations \eqref{eq:distribution} and \eqref{eq:excitation}). \label{fig:exctiation}}
+\end{figure}
+
+\subsubsection{Pitch}
+There are several ways to change the pitch of the string
+See \cite{Bilbao2009:NumericalSoundSynthesis} section 7.6.
+
+\subsubsection{Damping finger}
+%maybe it would be better to move the boundary to a different gridpoint and use interpolation for determination of the values around the boundary
+Another way to generate different pitches is to add damping to the model at several points that acts as a fretting finger. If the string is fretted st single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
+\begin{equation}
+u_l^n = 
+    \begin{cases}
+        \hfil 0, & l = l_\text{f} - 1 \vee l = l_\text{f}\\
+        \hfil (1-\alpha_\text{f}^\epsilon) u_l^n, & l = l_\text{f} + 1\\
+        \hfil u_l^n, & \text{otherwise}
+    \end{cases}
+\end{equation}
+where $\alpha_\text{f} = x_\text{f}/h - l_\text{f}$ describes the fractional location of $x_\text{f}$ between two grid points. We found that the effect of damping between grid points does not linearly scale to pitch. We thus added $\epsilon = 7$ as a heuristic value to more properly map finger position to pitch.
+
 
 \subsection{Plate}
 We chose the number of points to be $N_x = 20$ and $N_y = 10$ as this was found to be a great speed/quality tradeoff.
@@ -306,32 +354,22 @@ In the case of the plate, we set the number of horizontal and vertical points an
 
 \subsection{Connections}
 
-\subsection{Tuning}
-See \cite{Bilbao2009:NumericalSoundSynthesis} section 7.6.
-
-\subsection{Damping finger}
-%maybe it would be better to move the boundary to a different gridpoint and use interpolation for determination of the values around the boundary
-Another way to generate different pitches is to add damping to the model at several points that acts as a fretting finger. If the string is fretted st single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
-\begin{equation}
-u_l^n = 
-    \begin{cases}
-        0, & \text{if} \quad l = l_\text{f} - 1 \vee l = l_\text{f}\\
-        (1-\alpha_\text{f}^\epsilon) u_l^n &\text{if} \quad l = l_\text{f}
-    \end{cases}
-\end{equation}
-where $\alpha_\text{f} = x_\text{f}/h - l_\text{f}$ describes the fractional location of $x_\text{f}$ between two grid points. We found that the effect of damping between grid points does not linearly scale to pitch. We thus added $\epsilon = 7$ as a heuristic value to more properly map finger position to pitch.
 
 \subsection{Sensel Morph}
-The Sensel Morph (or further referred to as Sensel) is an expressive touch controller 
+The Sensel Morph (or further referred to as Sensel) is an expressive touch controller that senses position and force of objects
 \subsubsection{Mapping strategies}
 Something about the different prototype mappings, and the "final" mapping 
 
-\section{Instruments}\label{sec:instruments}
+Finally, connections are shown using orange circles/squares for the points of connection and dotted lines between connected elements.
+\section{Instrument Desctiptions}\label{sec:instruments}
 
 In this section, several configurations of strings, plates and connections that are inspired by real-life instruments will be presented. We subdivide string-elements into three types: bowed, plucked and sympathetic strings. All strings will be connected to one plate which simulates an instrument body. The user can control the plate stiffness and increase it to generate more interaction between the strings. Furthermore, the user can change the output-level of each element-type using. Apart from these parameters, which are controlled by the mouse, the instruments are fully controlled by two Sensels. The instruments we have chosen as our inspiration are the sitar, the hammered dulcimer and the hurdy gurdy. Videos and sound examples can be found through the following link:...
 
+\subsubsection{User interface}
+Strings are shown as coloured paths (also see figures in \ref{sec:instruments}). The state $u$ of the model is visualised using the vertical displacement of the paths. Bowed strings are shown in cyan on the top left. The bow is shown as a yellow rectangle and moves on interaction. The fretting position is shown as a   yellow circle. Plucked strings are shown in purple i the top right, underneath which the sympathetic strings are shown in light green. The plate is shown in the bottom using a 18x8 grid of rectangles (clamped gridpoints are not shown). Its state is visualised using a grey-scale.
+
 \subsection{Bowed Sitar}
-The sitar is an originally Indian string instrument that has both fretted strings and sympathetic strings. Instead of picking the fretted strings, we extended the model to bow these strings. Our implementation consists of 2 bowed strings, 13 sympathetic strings and 5 plucked strings (as it is also possible to strum the sympathetic strings). One Sensel is vertically subdivided into two sections, one for each bowed string, The first finger registered by the Sensel is mapped to the bow and the second is mapped to a fretting finger on the string controlling pitch. The frets are not implemented as such (the pitch is continuous), but they are visualised for reference. The horizontal position of the first finger is mapped to the bowing position on the string, the vertical velocity  to the bow velocity with a maximum of $v_\text{B} = 0.2$ m/s and the finger force is linked to the excitation function with a maximum of $F_\text{B} = 100$ m/s$^2$. The other Sensel is subdivided into 5 sections mapped to the plucked strings. 
+The sitar is originally an Indian string instrument that has both fretted strings and sympathetic strings. Instead of picking the fretted strings, we extended the model to bow these strings. Our implementation consists of 2 bowed strings, 13 sympathetic strings and 5 plucked strings (as it is also possible to strum the sympathetic strings). One Sensel is vertically subdivided into two sections, one for each bowed string, The first finger registered by the Sensel is mapped to the bow and the second is mapped to a fretting finger on the string controlling pitch. The frets are not implemented as such (the pitch is continuous), but they are visualised for reference. The horizontal position of the first finger is mapped to the bowing position on the string, the vertical velocity  to the bow velocity with a maximum of $v_\text{B} = 0.2$ m/s and the finger force is linked to the excitation function with a maximum of $F_\text{B} = 100$ m/s$^2$. The other Sensel is subdivided into 5 sections mapped to the plucked strings. 
 
 \subsection{Hammered Dulcimer}
 The hammered dulcimer is an instrument that can be seen as an 'open piano' where the musician has the hammers in their hand. Just like the piano, the strings are grouped in pairs or triples %triplets?
@@ -349,13 +387,15 @@ The Sensel is vertically subdivided into 5 rows that control whether the strings
 \begin{figure}[t]
 \centering
 \includegraphics[width=1.0\columnwidth]{LATEX/BowedSitar.png}
-\caption{The bowed sitar application.\label{fig:bowedSitar}}
+\caption{The bowed sitar application. \label{fig:bowedSitar}}
 \end{figure}
 
 
 \section{Discussion}\label{sec:discussion}
 
 Body should not be plate.
+We did an informal test with a lecturer of the Rytmisk Center København 
+The interaction with the bow has been found very natural. Bow force and velocity... 
 
 \section{Conclusion and Future Work}\label{sec:conclusion}
 Speed up more: AVX vector / GPU / multithreading such as \cite{Webb2015}
