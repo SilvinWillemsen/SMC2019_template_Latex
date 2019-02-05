@@ -132,7 +132,7 @@
 \capstarttrue
 %
 \begin{abstract}
-In this paper we introduce several physical models of bowed string instruments which use accurate numerical simulations using partial differential equations but are also efficient enough to run in realtime. We describe the mathematical formulation of these models, the realtime implementation in JUCE, the control using the Sensel Morph interface as well as results from qualitative evaluations from experts.
+In this paper we introduce several physical models of bowed string instruments which use accurate numerical simulations using partial differential equations but are also efficient enough to run in real-time. We describe the mathematical formulation of these models, the real-time implementation in JUCE, the control using the Sensel Morph interface as well as results from qualitative evaluations from experts.
 \end{abstract}
 %
 
@@ -146,13 +146,13 @@ Finite-difference schemes (FDSs) have been proposed to accurately simulate the b
 Given the high computational cost of such simulations, most of them have been implemented as offline simulations.
 We are interested in bridging the gap between accurate numerical simulations and sonic interaction design \cite{franinovic2013sonic}, to be able to control such simulations in real-time. 
 
-
 Specifically, we are interested in using the expressivity of Sensel Morph \cite{sensel2018} to control physical models simulated in real-time; our ultimate goal is to create models which are both mathematically accurate but also efficient to be controlled in real-time. This goal is nowadays possible thanks to improvements in hardware and software technologies for sound synthesis, yet it has not been achieved yet.
-Used Modular Percussion Synthesis Environment (Bilbao) + On the limits of real-time physical modelling synthesis with a modular environment (Webb + Bilbao) as a basis and extended it to be interactive and used melodic rather than percussive components/elements.
-This paper is structured as follows: Section \ref{sec:PDE} describes the PMs used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of PMs inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
+% Used Modular Percussion Synthesis Environment (Bilbao) + On the limits of real-time physical modelling synthesis with a modular environment (Webb + Bilbao) as a basis and extended it to be interactive and used melodic rather than percussive components/elements.
+
+This paper is structured as follows: Section \ref{sec:PDE} describes the physical models used in the implementation and Section \ref{sec:FDS} shows the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:implementation} will show how to implement the FDSs, Section \ref{sec:instruments} shows several different configurations of the physical models presented inspired by real musical instruments and finally Section \ref{sec:discussion} and Section \ref{sec:conclusion} will discuss and conclude upon the work shown in this paper.
 
 \section{Models}\label{sec:PDE}
-In this section, the PDE for the damped stiff string and the plate will be presented. The notation used will be the one found in \cite{Bilbao2009:NumericalSoundSynthesis} (and others) where the subscript for state variable $u$ denotes a single derivative with respect to time $t$ or space $x$ respectively. Furthermore, to simplify the presented PMs, non-dimensionalization (or scaling) will be used (see \cite{Bilbao2009:NumericalSoundSynthesis}). 
+In this section, the PDEs for the damped stiff string and the plate will be presented. The notation used will be the one found in \cite{Bilbao2009:NumericalSoundSynthesis} (among others) where the subscript for state variable $u$ denotes a single derivative with respect to time $t$ or space $x$ respectively. Furthermore, to simplify the presented physical models, non-dimensionalization (or scaling) will be used \cite{Bilbao2009:NumericalSoundSynthesis}. 
 
 % \begin{equation}
 %     \pdv[2]{u}{t} = \gamma^2 \pdv[2]{u}{x} -\kappa^2 \pdv[4]{u}{x} - 2\sigma_0\pdv{u}{t} + 2\sigma_1\frac{\partial^3u}{\partial tx^2}
@@ -185,7 +185,7 @@ Furthermore,
     0,              & \text{otherwise}
 \end{cases}
 \end{equation}
-is referred to as the spatial Dirac delta function centered at $x_\text{B}$, which, when multiplied onto the excitation, applies it only to the point $x_\text{B}$ on the string.
+is referred to as the spatial Dirac delta function centered at $x_\text{B}$, which, when multiplied onto the excitation, applies the excitation only to point $x_\text{B}$ on the string.
 
 Another, and more simple way to excite the string is by extending Equation \eqref{eq:stiffString} to
 \begin{equation}
@@ -197,10 +197,13 @@ In the case of a plate, the state $u = u(x,y,t)$ is now defined over two spatial
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t},
 \end{equation}
-where $\kappa$ is again a stiffness parameter [m$^2$/s] and $\Delta$ represents the 2D Laplacian.
-
+where $\kappa$ is again a stiffness parameter [m$^2$/s] and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
+\begin{equation}
+    \Delta u = u_{xx} + u_{yy}.
+\end{equation}
+%need to explain subscript y?
 \subsection{Connections}\label{sec:connections}
-Adding connections between different PMs, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}
+Adding connections between different physical models, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}
 %% this paragraph is too wide for some reason
 \begin{equation}
 \begin{aligned}
@@ -215,15 +218,14 @@ where $F_\alpha$ and $F_\beta$ are the forces of the connection at connection ar
     F_\beta &= -\mathcal{M}_{\alpha/\beta}F_\alpha,
 \end{align}
 \end{subequations}
-where $\omega_0$ and $\omega_1$ are the linear and non-linear angular frequencies of oscillation respectively [s$^{-1}$], $\sigma_\times$ is a damping factor, $\mathcal{M}_{\alpha/\beta}$ is the mass ratio between the two elements and $\eta$ is the relative displacement between the connected elements at the point of connection %[m?]
+where $\omega_0$ and $\omega_1$ are the linear and non-linear (angular) frequencies of oscillation respectively [rad/s], $\sigma_\times$ is a unit-less damping factor, $\mathcal{M}_{\alpha/\beta}$ is the mass ratio between the two elements and $\eta$ is the relative displacement between the connected elements at the point of connection%[m?]
 . The subscript $t$ again denotes a derivative with respect to time.
 
-
 \section{Finite-Difference Schemes}\label{sec:FDS}
-To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, where $l \in [0,N]$ with $N$ being the total number of points and $h$ is the grid-spacing of the model which is calculated differently for each model (see sub-sections below). The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. The plate is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
+To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, with $l \in [0,N]$ where $N$ is the total number of points and grid-spacing $h$ which is calculated differently for each model. The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. The plate is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
 Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}. We will also use the notation for the difference and averaging operators found here. 
 
-\textit{Note: In this paper we have used the simple case of a single point for bowing and connections. These can be extended to a bowing area or area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:ModularPercussion}}.
+\textit{Note: In this paper we have used the simple case of a single point for bowing and connections. These can be extended to a bowing area or area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:NumericalSoundSynthesis} for bowing area and \cite{Bilbao2009:ModularPercussion} for area of connection}.
 
 \subsection{Stiff String}\label{subsec:stiffStringFDS}
 Equation \eqref{eq:bowedString} can be approximated using
@@ -273,10 +275,10 @@ h = 2\sqrt{k\bigg(\sigma_1^2 + \sqrt{\kappa^2+ \sigma_1^2}\bigg)}
 \end{equation}
 after which we calculate $N_x$ and $N_y$ using
 \begin{align}
-    N_x &= \text{floor}\Bigg(\frac{\sqrt{\alpha}}{h}\Bigg)\\
-    N_y &= \text{floor}\Bigg(\frac{1}{h\sqrt{\alpha}}\Bigg)
+    N_x &= \text{floor}\Bigg(\frac{\sqrt{a}}{h}\Bigg)\\
+    N_y &= \text{floor}\Bigg(\frac{1}{h\sqrt{a}}\Bigg)
 \end{align}
-where $\alpha$ is a user-defined length-width ratio.
+where $a = N_x / N_y$ is a user-defined length-width ratio.
 \subsection{Connections}
 The equations in \eqref{eq:connectionsPDE} can be approximated using \cite{Bilbao2009:ModularPercussion}
 \begin{subequations}
@@ -289,7 +291,7 @@ The relative displacement $\eta$ between $\alpha$ and $\beta$ can be calculated 
 \begin{equation}\label{eq:relativeDisp}
     \eta^n = \sigma_\alpha u_{\alpha, x_{\text{c},\alpha}}^n - \sigma_\beta u_{\beta,x_{\text{c},\beta}}^n,
 \end{equation}
-where $\sigma_\alpha$ and $\sigma_\beta$ are equal to the grid spacing in the case of the string and the grid spacing squared for the plate. In other words, this is the difference between the state of element $\alpha$ at connection point $x_{\text{c},\alpha}$ and the state of element $\beta$ at connection point $x_{\text{c},\beta}$ scaled by their respective (squared) grid-spacings $\sigma_\alpha$ and $\sigma_\beta$. Solving \eqref{eq:connectionsFDS} for $\eta^{n+1}$ yields
+where $\sigma_\alpha$ and $\sigma_\beta$ are equal to $h$ in the case of the string and $h^2$ for the plate. In other words, this is the difference between the state of element $\alpha$ at connection point $x_{\text{c},\alpha}$ and the state of element $\beta$ at connection point $x_{\text{c},\beta}$ scaled by their respective (squared) grid-spacings $\sigma_\alpha$ and $\sigma_\beta$. Solving \eqref{eq:connectionsFDS} for $\eta^{n+1}$ yields
 \begin{equation} \label{eq:etaNext}
     \eta^{n+1} = p^nF_\alpha+r^n\eta^{n-1},
 \end{equation}
@@ -300,7 +302,7 @@ where
     r^n &= \frac{2\sigma_\times / k - \omega_0^2 -\omega_1^4(\eta^n)^2}{2\sigma_\times / k + \omega_0^2 + \omega_1^4(\eta^n)^2}.
 \end{align}
 \end{subequations}
-We now need to solve for the connection forces $F_\alpha$ and $F_\beta$. The first step is to obtain values for $u$ by solving \eqref{eq:bowedStringFDS} or \eqref{eq:plateFDS} for $u^{n+1}$ for a string or plate respectively. As, at this point, no connection forces have been added yet, we refer to this state as an intermediate state or $u^\text{I}$. This intermediate state can be used to obtain $\eta^{n+1}$ using \eqref{eq:relativeDisp}:
+The next step is to obtain $F_\alpha$ which can be used to easily calculate $F_\beta$. We first obtain values for $u$ by solving \eqref{eq:bowedStringFDS} or \eqref{eq:plateFDS} for $u^{n+1}$ for a string or plate respectively. As, at this point, no connection forces have been added yet, this state is referred to as an intermediate state or $u^\text{I}$. This intermediate state can be used to obtain $\eta^{n+1}$ using \eqref{eq:relativeDisp}:
 \begin{equation}
     \eta^{n+1} = \sigma_\alpha u_{\alpha,x_{\text{c},\alpha}}^\text{I} - \sigma_\beta u_{\beta,x_{\text{c},\beta}}^\text{I}
 \end{equation}
@@ -322,9 +324,12 @@ where scaling factor $J$ for element E is defined as
 \section{Implementation}\label{sec:implementation}
 %kind of a methods section 
 % implementation of FDSs and C++ optimization
-In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework for implementing the PMs and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
 
 \subsection{General}
+The C++ Framework JUCE is a powerful tool for creating real-time audio applications. 
+
+
 The most important thing in real-time implementation of FDSs, is to optimise the FDSs themselves as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 
 Furthermore, it is important to take note of is the order of calculation. First the non-extended schemes (Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}) must be calculated before adding the effects of excitations (including bowing), which - in turn - needs to be calculated before adding the effects of connections (see Algorithm \ref{alg:calcOrder}).
@@ -444,6 +449,8 @@ where $\alpha_\text{f} = x_\text{f}/h - l_\text{f}$ describes the fractional loc
 \subsection{Plate}
 An interesting parameter to change is the plate stiffness $\kappa$ as this..
 
+Length-width ratio $a = 2$. 
+
 \subsection{Connections}
 As mentioned before, the connections need to be calculated using 
 
@@ -454,7 +461,7 @@ The Sensel Morph (or further referred to as Sensel) is an expressive touch contr
 % STEFANIA: can you say something more? 
 \subsubsection{Mapping strategies}
 Something about the different prototype mappings, and the "final" mapping 
-
+Lights to indicate bowing position or string position   
 % STEFANIA: add a pictue when we can see one person %interacting with the sensei and we see also the computer's %screen.
 
 
@@ -493,6 +500,9 @@ Our implementation consists of 5 bowed strings subdivided into 2 drone strings t
 The Sensel is vertically subdivided into 5 rows that control whether the strings are placed on the wheel. The bowing velocity is mapped to the average pressure of the fingers. The pitch (in the model this is the wave-speed $c$) of the melody-strings are changed by a midi controller.
 % STEFANIA: screenshot of hurdy gurdy model
 
+\section{Results}
+Informal evaluation
+CPU usage
 
 \section{Discussion}\label{sec:discussion}
 
@@ -503,9 +513,8 @@ We did an informal test with a lecturer of the Rytmisk Center København
 The interaction with the bow has been found very natural. Bow force and velocity... 
 
 \section{Conclusion and Future Work}\label{sec:conclusion}
-Speed up more: AVX vector / GPU / multithreading such as \cite{Webb2015}
-
-Model instrument bodies
+Speed up more: AVX vector such as \cite{Webb2015}
+Model instrument bodies for more realistic sounds
 
 
 \begin{acknowledgments}
