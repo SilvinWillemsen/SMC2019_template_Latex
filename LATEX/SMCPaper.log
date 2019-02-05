@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  21 DEC 2018 17:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  10 JAN 2019 11:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1238,21 +1238,21 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 89.
  (./SMCPaper.aux)
 \openout1 = `SMCPaper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 132.
-LaTeX Font Info:    ... okay on input line 132.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 132.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 128.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
@@ -1265,7 +1265,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 144.
 )
-Package hyperref Info: Link coloring ON on input line 132.
+Package hyperref Info: Link coloring ON on input line 128.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -1273,10 +1273,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count139
 )
-LaTeX Info: Redefining \ref on input line 132.
-LaTeX Info: Redefining \pageref on input line 132.
-LaTeX Info: Redefining \nameref on input line 132.
- (./SMCPaper.out) (./SMCPaper.out)
+LaTeX Info: Redefining \ref on input line 128.
+LaTeX Info: Redefining \pageref on input line 128.
+LaTeX Info: Redefining \nameref on input line 128.
 \@outlinefile=\write3
 \openout3 = `SMCPaper.out'.
 
@@ -1305,149 +1304,221 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 136.
-LaTeX Font Info:    Try loading font information for U+msa on input line 136.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 132.
+LaTeX Font Info:    Try loading font information for U+msa on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 136.
+LaTeX Font Info:    Try loading font information for U+msb on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 136.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 136.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 132.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Try loading font information for OMS+pcr on input line 136.
+LaTeX Font Info:    Try loading font information for OMS+pcr on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omspcr.fd
 File: omspcr.fd 
 )
 LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 136.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 136.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 132.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/it' in size <7> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 136.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <7> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 136.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--136
+Underfull \hbox (badness 10000) in paragraph at lines 132--132
 []\OT1/ptm/m/it/7 Copyright: []|  2018 Sil-vin Willemsen|  et al. This is
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--136
+Underfull \hbox (badness 10000) in paragraph at lines 132--132
 \OT1/ptm/m/it/7 an open-access ar-ti-cle dis-tributed un-der the terms of the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--136
+Underfull \hbox (badness 10000) in paragraph at lines 132--132
 [][][]$[]$[][][]\OT1/ptm/m/it/7 , which per-mits un-re-
  []
 
 
-Overfull \hbox (2.2113pt too wide) in paragraph at lines 165--169
-\OT1/ptm/m/n/10 where $\OML/cmm/m/it/10 ^^M \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 c=L$ \OT1/ptm/m/n/10 is wave-speed with units of frequency[s$[]$],
+LaTeX Warning: Citation `Bilbao2018:Tutorial' on page 1 undefined on input line 140.
+
+
+LaTeX Warning: Citation `sensel2018' on page 1 undefined on input line 146.
+
+
+LaTeX Warning: Reference `sec:PDE' on page 1 undefined on input line 148.
+
+
+LaTeX Warning: Reference `sec:FDS' on page 1 undefined on input line 148.
+
+
+LaTeX Warning: Reference `sec:implementation' on page 1 undefined on input line 148.
+
+
+LaTeX Warning: Reference `sec:instruments' on page 1 undefined on input line 148.
+
+
+LaTeX Warning: Reference `sec:discussion' on page 1 undefined on input line 148.
+
+
+LaTeX Warning: Reference `sec:conclusion' on page 1 undefined on input line 148.
+
+
+Overfull \hbox (3.40509pt too wide) in paragraph at lines 148--149
+\OT1/ptm/m/n/10 ther-more, Sec-tion [] will show how to im-ple-ment the FDSs,
  []
 
 
-Overfull \hbox (5.76968pt too wide) in paragraph at lines 165--169
-\OML/cmm/m/it/10 ^^[[] \OMS/cmsy/m/n/10 ^^U \OT1/cmr/m/n/10 0$ \OT1/ptm/m/n/10 are frequency-dependent and frequency-independent
+LaTeX Warning: Citation `Bilbao2009:NumericalSoundSynthesis' on page 1 undefined on input line 158.
+
+
+Overfull \hbox (6.63577pt too wide) in paragraph at lines 161--165
+\OT1/ptm/m/n/10 dependent and frequency-independent damp-ing re-spec-tively.
  []
 
 
-Overfull \hbox (2.57953pt too wide) in paragraph at lines 193--195
-\OT1/ptm/m/n/10 pa-ram-e-ter with Young's mod-u-lus $\OML/cmm/m/it/10 E$ \OT1/ptm/m/n/10 [N/m$[]$], plate-thickness
- []
+LaTeX Warning: Reference `eq:stiffString' on page 1 undefined on input line 166.
 
 
-Overfull \hbox (3.1652pt too wide) in paragraph at lines 201--203
+LaTeX Warning: Citation `Bilbao2009:NumericalSoundSynthesis' on page 1 undefined on input line 166.
+
+
+LaTeX Warning: Citation `Bilbao2009:NumericalSoundSynthesis' on page 1 undefined on input line 172.
+
+
+LaTeX Warning: Citation `Bilbao2009:NumericalSoundSynthesis' on page 1 undefined on input line 186.
+
+
+LaTeX Warning: Reference `eq:bowedString' on page 1 undefined on input line 193.
+
+
+LaTeX Warning: Reference `eq:platePDE' on page 1 undefined on input line 193.
+
+
+Overfull \hbox (3.1652pt too wide) in paragraph at lines 193--195
 \OT1/ptm/m/n/10 Adding con-nec-tions be-tween dif-fer-ent PMs, fur-ther re-ferred
  []
+
+
+LaTeX Warning: Citation `Bilbao2009:ModularPercussion' on page 1 undefined on input line 199.
 
 [1{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 
 ]
-Overfull \hbox (3.30539pt too wide) in paragraph at lines 250--252
+
+LaTeX Warning: Reference `sec:PDE' on page 2 undefined on input line 209.
+
+
+LaTeX Warning: Citation `Bilbao2009:NumericalSoundSynthesis' on page 2 undefined on input line 209.
+
+
+LaTeX Warning: Reference `eq:bowedString' on page 2 undefined on input line 212.
+
+
+LaTeX Warning: Reference `eq:dirac' on page 2 undefined on input line 219.
+
+
+Overfull \hbox (3.30539pt too wide) in paragraph at lines 222--224
 \OT1/ptm/m/n/10 For our im-ple-men-ta-tion, clamped bound-ary con-di-tions were
  []
 
-Missing character: There is no â in font cmr7!
-Missing character: There is no ˆ in font cmr7!
-Missing character: There is no ’ in font cmr7!
-LaTeX Font Info:    Try loading font information for U+euf on input line 298.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/ueuf.fd
-File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
-) <FullPlate.png, id=166, 1778.3238pt x 555.7563pt>
-File: FullPlate.png Graphic file (type png)
- <use FullPlate.png>
-Package pdftex.def Info: FullPlate.png used on input line 308.
-(pdftex.def)             Requested size: 489.95786pt x 153.11754pt.
 
-Overfull \hbox (0.57047pt too wide) in paragraph at lines 308--309
- [][] 
- []
+LaTeX Warning: Reference `eq:platePDE' on page 2 undefined on input line 238.
+
+
+LaTeX Warning: Reference `sec:FDS' on page 2 undefined on input line 267.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 269.
+
+LaTeX Warning: Citation `Bilbao2009:ModularPercussion' on page 2 undefined on input line 269.
+
+
+LaTeX Warning: Reference `eq:descreteRelativeVel' on page 2 undefined on input line 295.
+
+
+LaTeX Warning: Citation `Bilbao2009:NumericalSoundSynthesis' on page 2 undefined on input line 310.
 
 [2]
-Overfull \hbox (4.34451pt too wide) in paragraph at lines 362--363
-\OT1/ptm/m/n/10 tions that are in-spired by real-life in-stru-ments will be shown. 
- []
-
-[3 <./FullPlate.png>]
-Overfull \hbox (11.4759pt too wide) in paragraph at lines 386--387
-[]\OT1/ptm/m/n/10 In our im-ple-men-ta-tion, we have 40 ham-mered strings (which
- []
-
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 391.
-(./SMCPaper.bbl)
-Overfull \hbox (8.00151pt too wide) detected at line 456
-[][] []
+Overfull \hbox (4.06473pt too wide) in paragraph at lines 331--332
+\OT1/ptm/m/n/10 be pre-sented. We sub-di-vide string-elements into three types:
  []
 
 
-Overfull \hbox (3.9263pt too wide) detected at line 469
-[][] []
+Overfull \hbox (15.3751pt too wide) in paragraph at lines 331--332
+\OT1/ptm/m/n/10 ther-more, the user can change the output-level of each element-
  []
 
-[4pdfTeX warning (ext4): destination with the same identifier (name{equation.10.33}) has been already used, duplicate ignored
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.469 \end{equation}
-                    ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 475.
- [5
+LaTeX Warning: File `LATEX/BowedSitar.png' not found on input line 351.
+
+
+/Users/SilvinW/repositories/SMC2019_template_Latex/LATEX/SMCPaper.tex:351: Package pdftex.def Error: File `LATEX/BowedSitar.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.351 ...th=1.0\columnwidth]{LATEX/BowedSitar.png}
+                                                  
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: Citation `Webb2015' on page 3 undefined on input line 361.
+
+No file SMCPaper.bbl.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 373.
+[3] [4
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 475.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 373.
  (./SMCPaper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 475.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 475.
-Package rerunfilecheck Info: File `SMCPaper.out' has not changed.
-(rerunfilecheck)             Checksum: 99FD8AED3A8C29FD954B50217A8B8D94;1673.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 475.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 373.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 373.
+
+
+Package rerunfilecheck Warning: File `SMCPaper.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `SMCPaper.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  F1F1504658EA870D86E3B7D62A0EF0E1;1418.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 373.
  )
 (\end occurred when \ifx on line 41 was incomplete) 
 Here is how much of TeX's memory you used:
- 14177 strings out of 493014
- 244050 string characters out of 6133351
- 319508 words of memory out of 5000000
- 17508 multiletter control sequences out of 15000+600000
- 21201 words of font info for 51 fonts, out of 8000000 for 9000
+ 14086 strings out of 493014
+ 242607 string characters out of 6133351
+ 312509 words of memory out of 5000000
+ 17450 multiletter control sequences out of 15000+600000
+ 22122 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  40i,14n,42p,10441b,417s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on SMCPaper.pdf (5 pages, 735098 bytes).
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on SMCPaper.pdf (4 pages, 161733 bytes).
 PDF statistics:
- 305 PDF objects out of 1000 (max. 8388607)
- 277 compressed objects within 3 object streams
- 76 named destinations out of 1000 (max. 500000)
- 222 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 148 PDF objects out of 1000 (max. 8388607)
+ 125 compressed objects within 2 object streams
+ 53 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -7,21 +7,17 @@
 \BOOKMARK [2][-]{subsection.3.1}{3.1 Stiff String}{section.3}% 7
 \BOOKMARK [2][-]{subsection.3.2}{3.2 Plate}{section.3}% 8
 \BOOKMARK [2][-]{subsection.3.3}{3.3 Connections}{section.3}% 9
-\BOOKMARK [1][-]{section.4}{ 4. Energy Analysis}{}% 10
-\BOOKMARK [1][-]{section.5}{ 5. Implementation}{}% 11
-\BOOKMARK [2][-]{subsection.5.1}{5.1 String}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.2}{5.2 Plate}{section.5}% 13
-\BOOKMARK [2][-]{subsection.5.3}{5.3 Connections}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.4}{5.4 Tuning}{section.5}% 15
-\BOOKMARK [1][-]{section.6}{ 6. Instruments}{}% 16
-\BOOKMARK [2][-]{subsection.6.1}{6.1 Bowed Sitar}{section.6}% 17
-\BOOKMARK [2][-]{subsection.6.2}{6.2 Hurdy Gurdy}{section.6}% 18
-\BOOKMARK [2][-]{subsection.6.3}{6.3 Dulcimer}{section.6}% 19
-\BOOKMARK [2][-]{subsection.6.4}{6.4 Sensel Morph}{section.6}% 20
-\BOOKMARK [3][-]{subsubsection.6.4.1}{6.4.1 Mapping strategies}{subsection.6.4}% 21
-\BOOKMARK [1][-]{section.7}{ 7. Discussion}{}% 22
-\BOOKMARK [1][-]{section.8}{ 8. Conclusion and Future Work}{}% 23
-\BOOKMARK [1][-]{section.9}{ 9. References}{}% 24
-\BOOKMARK [1][-]{section.10}{ 10. Appendix A}{}% 25
-\BOOKMARK [2][-]{subsection.10.1}{10.1 Finite-Difference Scheme String}{section.10}% 26
-\BOOKMARK [2][-]{subsection.10.2}{10.2 Finite-Difference Scheme Plate}{section.10}% 27
+\BOOKMARK [1][-]{section.4}{ 4. Implementation}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{4.1 String}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{4.2 Plate}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{4.3 Connections}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{4.4 Tuning}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.5}{4.5 Damping finger}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.6}{4.6 Sensel Morph}{section.4}% 16
+\BOOKMARK [3][-]{subsubsection.4.6.1}{4.6.1 Mapping strategies}{subsection.4.6}% 17
+\BOOKMARK [1][-]{section.5}{ 5. Instruments}{}% 18
+\BOOKMARK [2][-]{subsection.5.1}{5.1 Bowed Sitar}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.2}{5.2 Hammered Dulcimer}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.3}{5.3 Hurdy Gurdy}{section.5}% 21
+\BOOKMARK [1][-]{section.6}{ 6. Discussion}{}% 22
+\BOOKMARK [1][-]{section.7}{ 7. Conclusion and Future Work}{}% 23
