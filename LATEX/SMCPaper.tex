@@ -10,6 +10,7 @@
 \usepackage[english]{babel}
 \usepackage{cite}
 \usepackage{physics}
+\usepackage[final]{pdfpages}
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath} % popular packages from Am. Math. Soc. Please use the 
@@ -324,12 +325,14 @@ where scaling factor $J$ for element E is defined as
 \section{Implementation}\label{sec:implementation}
 %kind of a methods section 
 % implementation of FDSs and C++ optimization
-In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework \cite{JUCE2019} for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
 
 \subsection{General}
 The C++ Framework JUCE is a powerful tool for creating real-time audio applications. 
 
-
+% \includepdf[pages=-]{LATEX/JUCE.pdf}
+As can be seen in Figure \ref{fig:juce}
+In order to draw the system, the state needs to be retrieved. This happens on the GUI thread
 The most important thing in real-time implementation of FDSs, is to optimise the FDSs themselves as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 
 Furthermore, it is important to take note of is the order of calculation. First the non-extended schemes (Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}) must be calculated before adding the effects of excitations (including bowing), which - in turn - needs to be calculated before adding the effects of connections (see Algorithm \ref{alg:calcOrder}).
