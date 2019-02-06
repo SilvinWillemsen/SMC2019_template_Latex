@@ -10,7 +10,10 @@
 \usepackage[english]{babel}
 \usepackage{cite}
 \usepackage{physics}
-\usepackage[final]{pdfpages}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{trees}% cfr added this as the code fails to compile otherwise
+
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath} % popular packages from Am. Math. Soc. Please use the 
@@ -57,7 +60,7 @@
    ]{hyperref}
   %\pdfcompresslevel=9
 
-  \usepackage[pdftex]{graphicx}
+%   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are and their extensions so 
   %you won't have to specify these with every instance of \includegraphics
   \graphicspath{{./figures/}}
@@ -89,6 +92,7 @@
     urlcolor=black
 }
 \SetAlCapSkip{1em}
+% inkscape -D -z --file=JUCE.svg --export-pdf=JUCESVG.pdf --export-latex
 
 % Title.
 % ------
@@ -160,48 +164,48 @@ In this section, the PDEs for the damped stiff string and the plate will be pres
 % \end{equation}
 
 \subsection{Stiff string}\label{subsec:stiffStringPDE}
-The state $u = u(x,t)$ describes the transverse displacement of the string. The partial differential equation for the damped stiff string is defined as \cite{Bilbao2009:NumericalSoundSynthesis} 
+A basic model of the linear transverse motion of a string of circular cross section may be framed in terms of several parameters: the total length $L$ (in m), the material density $\rho$ (in kg$\cdot$m$^{-3}$), string radius $r$ (in m), Young's modulus $E$ (in Pa), tension $T$ (in N), and two loss parameters $\sigma_{0}$ and $\sigma_{1}$, to be described shortly. A partial differential equation model may be written as
+ \cite{Bilbao2009:NumericalSoundSynthesis} 
 \begin{equation}\label{eq:stiffString}
     u_{tt} = \gamma^2 u_{xx}-\kappa^2u_{xxxx} - 2\sigma_0u_{t} + 2\sigma_1u_{txx},
 \end{equation}
-where $\gamma$ is wave-speed with units of frequency [s$^{-1}$], $\kappa$ is a stiffness parameter [m$^2$/s]
-%[$\sqrt{\text{kg}}\cdot$m$^{-2}\cdot$ s$^{-2}$]
-and $\sigma_0 \geq 0$ and $\sigma_1 \geq 0$ are unit-less frequency-dependent and frequency-independent damping respectively.
+In this representation, spatial scaling has been employed using a length $L$, so the solution $u = u(x,t)$ is defined for $t\geq 0$ and for dimensionless coordinate $x\in[0,1]$. $\gamma = \sqrt{T/\rho\pi r^2 L^2}$ and $\kappa = \sqrt{Er^2/4\rho L^4}$ are parameters with units s$^{-1}$. Subscripts represent partial differentiation with respect to time $t$ and coordinate $x$. 
 
-We can extend Equation \eqref{eq:stiffString} to a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} 
+In this work, the string is assumed clamped at both ends, so that
+\begin{equation}\label{boundary}
+    u = u_x = 0 \quad \text{where} \quad x = \{0, 1\}.
+\end{equation}
+
+A model of a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} may be incorporated into \eqref{eq:stiffString} as  
 \begin{align}
     \label{eq:bowedString} &u_{tt} = ... - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
     &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}
 \end{align}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
-where $F_\text{B} = f_\text{B}/ M_\text{s}$ is the excitation function [m/s$^2$] with bowing force $f_\text{B}$ [N] and total string mass $M_\text{s}$ [kg]. The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a friction characteristic, which has been chosen to be \cite{Bilbao2009:NumericalSoundSynthesis}
+where $F_\text{B} = f_\text{B}/ M_\text{s}$ is the excitation function (in m/s$^2$) with bowing force $f_\text{B}$ (in N) and total string mass $M_\text{s} = \rho\pi r^2 L$ (in kg). The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a dimensionless friction characteristic, chosen here as \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}
     \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} e^{-av_\text{rel}^2+1/2}.
 \end{equation}
-Furthermore,
-\begin{equation} \label{eq:dirac}
-    \delta(x-x_\text{B}) =
-\begin{cases}
-    1, & \text{if } x=x_\text{B}\\
-    0,              & \text{otherwise}
-\end{cases}
-\end{equation}
-is referred to as the spatial Dirac delta function centered at $x_\text{B}$, which, when multiplied onto the excitation, applies the excitation only to point $x_\text{B}$ on the string.
+$\delta(x-x_\text{B})$ is a spatial Dirac delta function selecting the bowing location $x=x_\text{B}$.
 
 Another, and more simple way to excite the string is by extending Equation \eqref{eq:stiffString} to
 \begin{equation}
     \label{eq:excitedString} u_{tt} = ... + F_\text{e}E_\text{e},
 \end{equation}
-where excitation function $F_\text{e} = F_\text{e}(t)$ and distribution function $E_\text{e} = E_\text{e}(x)$. If the excitation is only applied to one point, the distribution function reduces to $\delta(x-x_\text{e})$.
+using an externally-supplied excitation function $F_\text{e} = F_\text{e}(t)$ and distribution function $E_\text{e} = E_\text{e}(x)$. In this case, the excitation region is allowed to be of finite width.
 \subsection{Plate}\label{subsec:platePDE}
-In the case of a plate, the state $u = u(x,y,t)$ is now defined over two spatial dimensions. The PDE for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
+Under linear conditions, a rectangular plate of dimensions $L_{x}$ and $L_{y}$ may be parameterized in terms of density $\rho$ (in kg$\cdot$ m$^{-3}$), thickness $H$ (in m), Young's modulus $E$ (in Pa) and a dimensionless Poisson's ratio $\nu$, as well as two loss parameters $\sigma_{0}$ and $\sigma_{1}$, to be discussed shortly.  
+
+In terms of dimensionless spatial coordinates $x$ and $y$ scaled by $\sqrt{L_{x}L_{y}}$, the defining for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t},
 \end{equation}
-where $\kappa$ is again a stiffness parameter [m$^2$/s] and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
+Here, $u(x,y,t)$ is the transverse displacement of the plate as a function of dimensionless coordinates $x\in[0, \sqrt{\alpha}]$, $y\in[0,1/\sqrt{\alpha}]$, where $\alpha = L_{x}/L_{y}$ is the plate aspect ratio, as well as time $t$. The subscript $t$ represents partial differentiation wit respect to $t$, and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
 \begin{equation}
-    \Delta u = u_{xx} + u_{yy}.
+    \Delta  = \frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}
 \end{equation}
+The stiffness parameter $\kappa$, with dimensions of s$^{-1}$, is defined by $\kappa = \sqrt{D/\rho H L_{x}^2L_{y}^2}$ where $D = EH^3/12\left(1-\nu^2\right)$. 
+
 %need to explain subscript y?
 \subsection{Connections}\label{sec:connections}
 Adding connections between different physical models, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}
@@ -224,7 +228,7 @@ where $\omega_0$ and $\omega_1$ are the linear and non-linear (angular) frequenc
 
 \section{Finite-Difference Schemes}\label{sec:FDS}
 To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. The models can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, with $l \in [0,N]$ where $N$ is the total number of points and grid-spacing $h$ which is calculated differently for each model. The discretised variable $u_l^n$ is $u(x,t)$ at the $n$th time step and the $l$th point on the string. The plate is discretised using $x = lh$ where $l \in [0,N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,N_y]$ with $N_y$ being the total vertical number of points. 
-Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}. We will also use the notation for the difference and averaging operators found here. 
+Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}. As our implementation uses already existing models, we will not go much into depth in this section, but will rather  We will also use the notation for the difference and averaging operators found here. 
 
 \textit{Note: In this paper we have used the simple case of a single point for bowing and connections. These can be extended to a bowing area or area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:NumericalSoundSynthesis} for bowing area and \cite{Bilbao2009:ModularPercussion} for area of connection}.
 
@@ -325,55 +329,8 @@ where scaling factor $J$ for element E is defined as
 \section{Implementation}\label{sec:implementation}
 %kind of a methods section 
 % implementation of FDSs and C++ optimization
-In this section, we will present how to implement the FDSs presented in Section \ref{sec:FDS} and elaborate more on the parameters used. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework \cite{JUCE2019} for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
-
-\subsection{General}
-The C++ Framework JUCE is a powerful tool for creating real-time audio applications. 
-
-% \includepdf[pages=-]{LATEX/JUCE.pdf}
-As can be seen in Figure \ref{fig:juce}
-In order to draw the system, the state needs to be retrieved. This happens on the GUI thread
-The most important thing in real-time implementation of FDSs, is to optimise the FDSs themselves as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
-
-Furthermore, it is important to take note of is the order of calculation. First the non-extended schemes (Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}) must be calculated before adding the effects of excitations (including bowing), which - in turn - needs to be calculated before adding the effects of connections (see Algorithm \ref{alg:calcOrder}).
-
-\begin{algorithm}[h]\label{alg:calcOrder}
-\fbox{\parbox{0.93\linewidth}{
- \While{application runs}{
-  calculate intermediate state $u^\text{I}$ for all elements using previous state values
-  
-  $\quad u^\text{I}_\text{s} = Bu^n + Cu^{n-1}$
-  
-  \If{element is excited/bowed}{
-    calculate excitation term and add to intermediate state of the element
-    
-    $\quad u^\text{I}_\text{s+e} = u_\text{s}^\text{I} + E$
-    }
-   \For{all connections}{
-   calculate connection forces and add to elements to obtain the state at the next time step
-   
-   $\quad u^{n+1}_\text{s+e+c} = u_\text{s+e}^\text{I} + C$
-   }
-  
-  update statevectors
-  
-  $\quad u^{n-1} = u^n$
-  
-  $\quad u^n = u^{n+1}_\text{s+e+c}$
-  
-  
-  increment time step
-  
-  $\quad n$++
-
- }
- }}
- \caption{Pseudocode showing the correct order of calculation. The subscripts for state $u$ shows what it consists of (`s' for previous state, `e' for excitation and `c' for connection).}
-\end{algorithm}
-
-
-% STEFANIA: what about something about JUCE implementation? 
-
+In this section, we elaborate more on parameter choices in the previous two sections and present the system architecture of the real-time application. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework \cite{JUCE2019} for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+The most important thing is to optimise the FDSs as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 \subsection{String}
 %In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
 
@@ -458,6 +415,87 @@ Length-width ratio $a = 2$.
 As mentioned before, the connections need to be calculated using 
 
 In order to calculate the connection forces $F_\alpha$ and $F_\beta$, the relative displacement of the connection points $E_\alpha$ and $E_\beta$ is needed. We must thus have knowledge of the states of connected elements $\alpha$ and $\beta$. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\columnwidth]{LATEX/JUCE.pdf}
+\caption{System architecture flowchart. \label{fig:flowchart}}
+\end{figure}
+
+\subsection{System Architecture}
+The system architecture can be seen in Figure \ref{fig:flowchart}. The white boxes show the different classes, or components of the application. The hierarchy we adopted can be seen in Figure \ref{fig:hierarchy}.
+
+\begin{figure}[h]
+\centering
+    \begin{tikzpicture}[level distance=1.3in, sibling distance=.2in,scale=0.75]
+    \tikzset{edge from parent/.style= 
+        {thick, draw,
+            edge from parent fork right},every tree node/.style={draw,minimum width=1in,minimum height=0.25in,text width=1in, align=center},grow'=right}
+    \Tree 
+    [. {Main App}
+        [.{Instrument}
+            [. {String} ]
+            [. {Plate} ]
+            [. {Connection} ]
+        ]
+    ]
+    \end{tikzpicture}
+    \caption{System hierarchy. \label{fig:hierarchy}}
+\end{figure}
+
+Furthermore, the black arrows indicate instructions that one class can give to another. The hollow arrows show data flows between classes.
+
+All arrows are accompanied by a coloured box indicating on which thread is associated this instruction / dataflow.
+
+The lowest priority thread, the graphics-thread is shown by green boxes and runs at 15 Hz. This draws the states of the instrument strings, connections and the plate on the screen.
+
+Checking and retrieving the Sensel state happens at a rate of 150 Hz and is denoted by blue boxes. The parameters that the user controls by means of the Sensel, such as bowing position, force and velocity, will be updated in the models at the same rate. 
+
+The highest priority thread is the audio-thread and runs at 44100 Hz. The main application gives an 'update' (u) instruction to the instrument which in turn updates the FDSs in its strings and plate. In order to update the states for connected elements, the 
+
+The connection class retrieves the intermediate state $u^\text{I}$ at the connection point $x_\text{c}$ for the two connected elements 
+
+The handling of the data from the sensel is 'converted' into usable parameters and sent to the string models (the plate is not controlled in the applications).
+As can be seen in Figure \ref{fig:flowchart}, In order to draw the system, the state needs to be retrieved. This happens on the GUI thread
+
+
+The most important thing in real-time implementation of FDSs, is to optimise the FDSs themselves as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
+
+Furthermore, it is important to take note of is the order of calculation. First the non-extended schemes (Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}) must be calculated before adding the effects of excitations (including bowing), which - in turn - needs to be calculated before adding the effects of connections (see Algorithm \ref{alg:calcOrder}).
+
+\begin{algorithm}[h]\label{alg:calcOrder}
+\fbox{\parbox{0.93\linewidth}{
+ \While{application runs}{
+  calculate intermediate state $u^\text{I}$ for all elements using previous state values
+  
+  $\quad u^\text{I}_\text{s} = Bu^n + Cu^{n-1}$
+  
+  \If{element is excited/bowed}{
+    calculate excitation term and add to intermediate state of the element
+    
+    $\quad u^\text{I}_\text{s+e} = u_\text{s}^\text{I} + E$
+    }
+   \For{all connections}{
+   calculate connection forces and add to elements to obtain the state at the next time step
+   
+   $\quad u^{n+1}_\text{s+e+c} = u_\text{s+e}^\text{I} + C$
+   }
+  
+  update statevectors
+  
+  $\quad u^{n-1} = u^n$
+  
+  $\quad u^n = u^{n+1}_\text{s+e+c}$
+  
+  
+  increment time step
+  
+  $\quad n$++
+
+ }
+ }}
+ \caption{Pseudocode showing the correct order of calculation. The subscripts for state $u$ shows what it consists of (`s' for previous state, `e' for excitation and `c' for connection).}
+\end{algorithm}
 
 \subsection{Sensel Morph}
 The Sensel Morph (or further referred to as Sensel) is an expressive touch controller that senses position and force of objects.
