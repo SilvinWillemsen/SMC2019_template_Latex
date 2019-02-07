@@ -92,7 +92,6 @@
     urlcolor=black
 }
 \SetAlCapSkip{1em}
-% inkscape -D -z --file=JUCE.svg --export-pdf=JUCESVG.pdf --export-latex
 
 % Title.
 % ------
@@ -182,7 +181,7 @@ In this work, the string is assumed clamped at both ends, so that
 
 A model of a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} may be incorporated into \eqref{eq:stiffString} as  
 \begin{align}
-    \label{eq:bowedString} &u_{tt} = ... - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
+    \label{eq:bowedString} &u_{tt} = \hdots - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
     &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}
 \end{align}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
@@ -194,7 +193,7 @@ $\delta(x-x_\text{B})$ is a spatial Dirac delta function selecting the bowing lo
 
 Another, and more simple way to excite the string is by extending Equation \eqref{eq:stiffString} to
 \begin{equation}
-    \label{eq:excitedString} u_{tt} = ... + F_\text{e}E_\text{e},
+    \label{eq:excitedString} u_{tt} = \hdots + F_\text{e}E_\text{e},
 \end{equation}
 using an externally-supplied excitation function $F_\text{e} = F_\text{e}(t)$ and distribution function $E_\text{e} = E_\text{e}(x)$. In this case, the excitation region is allowed to be of finite width.
 \subsection{Plate}\label{subsec:platePDE}
@@ -220,15 +219,17 @@ As in the case of the stiff string, we chose to use clamped boundary conditions:
 
 %need to explain subscript y?
 \subsection{Connections}\label{sec:connections}
-Adding connections between different physical models, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}
+Adding connections between different physical models, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}. Assuming that element $\alpha$ is a stiff string and $\beta$ is a plate, the following terms are added:
 %% this paragraph is too wide for some reason
-\begin{equation}
-\begin{aligned}
+\begin{subequations}
+\begin{align}
+    \label{eq:stringConnection}
     u_{tt} &= ... + \delta(x-x_{\text{c},\alpha})F_\alpha, \\
-    u_{tt} &= ... + \delta(x-x_{\text{c},\beta})F_\beta,
-\end{aligned}
-\end{equation}
-where $F_\alpha$ and $F_\beta$ are the forces of the connection at connection points $x_{\text{c},\alpha}$ and $x_{\text{c},\beta}$ respectively. For simplicity, we chose to only work with a connection point, but it can be extended to a connection area \cite{Bilbao2009:ModularPercussion}. We use the implementation as presented in \cite{Bilbao2009:ModularPercussion} where the connection between two elements is a non-linear spring. The forces it imposes on the elements it connects - denoted by $\alpha$ and $\beta$ - are defined as
+    \label{eq:plateConnection}
+    u_{tt} &= ... + \delta(x-x_{\text{c},\beta}, y-y_{\text{c},\beta})F_\beta,
+\end{align}
+\end{subequations}
+where $F_\alpha$ and $F_\beta$ are the forces of the connection at connection points $x_{\text{c},\alpha}$ and $(x-x_{\text{c},\beta}, y-y_{\text{c},\beta})$ respectively. For simplicity, we chose to only work with a connection point, but this can be extended to a connection area \cite{Bilbao2009:ModularPercussion}. We use the implementation as presented in \cite{Bilbao2009:ModularPercussion} where the connection between two elements is a non-linear spring. The forces it imposes on the elements it connects - denoted by $\alpha$ and $\beta$ - are defined as
 \begin{subequations}\label{eq:connectionsPDE}
 \begin{align}
     F_\alpha &= -\omega_0^2\eta - \omega_1^4\eta^3 - 2\sigma_\times\dot\eta,\\
@@ -243,26 +244,38 @@ To be able to digitally implement the continuous equations shown in the previous
 
 In the case of the plate, $u(x,y,t)$ is discretised to $u_{l,m}^n$ using $x = lh$ where $l \in [0,\hdots, N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,\hdots,N_y]$ with $N_y$ being the total vertical number of points.
 
-As our implementation uses already existing models, we will not go much into depth in this section, but will rather visualise the finite-difference schemes used. 
+As our implementation uses already existing models, we will not go much into depth, but rather we will describe the FDSs in general and visualise them in this section.
 %Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}. 
 %We will also use the notation for the difference and averaging operators found here. 
 
 In a general sense, when discretising PDEs as presented in Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}, we will need to solve for $u^{n+1}$, i.e. state $u$ at the next time step. For a PDE of the form 
 % \begin{subequations}
 \begin{equation}
-u_{tt} = f \label{eq:PDEform}
+u_{tt} = \hdots \label{eq:PDEform}
 \end{equation}
-the FDS will be of the form
-\begin{equation}
-    u^{n+1} = 2u^n-u^{n-1} + k^2f^n,
+its FDS will be of the form
+\begin{equation}\label{eq:FDSform}
+    u^{n+1} = 2u^n-u^{n-1} + J\mathcal{F}^n,
+\end{equation}
+where
+\begin{equation}\label{eq:J}
+    J = \frac{k^2}{1+\sigma_0k}, 
 \end{equation}
 % \end{subequations}
-where $f^n$ is a discretised version of $f$. It can be useful to talk about the \textbf{complexity} %NOT THE RIGHT WORDING
-of $f^n$ in terms of a 'stencil'. A stencil describes the number of grid-points needed to calculate a single point at the next time step. 
+and $\mathcal{F}^n$ is a combination of the discretised PDE (excluding terms containing $u^{n+1}$), connection and excitation terms.  
 
 \subsection{Stiff String}
-In the case of a stiff string, $f^n$ will have a stencil of 5 grid points. In other words, two grid-points at either side of $l$ (including $l$ itself) are necessary to calculate $u^{n+1}$ at grid-point $l$. See Figure \ref{fig:stencil1D} for a visualisation of this.
-
+In the case of the stiff string, $\mathcal{F}^n$ in Equation \eqref{eq:FDSform} is a combination of the discretised PDE \eqref{eq:stiffString} $f_\alpha$, connection term \eqref{eq:stringConnection} and bowing \eqref{eq:bowedString}
+\begin{subequations}
+\begin{equation}
+\mathcal{F}^n = f_\alpha^n + \delta(N - l_{\text{c}})F_\alpha - \delta(N-l_\text{B})F_\text{B},
+\end{equation}
+or excitation \eqref{eq:excitedString} term
+\begin{equation}
+    \mathcal{F}^n = f_\alpha^n + \delta(N - l_{\text{c}})F_\alpha + F_\text{e}^n\mathbf{E}_\text{e},% \quad \quad \ \ \;\,
+\end{equation}
+\end{subequations}
+where $l_{\text{c}}$ and $l_{\text{B}}$ are the discretised connection and bowing point respectively and $\mathbf{E}_\text{e}$ is a vector of size $N$ containing the discretised values of the distribution function which will be presented in Equation \eqref{eq:discDist} in the next section. It can be useful to talk about the \textit{region of operation} of $f^n$ in terms of a 'stencil'. A stencil describes the number of grid-points needed to calculate a single point at the next time step. In the case of a stiff string, $f^n$ will have a stencil of 5 grid points. In other words, two grid-points at either side of $l$ (including $l$ itself) are necessary to calculate $u^{n+1}$ at grid-point $l$. See Figure \ref{fig:stencil1D} for a visualisation of this.
 \begin{figure}[h]\includegraphics[width=1.0\columnwidth]{stencil1Dedit.eps}
 \caption{Stencil for a stiff string finite-difference scheme with grid-spacing $h$ and time-step $k$. The point $l$ at the next time-step (yellow) is calculated using 5 points at the current time-step (blue) and 3 at the previous time-step (dark blue). \label{fig:stencil1D}}
 \end{figure}
@@ -274,13 +287,18 @@ For stability reasons, the grid-spacing needs to abide the following condition \
 \end{equation}
 The closer $h$ is to this limit, the higher the quality of the implementation. The number of points $N$ can then be calculated using 
 \begin{equation}
-    N = \text{floor}\Bigg(\frac{1}{h}\Bigg).
+    N = \text{floor}\bigg(\frac{1}{h}\bigg).
 \end{equation}
 
 %\textit{Note: In this paper we have used the simple case of a single point for bowing and connections. These can be extended to a bowing area or area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:NumericalSoundSynthesis} for bowing area and \cite{Bilbao2009:ModularPercussion} for area of connection}.
 \subsection{Plate}
-For the plate, the stencil will consist of 13 grid-points as can be seen in Figure \ref{fig:stencil2D}.
+In the case of the plate, $\mathcal{F}$ in Equation \eqref{eq:FDSform} is a combination of the discretised PDE \eqref{eq:platePDE} $f_\beta$ and connection term \eqref{eq:plateConnection}
+\begin{equation}
+    \mathcal{F}^n = f_\beta^n + \delta(N_x - l_{\text{c}},N_y - m_{\text{c}})F_\beta.
+\end{equation}
+%OR SHOULD I ADD ",\alpha" OR ",\beta" TO l_c
 
+For the plate, the stencil will consist of 13 grid-points as can be seen in Figure \ref{fig:stencil2D}.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1.0\columnwidth]{stencil2Dedit.eps}
@@ -288,7 +306,7 @@ For the plate, the stencil will consist of 13 grid-points as can be seen in Figu
 \end{figure}
 
 The grid spacing is calculated using \cite{Bilbao2009:ModularPercussion}
-\begin{equation}
+\begin{equation}\label{eq:stabilityPlate}
 h = 2\sqrt{k\bigg(\sigma_1^2 + \sqrt{\kappa^2+ \sigma_1^2}\bigg)}
 \end{equation}
 from which we can derive $N_x$ and $N_y$ using
@@ -296,47 +314,30 @@ from which we can derive $N_x$ and $N_y$ using
     N_x &= \text{floor}\Bigg(\frac{\sqrt{a}}{h}\Bigg) \quad \text{and}\\
     N_y &= \text{floor}\Bigg(\frac{1}{h\sqrt{a}}\Bigg).
 \end{align}
-where $a = N_x / N_y$ is a user-defined length-width ratio.
-
 
 \subsection{Connections}
-The equations in \eqref{eq:connectionsPDE} are discretised as shown in \cite{Bilbao2009:ModularPercussion}. However, as these equations not of the form described in Equation \eqref{eq:PDEform} their FDS counterpart will be different.
-
-
-The equations in \eqref{eq:connectionsPDE} can be approximated using \cite{Bilbao2009:ModularPercussion}
-\begin{subequations}
-\begin{align}\label{eq:connectionsFDS}
-    F_\alpha &= -\omega_0^2\mu_{t\cdot}\eta - \omega_1^4\eta^2\mu_{t\cdot}\eta - 2\sigma_\times\delta_{t\cdot}\eta,\\
-    F_\beta &= -\mathcal{M}_{\alpha/\beta}F_\alpha.
-\end{align}
-\end{subequations}
-The relative displacement $\eta$ between $\alpha$ and $\beta$ can be calculated as
+The equations in \eqref{eq:connectionsPDE} are discretised as shown in \cite{Bilbao2009:ModularPercussion}. However, as these equations are not of the form described in Equation \eqref{eq:PDEform} their FDS counterpart will be different. Moreover, instead of solving for $u^{n+1}$, we need to solve for $\eta^{n+1}$ which will be in the form of
+\begin{equation}\label{eq:etaNext}
+    \eta^{n+1} = p^nF_\alpha + r^n\eta^{n-1},
+\end{equation}
+where $p^n = p(\eta^n)$ and $r^n = r(\eta^n)$ are functions of the relative displacement $\eta$ if $\omega_1 \neq 0$ and constants if $\omega_1 = 0$. Again, assuming that element $\alpha$ is a stiff string and $\beta$ is a plate, $\eta$ can be calculated using
 \begin{equation}\label{eq:relativeDisp}
-    \eta^n = \sigma_\alpha u_{\alpha, x_{\text{c},\alpha}}^n - \sigma_\beta u_{\beta,x_{\text{c},\beta}}^n,
+    \eta^n = h_\alpha u_{\alpha, l_{\text{c},\alpha}}^n - h_\beta^2 u_{\beta,(l_{\text{c},\beta}, m_{\text{c},\beta})}^n.
 \end{equation}
-where $\sigma_\alpha$ and $\sigma_\beta$ are equal to $h$ in the case of the string and $h^2$ for the plate. In other words, this is the difference between the state of element $\alpha$ at connection point $x_{\text{c},\alpha}$ and the state of element $\beta$ at connection point $x_{\text{c},\beta}$ scaled by their respective (squared) grid-spacings $\sigma_\alpha$ and $\sigma_\beta$. It is important to note that this can only be done Solving \eqref{eq:connectionsFDS} for $\eta^{n+1}$ yields
-\begin{equation} \label{eq:etaNext}
-    \eta^{n+1} = p^nF_\alpha+r^n\eta^{n-1},
-\end{equation}
-where
-\begin{subequations}
-\begin{align}
-    p^n &= \frac{-2}{2\sigma_\times / k + \omega_0^2 + \omega_1^4(\eta^n)^2},\\
-    r^n &= \frac{2\sigma_\times / k - \omega_0^2 -\omega_1^4(\eta^n)^2}{2\sigma_\times / k + \omega_0^2 + \omega_1^4(\eta^n)^2}.
-\end{align}
-\end{subequations}
-The next step is to obtain $F_\alpha$ which can be used to easily calculate $F_\beta$. We first obtain values for $u$ by solving \eqref{eq:bowedStringFDS} or \eqref{eq:plateFDS} for $u^{n+1}$ for a string or plate respectively. As, at this point, no connection forces have been added yet, this state is referred to as an intermediate state or $u^\text{I}$. This intermediate state can be used to obtain $\eta^{n+1}$ using \eqref{eq:relativeDisp}:
+In other words, this is the difference between the state of element $\alpha$ at connection point $l_{\text{c},\alpha} = x_{\text{c},\alpha}N$ and the state of element $\beta$ at connection point $(l_{\text{c},\beta}, m_{\text{c},\beta}) = (x_{\text{c},\beta}N_x, y_{\text{c},\beta}N_y)$ scaled by their respective (squared) grid-spacings $h_\alpha$ and $h_\beta$. %It is important to note that this can only be done when the connection is a point rather than an area, in which case an inner product needs to be taken over the  
+The next step is to obtain $F_\alpha$ which can be used to easily calculate $F_\beta$. We first obtain values for $u$ by solving \eqref{eq:bowedString}, \eqref{eq:excitedString} or \eqref{eq:platePDE} for $u^{n+1}$ for a string or plate respectively. As, at this point, no connection forces have been added yet, this state is referred to as an intermediate state or $u^\text{I}$. This intermediate state can be used to obtain $\eta^{n+1}$ using \eqref{eq:relativeDisp}:
 \begin{equation}
-    \eta^{n+1} = \sigma_\alpha u_{\alpha,x_{\text{c},\alpha}}^\text{I} - \sigma_\beta u_{\beta,x_{\text{c},\beta}}^\text{I}
+    \eta^{n+1} = h_\alpha u_{\alpha,l_{\text{c},\alpha}}^\text{I} - h^2_\beta u_{\beta,(l_{\text{c},\beta}, m_{\text{c},\beta})}^\text{I}
 \end{equation}
 which can be set equal to \eqref{eq:etaNext}. Solving for connection force $F_\alpha$ yields:
 \begin{equation}
-    F_\alpha = \frac{r^n\eta^{n-1}-(\sigma_\alpha u_{\alpha, x_{\text{c},\alpha}}^\text{I} - \sigma_\beta u_{\beta,x_{\text{c},\beta}}^\text{I})}{\sigma_\alpha J_\alpha u_{\alpha, x_{\text{c},\alpha}}^\text{I} - \sigma_\beta J_\beta u_{\beta,x_{\text{c},\beta}}^\text{I}-p^n},
+    F_\alpha = \frac{r^n\eta^{n-1}-(h_\alpha u_{\alpha, l_{\text{c},\alpha}}^\text{I} - h^2_\beta u_{\beta,(l_{\text{c},\beta},m_{\text{c},\beta})}^\text{I})}{h_\alpha J_\alpha u_{\alpha, l_{\text{c},\alpha}}^\text{I} - h^2_\beta J_\beta u_{\beta,(l_{\text{c},\beta},m_{\text{c},\beta})}^\text{I}-p^n}.
 \end{equation}
-where scaling factor $J$ for element E is defined as
-\begin{equation}
-    J_\text{E} = \frac{k^2}{1+\sigma_{0,\text{E}}k}.
-\end{equation}
+% where $J$ for element E is defined as
+% \begin{equation}
+%     J_\text{E} = \frac{k^2}{1+\sigma_{0,\text{E}}k}.
+% \end{equation}
+
 % This scaling factor is also used when adding the connection forces to the state $u$ where FDSs \eqref{eq:bowedStringFDS} and \eqref{eq:plateFDS} are extended to:
 % \begin{equation}
 % \begin{aligned}
@@ -347,7 +348,7 @@ where scaling factor $J$ for element E is defined as
 \section{Implementation}\label{sec:implementation}
 %kind of a methods section 
 % implementation of FDSs and C++ optimization
-In this section, we elaborate more on parameter choices in the previous two sections and present the system architecture of the real-time application. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions - be changed. We used C++ along with the JUCE framework \cite{JUCE2019} for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
+In this section, we elaborate more on parameter choices in the previous two sections and present the system architecture of the real-time application. The values for most parameters have been arbitrarily chosen and can - as long as they satisfy the conditions in Equations \eqref{eq:stabilityString} and \eqref{eq:stabilityPlate} - be changed. We used C++ along with the JUCE framework \cite{JUCE2019} for implementing the physical models and connections in real-time. The main hardware used for testing was a MacBook Pro with a 2.2 GHz Intel Core i7 processor.
 The most important thing is to optimise the FDSs as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time-step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 \subsection{String}
 %In order to implement the FDSs presented in Section \ref{sec:FDS} they need to be solved for $u^{n+1}$. Equation \eqref{eq:stringImplementation} found in Appendix A shows a solved finite-difference scheme of Equation \eqref{eq:stiffStringFDS}.
@@ -355,46 +356,46 @@ The most important thing is to optimise the FDSs as these will be ran at samplin
 
 As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source].
 
-If simply excited, or plucked in the case of a string, we set the distribution function is to a raised cosine with width $w_\text{e}$ [m]
-
-\begin{equation} \label{eq:distribution}
-    E(x) = 
-    \begin{cases}
-        \hfil \frac{1 - \cos(\frac{2 \pi (x - x_\text{e})}{w_\text{e}})}{2}, & x_\text{e} -  \frac{w_\text{e}}{2} \leq x \leq x_\text{e} + \frac{w_\text{e}}{2} \\
-        \hfil 0, &\text{otherwise}
-    \end{cases}
-\end{equation}
-scaled by the excitation function over time with excitation duration $d_\text{e}$ [s]
-%numerical sound synthesis Eq. (12.28) or
-%On the limits of Eq. (4)
-\begin{equation}\label{eq:excitation}
-    F(t) = 
-    \begin{cases}
-        f_\text{e}\frac{1 - \cos(\frac{\pi (t - t_\text{e})}{d_\text{e}})}{2}, & t_\text{e} \leq t \leq t_\text{e}+d_\text{e}\\
-        \hfil 0, &\text{otherwise}
-    \end{cases}
-\end{equation}
-with excitation force $f_\text{e}$ [N]. 
-A visualisation of this can be found in Figure \ref{fig:exctiation}.
-
-
-%% Discretised version
-% The distribution function is set to a raised cosine with width $w_\text{e}$
-
-% \begin{equation}
-%     E(l) = 
+If simply excited we set the distribution function is to a raised cosine with width $w_\text{e}$ (in grid-points)
+%% Continuous version
+% \begin{equation} \label{eq:distribution}
+%     E(x) = 
 %     \begin{cases}
-%         \hfil \frac{1 - \cos(\frac{2 \pi (l - l_\text{e})}{w_\text{e}})}{2}, & l_\text{e} -  \frac{w_\text{e}}{2} < l < l_\text{e} + \frac{l_\text{e}}{2} \\
+%         \hfil \frac{1 - \cos(\frac{2 \pi (x - x_\text{e})}{w_\text{e}})}{2}, & x_\text{e} -  \frac{w_\text{e}}{2} \leq x \leq x_\text{e} + \frac{w_\text{e}}{2} \\
 %         \hfil 0, &\text{otherwise}
 %     \end{cases}
 % \end{equation}
-% and scaled by the excitation function over time with excitation duration $d_\text{e}$ [s$^{-1}$]
-% \begin{equation}
-%     F(n) = 
+% scaled by the excitation function over time with excitation duration $d_\text{e}$ [s]
+% %numerical sound synthesis Eq. (12.28) or
+% %On the limits of Eq. (4)
+% \begin{equation}\label{eq:excitation}
+%     F(t) = 
 %     \begin{cases}
-%         \frac{1 - \cos(\frac{\pi (n - n_\text{e})}{d_\text{e}})}{2}, & n \geq n_\text{e} \wedge n < n_\text{e}+d_\text{e}\\
+%         f_\text{e}\frac{1 - \cos(\frac{\pi (t - t_\text{e})}{d_\text{e}})}{2}, & t_\text{e} \leq t \leq t_\text{e}+d_\text{e}\\
+%         \hfil 0, &\text{otherwise}
 %     \end{cases}
 % \end{equation}
+% with excitation force $f_\text{e}$ [N]. 
+% The distribution function is set to a raised cosine with width $w_\text{e}$
+
+%% Discretised version
+\begin{equation}\label{eq:discDist}
+    E(l) = 
+    \begin{cases}
+        \hfil \frac{1 - \cos(\frac{2 \pi (l - l_\text{e})}{w_\text{e}})}{2}, & l_\text{e} -  \frac{w_\text{e}}{2} < l < l_\text{e} + \frac{l_\text{e}}{2} \\
+        \hfil 0, &\text{otherwise}
+    \end{cases}
+\end{equation}
+scaled by the excitation function over time with excitation duration $d_\text{e}$ (in s$^{-1}$)
+\begin{equation}
+    F(n) = 
+    \begin{cases}
+        \frac{1 - \cos(\frac{\pi (n - n_\text{e})}{d_\text{e}})}{2}, & n \geq n_\text{e} \wedge n < n_\text{e}+d_\text{e}\\
+    \end{cases}
+\end{equation}
+
+
+A visualisation of this can be found in Figure \ref{fig:exctiation}.
 
 \begin{figure}[t]
 \centering
