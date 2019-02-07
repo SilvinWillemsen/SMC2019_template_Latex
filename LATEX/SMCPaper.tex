@@ -105,17 +105,21 @@
 % Single address
 % To use with only one author or several with the same address
 % ---------------
-% \twoauthors
-%   {Silvin Willemsen, Nikolaj Andersson and Stefania Serafin} { \\ Multisensory Experience Lab, CREATE, Aalborg University Copenhagen \\ %
-%     {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
+\twoauthors
+  {\firstauthor, \secondauthor, \thirdauthor} { Multisensory Experience Lab, CREATE,\\ Aalborg University Copenhagen\\
+  Copenhagen, Denmark\\%
+    {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
+    {\fourthauthor} { Acoustics and Fluid Dynamics Group/Music \\ University of Edinburgh\\
+    Edinburgh, UK\\
+     {\tt \href{mailto:s.bilbao@ed.ac.uk}{s.bilbao@ed.ac.uk}}}
 
 % Two addresses
 % --------------
-\oneauthor
-  {\firstauthor, \secondauthor and \thirdauthor} {Multisensory Experience Lab,\\
-   Aalborg University Copenhagen \\
-   Copenhagen, Denmark\\ %
-    {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
+% \oneauthor
+%   {\firstauthor, \secondauthor and \thirdauthor} {Multisensory Experience Lab,\\
+%   Aalborg University Copenhagen \\
+%   Copenhagen, Denmark\\ %
+%     {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
 
 % Three addresses
 % --------------
@@ -125,8 +129,8 @@
 %      {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
 %   {\thirdauthor}{
 %      {}}
-    % {\fourthauthor} { Affiliation4 \\ %
-    %  {\tt \href{mailto:author3@smcnetwork.org}{author3@smcnetwork.org}}}
+%     {\fourthauthor} { Affiliation4 \\ %
+%      {\tt \href{mailto:author3@smcnetwork.org}{author3@smcnetwork.org}}}
 
 
 % ***************************************** the document starts here ***************
@@ -137,7 +141,7 @@
 \capstarttrue
 %
 \begin{abstract}
-In this paper we introduce several physical models of bowed string instruments which use accurate numerical simulations using partial differential equations but are also efficient enough to run in real-time. We describe the mathematical formulation of these models, the real-time implementation in JUCE, the control using the Sensel Morph interface as well as results from qualitative evaluations from experts.
+In this paper we introduce several physical models of bowed and plucked string instruments which use accurate numerical simulations using partial differential equations but are also efficient enough to run in real-time. We describe the mathematical formulation of these models, the real-time implementation in JUCE, the control using the Sensel Morph interface as well as results from qualitative evaluations from experts.
 \end{abstract}
 %
 
@@ -200,7 +204,7 @@ In terms of dimensionless spatial coordinates $x$ and $y$ scaled by $\sqrt{L_{x}
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t},
 \end{equation}
-Here, $u(x,y,t)$ is the transverse displacement of the plate as a function of dimensionless coordinates $x\in[0, \sqrt{\alpha}]$, $y\in[0,1/\sqrt{\alpha}]$, where $\alpha = L_{x}/L_{y}$ is the plate aspect ratio, as well as time $t$. The subscript $t$ represents partial differentiation wit respect to $t$, and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
+Here, $u(x,y,t)$ is the transverse displacement of the plate as a function of dimensionless coordinates $x\in[0, \sqrt{a}]$, $y\in[0,1/\sqrt{a}]$, where $a = L_{x}/L_{y}$ is the plate aspect ratio, as well as time $t$. The subscript $t$ represents partial differentiation wit respect to $t$, and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
 \begin{equation}
     \Delta  = \frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}
 \end{equation}
@@ -235,28 +239,43 @@ where $\omega_0$ and $\omega_1$ are the linear and non-linear (angular) frequenc
 . Lastly, he dot above $\eta$ denotes a derivative with respect to time.
 
 \section{Finite-Difference Schemes}\label{sec:FDS}
-To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. State variable $u(x,t)$ can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, with $l \in [0,\hdots, N]$ where $N$ is the total number of points and grid-spacing $h$. We can now write the discretised state variable as $u_l^n$ which is $u$ at the $n$th time step and the $l$th point on the string.
+To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. In the case of the stiff string, state variable $u(x,t)$ can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time-step with sample-rate $f_\text{s}$ and locations $x = lh$, with $l \in [0,\hdots, N]$ where $N$ is the total number of points and grid-spacing $h$. We can now write the discretised state variable as $u_l^n$ which is $u$ at the $n$th time step and the $l$th point on the string.
 
-In the case of the plate, $u(x,y,t)$ is discretised using $x = lh$ where $l \in [0,\hdots, N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,\hdots,N_y]$ with $N_y$ being the total vertical number of points which yields state variable $u_{l,m}^n$.
+In the case of the plate, $u(x,y,t)$ is discretised to $u_{l,m}^n$ using $x = lh$ where $l \in [0,\hdots, N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,\hdots,N_y]$ with $N_y$ being the total vertical number of points.
 
-As our implementation uses already existing models, we will not go much into depth in this section, but will rather show visualisations of the finite-difference schemes used. 
+As our implementation uses already existing models, we will not go much into depth in this section, but will rather visualise the finite-difference schemes used. 
 %Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}. 
 %We will also use the notation for the difference and averaging operators found here. 
 
-In a general sense, when discretising PDEs as presented in Equations \eqref{subsec:stiffStringPDE} and \eqref{eq:platePDE}, we will need to solve for $u^{n+1}$, i.e. state $u$ at the next time step. For a PDE of the form $u_{tt} = f$ the FDS will be of the form
+In a general sense, when discretising PDEs as presented in Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}, we will need to solve for $u^{n+1}$, i.e. state $u$ at the next time step. For a PDE of the form 
+% \begin{subequations}
+\begin{equation}
+u_{tt} = f \label{eq:PDEform}
+\end{equation}
+the FDS will be of the form
 \begin{equation}
     u^{n+1} = 2u^n-u^{n-1} + k^2f^n,
 \end{equation}
-where $f^n$ depends on the model at hand. It can be useful to talk about the \textbf{complexity} %NOT THE RIGHT WORDING
+% \end{subequations}
+where $f^n$ is a discretised version of $f$. It can be useful to talk about the \textbf{complexity} %NOT THE RIGHT WORDING
 of $f^n$ in terms of a 'stencil'. A stencil describes the number of grid-points needed to calculate a single point at the next time step. 
 
 \subsection{Stiff String}
-In the case of a stiff string, $f^n$ will have a stencil of 5 grid points. In other words, two grid-points at either side of $l$ (including $l$ itself) are necessary to calculate $u^{n+1}$ at grid-point $l$. See Figure \ref{fig:stencil1D} for a visualisation of this for the stiff string.
+In the case of a stiff string, $f^n$ will have a stencil of 5 grid points. In other words, two grid-points at either side of $l$ (including $l$ itself) are necessary to calculate $u^{n+1}$ at grid-point $l$. See Figure \ref{fig:stencil1D} for a visualisation of this.
 
-\begin{figure}[h]\includegraphics[width=1.0\columnwidth]{stencil1D.eps}
-\caption{Stencil for a stiff string finite-difference scheme with grid-spacing $h$ and time-step $k$. The point $l$ at the next time-step (yellow) is calculated using five points at the current time-step (blue) and one at the previous time-step (dark blue). \label{fig:stencil1D}}
+\begin{figure}[h]\includegraphics[width=1.0\columnwidth]{stencil1Dedit.eps}
+\caption{Stencil for a stiff string finite-difference scheme with grid-spacing $h$ and time-step $k$. The point $l$ at the next time-step (yellow) is calculated using 5 points at the current time-step (blue) and 3 at the previous time-step (dark blue). \label{fig:stencil1D}}
 \end{figure}
 
+For stability reasons, the grid-spacing needs to abide the following condition \cite{Bilbao2009:NumericalSoundSynthesis}
+%section 7.2.3 numerical sound synthesis
+\begin{equation}\label{eq:stabilityString}
+    h \geq \sqrt{\frac{\gamma^2 k^2 + 4 \sigma_1 k + \sqrt {(\gamma^2 k^2 + 4 \sigma_1 k)^2 + 16 \kappa^2 k^2}}{2}}.
+\end{equation}
+The closer $h$ is to this limit, the higher the quality of the implementation. The number of points $N$ can then be calculated using 
+\begin{equation}
+    N = \text{floor}\Bigg(\frac{1}{h}\Bigg).
+\end{equation}
 
 %\textit{Note: In this paper we have used the simple case of a single point for bowing and connections. These can be extended to a bowing area or area of connection. For more information on this, we would like to refer the reader to \cite{Bilbao2009:NumericalSoundSynthesis} for bowing area and \cite{Bilbao2009:ModularPercussion} for area of connection}.
 \subsection{Plate}
@@ -264,33 +283,26 @@ For the plate, the stencil will consist of 13 grid-points as can be seen in Figu
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1.0\columnwidth]{stencil2D.eps}
-\caption{Stencil for a plate finite-difference scheme. The point $(l,m)$ at the next time-step (yellow) is calculated using 13 points at the current time-step (blue) and five at the previous time-step (dark blue). \label{fig:stencil2D}}
+\includegraphics[width=1.0\columnwidth]{stencil2Dedit.eps}
+\caption{Stencil for a plate finite-difference scheme. The point $(l,m)$ at the next time-step (yellow) is calculated using 13 points at the current time-step (blue) and 5 at the previous time-step (dark blue). \label{fig:stencil2D}}
 \end{figure}
 
-For stability reasons, the grid-spacing needs to abide the following condition
-%section 7.2.3 numerical sound synthesis
-\begin{equation}\label{eq:stabilityString}
-    h \geq \sqrt{\frac{\gamma^2 k^2 + 4 \sigma_1 k + \sqrt {(\gamma^2 k^2 + 4 \sigma_1 k)^2 + 16 \kappa^2 k^2}}{2}}.
-\end{equation}
-The closer $h$ is to this limit, the higher the quality of the implementation. The number of points $N$ can then be calculated using 
-\begin{equation}
-    N = h^{-1}.
-\end{equation}
-
-In the case of the plate, calculated the grid spacing using \cite{Bilbao2009:ModularPercussion}
+The grid spacing is calculated using \cite{Bilbao2009:ModularPercussion}
 \begin{equation}
 h = 2\sqrt{k\bigg(\sigma_1^2 + \sqrt{\kappa^2+ \sigma_1^2}\bigg)}
 \end{equation}
-after which we calculate $N_x$ and $N_y$ using
+from which we can derive $N_x$ and $N_y$ using
 \begin{align}
-    N_x &= \text{floor}\Bigg(\frac{\sqrt{a}}{h}\Bigg)\\
-    N_y &= \text{floor}\Bigg(\frac{1}{h\sqrt{a}}\Bigg)
+    N_x &= \text{floor}\Bigg(\frac{\sqrt{a}}{h}\Bigg) \quad \text{and}\\
+    N_y &= \text{floor}\Bigg(\frac{1}{h\sqrt{a}}\Bigg).
 \end{align}
 where $a = N_x / N_y$ is a user-defined length-width ratio.
 
 
 \subsection{Connections}
+The equations in \eqref{eq:connectionsPDE} are discretised as shown in \cite{Bilbao2009:ModularPercussion}. However, as these equations not of the form described in Equation \eqref{eq:PDEform} their FDS counterpart will be different.
+
+
 The equations in \eqref{eq:connectionsPDE} can be approximated using \cite{Bilbao2009:ModularPercussion}
 \begin{subequations}
 \begin{align}\label{eq:connectionsFDS}
@@ -302,7 +314,7 @@ The relative displacement $\eta$ between $\alpha$ and $\beta$ can be calculated 
 \begin{equation}\label{eq:relativeDisp}
     \eta^n = \sigma_\alpha u_{\alpha, x_{\text{c},\alpha}}^n - \sigma_\beta u_{\beta,x_{\text{c},\beta}}^n,
 \end{equation}
-where $\sigma_\alpha$ and $\sigma_\beta$ are equal to $h$ in the case of the string and $h^2$ for the plate. In other words, this is the difference between the state of element $\alpha$ at connection point $x_{\text{c},\alpha}$ and the state of element $\beta$ at connection point $x_{\text{c},\beta}$ scaled by their respective (squared) grid-spacings $\sigma_\alpha$ and $\sigma_\beta$. Solving \eqref{eq:connectionsFDS} for $\eta^{n+1}$ yields
+where $\sigma_\alpha$ and $\sigma_\beta$ are equal to $h$ in the case of the string and $h^2$ for the plate. In other words, this is the difference between the state of element $\alpha$ at connection point $x_{\text{c},\alpha}$ and the state of element $\beta$ at connection point $x_{\text{c},\beta}$ scaled by their respective (squared) grid-spacings $\sigma_\alpha$ and $\sigma_\beta$. It is important to note that this can only be done Solving \eqref{eq:connectionsFDS} for $\eta^{n+1}$ yields
 \begin{equation} \label{eq:etaNext}
     \eta^{n+1} = p^nF_\alpha+r^n\eta^{n-1},
 \end{equation}
