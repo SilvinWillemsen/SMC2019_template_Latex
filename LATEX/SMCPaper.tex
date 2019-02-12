@@ -12,6 +12,7 @@
 \usepackage{physics}
 \usepackage{tikz}
 \usepackage{tikz-qtree}
+\usepackage{textcomp}
 \usetikzlibrary{trees}% cfr added this as the code fails to compile otherwise
 
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -181,7 +182,7 @@ In this work, the string is assumed clamped at both ends, so that
 A model of a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} may be incorporated into \eqref{eq:stiffString} as  
 \begin{align}
     \label{eq:bowedString} &u_{tt} = \hdots - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
-    &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}
+    &v_\text{rel} = u_t(x_\text{B}) - v_\text{B}\label{eq:relVelocity} 
 \end{align}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
 where $F_\text{B} = f_\text{B}/ M_\text{s}$ is the excitation function (in m/s$^2$) with bowing force $f_\text{B}$ (in N) and total string mass $M_\text{s} = \rho\pi r^2 L$ (in kg). The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a dimensionless friction characteristic, chosen here as \cite{Bilbao2009:NumericalSoundSynthesis}
@@ -196,7 +197,7 @@ Another, and more simple way to excite the string is by extending Equation \eqre
 \end{equation}
 using an externally-supplied excitation function $F_\text{e} = F_\text{e}(t)$ and distribution function $E_\text{e} = E_\text{e}(x)$. In this case, the excitation region is allowed to be of finite width.
 \subsection{Plate}\label{subsec:platePDE}
-Under linear conditions, a rectangular plate of dimensions $L_{x}$ and $L_{y}$ may be parameterized in terms of density $\rho$ (in kg$\cdot$ m$^{-3}$), thickness $H$ (in m), Young's modulus $E$ (in Pa) and a dimensionless Poisson's ratio $\nu$, as well as two loss parameters $\sigma_{0}$ and $\sigma_{1}$, to be discussed shortly.  
+Under linear conditions, a rectangular plate of dimensions $L_{x}$ and $L_{y}$ may be parameterized in terms of density $\rho$ (in kg$\cdot$ m$^{-3}$), thickness $H$ (in m), Young's modulus $E$ (in Pa) and a dimensionless Poisson's ratio $\nu$, as well as two loss parameters $\sigma_{0}$ and $\sigma_{1}$.%, to be discussed shortly.  
 
 In terms of dimensionless spatial coordinates $x$ and $y$ scaled by $\sqrt{L_{x}L_{y}}$, the defining for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}\label{eq:platePDE}
@@ -302,11 +303,11 @@ For the plate, the stencil will consist of 13 grid-points as can be seen in Figu
 \includegraphics[width=1.0\columnwidth]{stencil2Dedit.eps}
 \caption{Stencil for a plate finite-difference scheme. The point $(l,m)$ at the next time-step (yellow) is calculated using 13 points at the current time-step (blue) and 5 at the previous time-step (dark blue). \label{fig:stencil2D}}
 \end{figure}
-The grid spacing is calculated using \cite{Bilbao2009:ModularPercussion}
+The grid spacing needs to abide the following condition \cite{Bilbao2009:ModularPercussion}
 \begin{equation}\label{eq:stabilityPlate}
-h = 2\sqrt{k\bigg(\sigma_1^2 + \sqrt{\kappa^2+ \sigma_1^2}\bigg)}
+h \geq 2\sqrt{k\bigg(\sigma_1^2 + \sqrt{\kappa^2+ \sigma_1^2}\bigg)}
 \end{equation}
-from which $N_x$ and $N_y$ can be derived using
+(again, the closer to this limit the better) from which $N_x$ and $N_y$ can be derived using
 \begin{align}
     N_x &= \text{floor}\Bigg(\frac{\sqrt{a}}{h}\Bigg) \quad \text{and}\\
     N_y &= \text{floor}\Bigg(\frac{1}{h\sqrt{a}}\Bigg).
@@ -359,9 +360,9 @@ As many string properties stay constant, we chose to set the following parameter
     f_0 \approx \frac{\gamma}{2}.
 \end{equation}
 However, as the grid spacing $h$ is dependent on the wave speed $\gamma$ according to the condition found in \eqref{eq:stabilityString}, we must put a lower limit on the number of points $N$ if we plan to dynamically increase $\gamma$.
-
 %maybe it would be better to move the boundary to a different gridpoint and use interpolation for determination of the values around the boundary
-Another way to change frequency, is to add damping to the model at specific points that acts as a fretting finger. The advantage of this is that the condition \eqref{eq:stabilityString} will never be violated. On top of this, a tapping sound will be introduced when fretting the string, making it more realistic than changing the wave speed. If the string is fretted st single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
+
+Another way to change frequency, is to add damping to the model at specific points acting as a fretting finger. The advantage of this is that the condition \eqref{eq:stabilityString} will never be violated. On top of this, a tapping sound will be introduced when fretting the string, making it more realistic than changing the wave speed. If the string is fretted st single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
 \begin{equation}
 u_l^n = 
     \begin{cases}
@@ -375,9 +376,9 @@ where $\alpha_\text{f} = x_\text{f}/h - l_\text{f}$ describes the fractional loc
 In some cases, $N$ is fixed to a certain value for multiple strings. Even though we will lose some bandwidth (in the higher frequency range), this will allow the strings to be perfectly tuned with respect to each other.
 
 \subsubsection{Bowed String}
-Parameters for the bowed strings abide the following conditions: $\abs{v_\text{B}} \leq 1$ and $0 \leq F_\text{B} \leq 100$ and the excitation...
+Parameters for the bowed strings abide the following conditions: $\abs{v_\text{B}} \leq 1$ and $0 \leq F_\text{B} \leq 100$. It was chosen to discretise Equation \eqref{eq:relVelocity} implicitly %(STEFAN?)
+making it necessary to use an iterative root-finding method such as Newton-Raphson \cite{Wallis1685}.
 
-As can be seen from Equation \eqref{eq:descreteRelativeVel} the solution for $v_\text{rel}$ is implicit. It is thus necessary to use an iterative root-finding method such as Newton-Raphson [source].
 \subsubsection{Excited string}
 If simply excited we set the distribution function is to a raised cosine with width $w_\text{e}$ (in grid-points)
 %% Continuous version
@@ -426,20 +427,11 @@ A visualisation of this can be found in Figure \ref{fig:exctiation}.
 \caption{A visualisation of the excitation used in our implementation presented in Equation \eqref{eq:excitedString}. The location of excitation $x_\text{e}$ is shown in green, excitation width $w_\text{e}$ in red and excitation duration $d_\text{e}$ in blue (also see Equations \eqref{eq:discDist} and \eqref{eq:discExcitation}). \label{fig:exctiation}}
 \end{figure}
 
-
 \subsection{Plate}
-An interesting parameter to change is the plate stiffness $\kappa$ as this..
-
-Length-width ratio $a = 2$. 
+For the plate, the damping coefficients have been decided to be $\sigma_0 = 0.1$ and $\sigma_1 = 0.005$ and the aspect ratio is set to $a = 2$. The plate stiffness $\kappa$ has been left as a user parameter to be changed dynamically and will be between these bounds: $0.1 \leq \kappa \leq 20$. In Equation \eqref{eq:stabilityPlate}, the grid-spacing is calculated using the maximum value of $\kappa$ to prevent stability issues.
 
 \subsection{Connections}
-As mentioned before, the connections need to be calculated using 
-
-In order to calculate the connection forces $F_\alpha$ and $F_\beta$, the relative displacement of the connection points $E_\alpha$ and $E_\beta$ is needed. We must thus have knowledge of the states of connected elements $\alpha$ and $\beta$. 
-
-Spring constants:
-
-Mass ratio
+Increasing $\omega_1 \gtrsim 100,000$ while keeping $\omega_0$ relatively low ($0 < \omega_0 \lesssim 100$) will cause non-linear behaviour, such as pitch-glides and rattling sounds. These effects will be more dominant when the plate stiffness is higher.
 
 \begin{figure}[h]
 \centering
@@ -533,20 +525,33 @@ The sitar is originally an Indian string instrument that has both fretted string
 \subsection{Hammered Dulcimer}
 The hammered dulcimer is an instrument that can be seen as an 'open piano' where the musician has the hammers in their hand. Just like the piano, the strings are grouped in pairs or triplets
 that are played simultaneously. 
-In our implementation, we have 20 pairs of plucked strings. The excitation (which are plucked strings with a longer excitation length). %need to work on a hammer model 
-One of each pair is connected to the plate which slightly detunes it.
+In our implementation, we have 20 pairs of plucked strings. One of each pair is connected to the plate which slightly detunes it. See Figure \ref{fig:dulcimer} for a visual of the implementation. In order for the excitation to more resemble a strike of a hammer than a pluck, the contents of the cosine in \eqref{eq:discExcitation} will be multiplied by 2. Moreover, the excitation length can be changed to simulate short and long hammer-times.
 
 The Sensels are placed vertically and next to each other. The pair with the lowest frequency will then be located in the bottom right and the highest in the top left. As with the plucked strings of the bowed sitar, the LED array is used to visualise the way that the Sensel is subdivided, which is especially useful here as one Sensel controls 10 string-pairs. 
+
+The mass-ratio and non-linear spring connections are set relatively high ($\mathcal{M} = 100,\ \omega_1 = 100,000$) to amplify the non-linear interaction between the strings and the detuning of the strings connected to the plate. 
 % STEFANIA: screenshot of hammered dulcimer model
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\columnwidth]{dulcimer.png}
+\caption{The hammered dulcimer application. \label{fig:dulcimer}}
+\end{figure}
 
 
 \subsection{Hurdy Gurdy}
 The hurdy gurdy is an instrument that consists of bowed and sympathetic strings. The bowing happens through a rosined wheel attached to a crank and bows these strings as the crank is turned. It is possible to change the pitch of a few bowed strings - the melody strings - using buttons that press tangent pins on the strings at different positions. The other strings, referred to as drone strings, are mostly tuned lower than the melody strings and provide the base notes of the instrument. The musician can place the bowed strings on rests that keep the wheel from interacting with it. 
 
-Our implementation consists of 5 bowed strings subdivided into 2 drone strings tuned to A2, E3 and 3 melody strings tuned to A3, E4 and A4 and 13 sympathetic strings. 
+Our implementation consists of 5 bowed strings subdivided into 2 drone strings tuned to A2, E3 and 3 melody strings tuned to A3, E4 and A4 and 13 sympathetic strings. See Figure \ref{fig:hurdyGurdy} for a visual of the implementation.
 
-The Sensel is vertically subdivided into 5 rows that control whether the strings are placed on the wheel. The bowing velocity is mapped to the average pressure of the fingers. The pitch (in the model this is the wave-speed $c$) of the melody-strings are changed by a midi controller.
+The Sensel is vertically subdivided into 5 rows that control whether the strings are placed on the wheel. The bowing velocity is mapped to the average pressure of the fingers. The pitch (in the model this is the wave-speed $c$) of the melody-strings are changed by a midi controller. A demonstration of the application can be found in \cite{video}.
 % STEFANIA: screenshot of hurdy gurdy model
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\columnwidth]{HurdyGurdy.png}
+\caption{The hurdy gurdy application. \label{fig:hurdyGurdy}}
+\end{figure}
 
 \section{Results and Discussion}\label{sec:discussion}
 Informal evaluation
