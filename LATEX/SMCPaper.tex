@@ -13,7 +13,7 @@
 \usepackage{tikz}
 \usepackage{tikz-qtree}
 \usetikzlibrary{trees}% cfr added this as the code fails to compile otherwise
-% \newcommand{\bibliofont}{\normalsize}
+
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath} % popular packages from Am. Math. Soc. Please use the 
@@ -31,7 +31,7 @@
 
 
 %user defined variables
-\def\papertitle{Real-time Control of Advanced Physical Models using the Sensel Morph}
+\def\papertitle{Real-time Control of Large-scale Modular Physical Models using the Sensel Morph}
 \def\firstauthor{Silvin Willemsen}
 \def\secondauthor{Nikolaj Andersson }
 \def\thirdauthor{Stefania Serafin}
@@ -109,7 +109,7 @@
   {\firstauthor, \secondauthor, \thirdauthor} { Multisensory Experience Lab, CREATE,\\ Aalborg University Copenhagen\\
   Copenhagen, Denmark\\%
     {\tt \href{mailto:sil@create.aau.dk}{\{sil, nsa, sts\}@create.aau.dk}}}
-    {\fourthauthor} { Acoustics and Fluid Dynamics Group/Music \\ University of Edinburgh\\
+    {\fourthauthor} { Acoustics and Audio Group \\ University of Edinburgh\\
     Edinburgh, UK\\
      {\tt \href{mailto:s.bilbao@ed.ac.uk}{s.bilbao@ed.ac.uk}}}
 
@@ -141,23 +141,22 @@
 \capstarttrue
 %
 \begin{abstract}
-In this paper, we introduce several physical models of bowed and plucked string instruments based on accurate numerical simulations using finite-difference schemes (FDS), but are also efficient enough to run in real-time. We describe the mathematical formulation of these models together with a real-time implementation in JUCE, controlled using the Sensel Morph.
+%In this paper, we introduce several physical models of bowed and plucked string instruments based on accurate numerical simulations using finite-difference schemes (FDS), which are also efficient enough to run in real-time. We describe 
+In this paper, implementation, instrument design and control issues surrounding a modular physical modeling synthesis environment are described. The environment is constructed as a network of stiff strings and a resonant plate, accompanied by user-defined connections and excitation models. The bow, in particular, is a novel feature in this setting. The system as a whole is simulated using finite difference (FD) methods. The mathematical formulation of these models is presented, alongside several new instrument designs, together with a real-time implementation in JUCE using FD methods. Control is through the Sensel Morph.  
 \end{abstract}
 %
 
 \section{Introduction}\label{sec:introduction}
 
-Physical models for sound synthesis have been researched for several decades to mathematically simulate the sonic behaviour of musical instruments and everyday sounds. The behaviour of musical instruments can be mathematically defined by partial differential equations (PDEs) \cite{Fletcher1998}. %maybe another source would be better
-Several techniques ranging from numerical solutions of wave equations \cite{hiller1971synthesizing}, mass-spring models \cite{cadoz1993cordis}, modal synthesis \cite{morrison1993mosaic} and waveguide based models \cite{smith1992physical} have been developed over the years to digitally implement these PDEs.
-More recently, in \cite{bilbao2009numerical}, finite-difference schemes (FDSs) have been proposed as an alternative technique to more accurately simulate the behaviour of several musical instruments.
-Given the high computational cost of such simulations, most of them have not been implemented in real-time. 
-We are interested in bridging the gap between accurate numerical solutions and sonic interaction design \cite{franinovic2013sonic}, to be able to play with such simulations in real-time. 
-Specifically, we are interested in using the expressivity of the Sensel Morph \cite{sensel2018} to control our simulations; our ultimate goal is to create models that are both mathematically accurate and efficient. This goal is nowadays possible thanks to improvements in hardware and software technologies for sound synthesis, yet it has rarely been achieved.
-Something about bowing in real-time?
-Include Van Walstijn paper
+Physical models for sound synthesis have been researched for several decades to mathematically simulate the sonic behaviour of musical instruments and everyday sounds. Various techniques and methodologies have developed, ranging from mass-spring models \cite{cadoz79, Cadoz83, cadoz1993cordis} to modal synthesis \cite{morrison1993mosaic} and waveguide based models \cite{smith1992physical}. The latter two techniques may be viewed as numerical simulation techniques applied to the systems of partial differential equations which define the dynamics of a musical instrument, either real or imagined. 
+
+Mainstream time-domain simulation techniques, such as, e.g., finite difference (FD) methods, were first applied to the case of string vibration by Ruiz \cite{Ruiz} and Hiller and Ruiz \cite{Hiller, Hiller2}, and then later by other authors \cite{Bacon} including, most notably Chaigne \cite{Chaigne92} and Chaigne and Askenfelt \cite{Chaigne}. The use of finite difference schemes more generally in sound synthesis is described in \cite{Bilbao2009:NumericalSoundSynthesis}. Modularized physical modeling sound synthesis, whereby the user may construct a virtual instrument using basic canonical components dates back to the work of Cadoz and collaborators \cite{cadoz79, Cadoz83, cadoz1993cordis}; it has been also used as a design principle in the context of FD methods---see, e.g., \cite{Bilbao2009:ModularPercussion, Bilbaosmc14, Webb2015}, where the canonical elements are strings and plates, with a nonlinear connection mechanism.  Though computational cost of such methods is high, standard computing power is now approaching a level suitable for real-time performance for simpler systems.  
+
+We are interested in bridging the gap between large-scale modular physical modeling synthesis and sonic interaction design \cite{franinovic2013sonic}, to be able to play with such simulations in real-time. Specifically, we are interested in using the expressivity of the Sensel Morph \cite{sensel2018} to control our simulations, using both percussive and bowing excitations. Our ultimate goal is to create models that are both mathematically accurate and efficient. This goal is nowadays possible thanks to improvements in hardware and software technologies for sound synthesis, yet it has rarely been achieved.
+
 % Used Modular Percussion Synthesis Environment (Bilbao) + On the limits of real-time physical modelling synthesis with a modular environment (Webb + Bilbao) as a basis and extended it to be interactive and used melodic rather than percussive components/elements.
 
-This paper is structured as follows: Section \ref{sec:PDE} describes the physical models used in the implementation and Section \ref{sec:FDS} shows a general description of the FDSs used to digitally implement these models. Furthermore, Section \ref{sec:implementation} elaborate on the real-time implementation, Section \ref{sec:instruments} shows several different configurations of the physical models inspired by real musical instruments, Section \ref{sec:discussion} will present the results on CPU usage and evaluation and discuss this and finally Section \ref{sec:conclusion} will conclude upon the work shown in this paper.
+This paper is structured as follows: Section \ref{sec:PDE} describes the physical models used in the implementation and Section \ref{sec:FDS} shows a general description of the FD methods used to digitally implement these models. Furthermore, Section \ref{sec:implementation} elaborate on the real-time implementation, Section \ref{sec:instruments} shows several different configurations of the physical models inspired by real musical instruments, Section \ref{sec:discussion} will present the results on CPU usage and evaluation and discuss this and finally, in Section \ref{sec:conclusion}, some concluding remarks appear.
 
 \section{Models}\label{sec:PDE}
 In this section, the PDEs for the damped stiff string and plate will be presented. The notation used will be the one found in \cite{Bilbao2009:NumericalSoundSynthesis} (among others) where the subscript for state variable $u$ denotes a single derivative with respect to time $t$ or space $x$ respectively. Furthermore, to simplify the presented physical models, non-dimensionalization (or scaling) will be used \cite{Bilbao2009:NumericalSoundSynthesis}. 
@@ -180,16 +179,18 @@ In this work, the string is assumed clamped at both ends, so that
     u = u_x = 0 \quad \text{where} \quad x = \{0, 1\}.
 \end{equation}
 A model of a bowed string \cite{Bilbao2009:NumericalSoundSynthesis} may be incorporated into \eqref{eq:stiffString} as  
+\begin{subequations}
 \begin{align}
     \label{eq:bowedString} &u_{tt} = \hdots - \delta(x-x_\text{B})F_\text{B}\phi(v_\text{rel}), \quad \text{with} \\
-    &v_\text{rel} = u_t(x_\text{B}) - v_\text{B},\label{eq:relVelocity}
+    &v_\text{rel} = u_t |_{(x = x_\text{B})} - v_\text{B},\label{eq:relVelocity}
 \end{align}
+\end{subequations}
 %the $\delta$ function is only non-zero at the bowing point, effectively locating the bowing interaction.  
-where $F_\text{B} = f_\text{B}/ M_\text{s}$ is the excitation function (in m/s$^2$) with bowing force $f_\text{B}$ (in N) and total string mass $M_\text{s} = \rho\pi r^2 L$ (in kg). The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the bowing velocity $v_\text{B}$ [m/s] and $\phi$ is a dimensionless friction characteristic, chosen here as \cite{Bilbao2009:NumericalSoundSynthesis}
+where $F_\text{B} = f_\text{B}/ M_\text{s}$ is the excitation function (in m/s$^2$) with externally-supplied bowing force $f_\text{B} = f_\text{B}(t)$ (in N) and total string mass $M_\text{s} = \rho\pi r^2 L$ (in kg). The relative velocity $v_\text{rel}$ is defined as the difference between the velocity of the string at bowing point $x_\text{B}$ and the externally-supplied bowing velocity $v_\text{B} = v_\text{B}(t)$ [m/s] and $\phi$ is a dimensionless friction characteristic, chosen here as \cite{Bilbao2009:NumericalSoundSynthesis}
 \begin{equation}
     \phi(v_\text{rel}) = \sqrt{2a}v_\text{rel} e^{-av_\text{rel}^2+1/2}.
 \end{equation}
-Furthermore, $\delta(x-x_\text{B})$ is a spatial Dirac delta function selecting the bowing location $x=x_\text{B}$. The single bowing point can be extended to a bowing area \cite{Bilbao2009:NumericalSoundSynthesis}.
+Furthermore, $\delta(x-x_\text{B})$ is a spatial Dirac delta function selecting the bowing location $x=x_\text{B}$. The single bowing point can be extended to a bowing area \cite{Bilbao2009:NumericalSoundSynthesis}. Much more detailed models of bow-string dynamics, used in a finite difference simulation setting, have been proposed by Desvages \cite{Desvages16}. 
 
 Another, and more simple way to excite the string is by extending Equation \eqref{eq:stiffString} to
 \begin{equation}
@@ -200,7 +201,7 @@ using an externally-supplied excitation function $F_\text{e} = F_\text{e}(t)$ an
 \subsection{Plate}\label{subsec:platePDE}
 Under linear conditions, a rectangular plate of dimensions $L_{x}$ and $L_{y}$ may be parameterized in terms of density $\rho$ (in kg$\cdot$ m$^{-3}$), thickness $H$ (in m), Young's modulus $E$ (in Pa) and a dimensionless Poisson's ratio $\nu$, as well as two loss parameters $\sigma_{0}$ and $\sigma_{1}$.%, to be discussed shortly.  
 
-In terms of dimensionless spatial coordinates $x$ and $y$ scaled by $\sqrt{L_{x}L_{y}}$, the definition for a damped plate is \cite{Bilbao2009:NumericalSoundSynthesis}
+In terms of dimensionless spatial coordinates $x$ and $y$ scaled by $\sqrt{L_{x}L_{y}}$, the equation of motion of a damped plate is a variant of the Kirchhoff model \cite{Graff}
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t}.
 \end{equation}
@@ -210,12 +211,9 @@ Here, $u(x,y,t)$ is the transverse displacement of the plate as a function of di
 \end{equation}
 The stiffness parameter $\kappa$, with dimensions of s$^{-1}$, is defined by $\kappa = \sqrt{D/\rho H L_{x}^2L_{y}^2}$ where $D = EH^3/12\left(1-\nu^2\right)$. As in the case of the stiff string, we chose to use clamped boundary conditions:
 \begin{equation}
-    \begin{aligned}
-        u = u_x = 0 \quad &\text{where} \quad \: l \, \, = \{0, 1\} \quad \text{and} \\
-        u = u_y = 0 \quad &\text{where} \quad m = \{0, 1\}.
-    \end{aligned}
+     u = {\bf n}\cdot \nabla u = 0 
 \end{equation}
-
+over any plate edge with outward normal direction ${\bf n}$. 
 %need to explain subscript y?
 \subsection{Connections}\label{sec:connections}
 Adding connections between different physical models, further referred to as elements, adds another term to Equation \eqref{eq:bowedString} or \eqref{eq:platePDE}. Assuming that element $\alpha$ is a stiff string and $\beta$ is a plate, the following terms are added to Equations \eqref{eq:bowedString}, \eqref{eq:excitedString} for bowed or simply excited strings or \eqref{eq:platePDE} for plates respectively:
@@ -238,9 +236,11 @@ where $F_\alpha$ and $F_\beta$ are the force-functions (in m/s$^2$) at connectio
 where $\omega_0$ and $\omega_1$ are the linear and non-linear frequencies of oscillation respectively (in s$^{-1}$), $\sigma_\times$ is a dimensionless damping factor, $\mathcal{M}$ is the mass ratio between the two elements and $\eta$ is the relative displacement between the connected elements at the point of connection (in m). Lastly, the dot above $\eta$ denotes a derivative with respect to time.
 
 \section{Finite-Difference Schemes}\label{sec:FDS}
-To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. In the case of the stiff string, state variable $u(x,t)$ can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time step with sample-rate $f_\text{s}$ and locations $x = lh$, with $l \in [0,\hdots, N]$ where $N$ is the total number of points and grid spacing $h$. We can now write the discretised state variable as $u_l^n$, which is $u$ at the $n$th time step and the $l$th point on the string.
+To be able to digitally implement the continuous equations shown in the previous section, they need to be approximated. In this section, a high-level review of a finite difference approximation to a connected system of strings and plates is presented. For more technical details, see \cite{Bilbao2009:ModularPercussion}. 
 
-In the case of the plate, $u(x,y,t)$ is discretised to $u_{l,m}^n$ using $x = lh$ where $l \in [0,\hdots, N_x]$ with $N_x$ being the total horizontal number of points and $y = mh$ where $m \in [0,\hdots,N_y]$ with $N_y$ being the total vertical number of points. As our implementation uses already existing models, we will not go much into depth in this section, but rather we will describe the FDSs in general.
+In the case of the stiff string, state variable $u(x,t)$ can be discretised at times $t = nk$, where $n \in \mathbb{N}$ and $k = 1 / f_\text{s}$ is the time step (at sample-rate $f_\text{s}$) and locations $x = lh$, with $l \in [0,\hdots, N]$ where the total number of points is $N+1$ and grid spacing $h$. We can now write the discretised state variable as $u_l^n$, representing an approximation to $u(x,t)$. 
+
+In the case of the plate, $u(x,y,t)$ is discretised to $u_{l,m}^n$ using $x = lh$ where $l \in [0,\hdots, N_x]$ with $N_x+1$ being the total horizontal number of points and $y = mh$ where $m \in [0,\hdots,N_y]$ with $N_y+1$ being the total vertical number of points. 
 %Approximations for the derivatives in the equations found in Section \ref{sec:PDE} can be found in \cite{Bilbao2009:NumericalSoundSynthesis}. 
 %We will also use the notation for the difference and averaging operators found here. 
 
@@ -486,21 +486,21 @@ In this section, the Sensel Morph (or simply Sensel) and user interface will be 
 
 \subsection{Sensel Morph}
 The Sensel Morph is a highly accurate touch controller that senses position and force of objects (see Figure \ref{fig:sensel}). We use the Sensel as an expressive interface for interacting with the instrument configurations. Right above the touch-sensitive area the Sensel contains an array of 24 LEDs that can be controlled from the application.
-% \begin{figure}[h]\includegraphics[width=1.0\columnwidth]{senselLQ.jpg}\centering
-% \caption{Player using the Sensel Morphs to interact with one of the instruments.\label{fig:sensel}}
-% \end{figure}
+\begin{figure}[h]\includegraphics[width=1.0\columnwidth]{senselLQ.jpg}\centering
+\caption{Player using the Sensel Morphs to interact with one of the instruments.\label{fig:sensel}}
+\end{figure}
 % \subsubsection{Mapping strategies}
 % Something about the different prototype mappings, and the "final" mapping 
 % Lights to indicate bowing position or string position   
 % % STEFANIA: add a pictue when we can see one person %interacting with the sensei and we see also the computer's %screen.
 \subsection{User interface}
-Strings are shown as coloured paths (also see Figure \ref{fig:bowedSitar}). The state $u$ of the string is visualised using the vertical displacement of the paths. Bowed strings are shown in cyan on the top left. The bow is shown as a yellow rectangle and moves on interaction. The fretting position is shown as a yellow circle. Plucked strings are shown in purple in the top right, underneath which the sympathetic strings are shown in light green. The plate is shown in the bottom using a grid of rectangles (clamped gridpoints are not shown). Its state is visualised using a grey-scale. Furthermore, connections are shown using orange circles/squares for the points of connection and dotted lines between these points. Lastly, all parameters that are controlled by the mouse - output-mix, plate stiffness, etc - are located in a column on the right side of the application.
+Strings are shown as coloured paths (see Figure \ref{fig:bowedSitar}). The state $u$ of the string is visualised using the vertical displacement of the paths. Bowed strings are shown in cyan on the top left. The bow is shown as a yellow rectangle and moves on interaction. The fretting position is shown as a yellow circle. Plucked strings are shown in purple in the top right, underneath which the sympathetic strings are shown in light green. The plate is shown in the bottom using a grid of rectangles (clamped gridpoints are not shown). Its state is visualised using a grey-scale. Furthermore, connections are shown using orange circles/squares for the points of connection and dotted lines between these points. Lastly, all parameters that are controlled by the mouse -- output-mix, plate-stiffness, etc. -- are located in a column on the right side of the application.
 
 \subsection{Instruments}
-We subdivide string-elements into three types: bowed, plucked and sympathetic strings. All strings will be connected to one plate acting as an instrument body. The user can control the plate stiffness and increase it to generate more interaction between the strings. Furthermore, the user can change the output level of each element type. Apart from these parameters, which are controlled by the mouse, the instruments are fully controlled by two Sensels. The instruments we have chosen as our inspiration are the sitar, the hammered dulcimer and the hurdy gurdy.
+We subdivide string-elements into three types: bowed, plucked and sympathetic strings. All strings will be connected to one plate acting as an instrument body. The user can control the plate-stiffness and increase it to generate more interaction between the strings. Furthermore, the user can change the output level of each element type. Apart from these parameters, which are controlled by the mouse, the instruments are fully controlled by two Sensels. The instruments we have chosen as our inspiration are the sitar, the hammered dulcimer and the hurdy gurdy.
 
 \subsubsection{Bowed Sitar}
-The sitar is originally an Indian string instrument that has both fretted strings and sympathetic strings. Instead of plucking the fretted strings, we extended the model to bow them. Our implementation consists of 2 bowed strings, 13 sympathetic strings and 5 plucked strings (as it is also possible to strum the sympathetic strings). See Figure \ref{fig:bowedSitar} for a visual of the implementation. One Sensel is vertically subdivided into two sections, one for each bowed string. The first finger registered by the Sensel is mapped to a bow and the second is mapped to a fretting finger controlling pitch. The x-position of both fingers is visualised using the Sensel's LED array. The frets are not implemented as such (the pitch is continuous), but they are visualised for reference. The horizontal position of the first finger is mapped to the bowing position on the string, the vertical velocity to the bow velocity $v_\text{B}$ and the finger force is linked to the excitation function $F_\text{B}$. The other Sensel is subdivided into 5 sections mapped to the plucked strings. These sections are visualised by the LED array for reference.
+The sitar is originally an Indian string instrument that has both fretted strings and sympathetic strings. Instead of plucking the fretted strings, we extended the model to bow them. Our implementation consists of 2 bowed strings, 13 sympathetic strings and 5 plucked strings (as it is also possible to strum the sympathetic strings). See Figure \ref{fig:bowedSitar} for a visual of the implementation. One Sensel is vertically subdivided into two sections; one for each bowed string. The first finger registered by the Sensel is mapped to a bow and the second is mapped to a fretting finger controlling pitch. The x-position of both fingers is visualised using the Sensel's LED array. The frets are not implemented as such (the pitch is continuous), but they are visualised for reference. The horizontal position of the first finger is mapped to the bowing position on the string, the vertical velocity to the bow velocity $v_\text{B}$ and the finger force is linked to the excitation function $F_\text{B}$. The other Sensel is subdivided into 5 sections mapped to the plucked strings. These sections are visualised by the LED array for reference.
 
 The mass-ratio for the bowed/plucked string to plate connections has been set to $\mathcal{M} = 2$ and ratio for the sympathetic string to plate connections has been set to $\mathcal{M} = 0.5$ to increase the effect that the playable strings have on the sympathetic strings.
 
@@ -518,7 +518,6 @@ In our implementation, we have 20 pairs of plucked strings. Even though the actu
 The Sensels are placed vertically next to each other (see \ref{fig:sensel}). The pair with the lowest frequency will then be located in the bottom right and the highest in the top left, as in the real instrument. As with the plucked strings of the bowed sitar, the LED array is used to visualise the way that the Sensel is subdivided, which is especially useful here as one Sensel controls 10 string-pairs. 
 
 The mass-ratio is set relatively high ($\mathcal{M} = 100$) to amplify the non-linear interaction between the strings and the detuning of the strings connected to the plate. 
-% STEFANIA: screenshot of hammered dulcimer model
 
 \begin{figure}[h]
 \centering
@@ -532,7 +531,6 @@ The hurdy gurdy is an instrument that consists of bowed and sympathetic strings.
 Our implementation consists of 5 bowed strings subdivided into 2 drone strings tuned to A2, E3 and 3 melody strings tuned to A3, E4 and A4 and 13 sympathetic strings. See Figure \ref{fig:hurdyGurdy} for a visual of the implementation.
 
 The Sensel is vertically subdivided into 5 rows that control whether the strings are placed on the wheel. The bowing velocity is mapped to the average pressure of the fingers. The fundamental frequency (in the model $\gamma / 2$) of the melody-strings is changed by a Sensel with a piano-overlay acting as a midi controller. The mass-ratios have been set the same as in the bowed sitar application. A demonstration of this instrument can be found in \cite{video}. It is interesting to note here that the sympathetic strings that are in tune with the harmonics of the bowed strings resonate most, which is expected to happen in the real world as well.
-% STEFANIA: screenshot of hurdy gurdy model
 
 \begin{figure}[h]
 \centering
@@ -558,7 +556,7 @@ Hurdy Gurdy &28 &58 &78 \\
 
 As can be seen from the table, all instruments use about the same amount of CPU and none of them have audible dropouts (CPU $<$ 100\%). It can be observed that the graphics use about 20\% of the CPU, indicating that there is still much room to increase the complexity of the instrument-configurations before dropouts will occur. On the other hand, should the instruments be used in parallel with other audio applications orplug-ins, the CPU has to be greatly reduced. The first step towards this would be to vectorise the FDSs using AVX instructions.
 
-While our instruments have been not formally evaluated yet, we have performed some qualitative evaluations with sound and music computing experts. The goals of the evaluations were to explore the playability of the instrument, sonic quality and intuitiveness of control. These evaluations showed that especially the bowing interaction feels intuitive and creates a natural sound. The overall sound of the instruments was generally judged to be interesting, but not ``sounding like a real-life instrument". This makes sense, as we did not seek to perfectly model each instrument but rather used them as an inspiration for the configurations of the physical models. The next step towards this would be to replace the thin plate model with a more realistic model, such as a wooden instrument body.
+While our instruments have been not formally evaluated yet, we have performed some qualitative evaluations with sound and music computing experts. The goals of the evaluations were to explore the playability of the instrument, sonic quality and intuitiveness of control. These evaluations showed that especially the bowing interaction feels intuitive and creates a natural sound. The overall sound of the instruments was generally judged to be interesting, but not ``sounding like a real-life instrument". This makes sense, as we did not seek to perfectly model each instrument, but rather used them as an inspiration for the configurations of the physical models. The next step towards this would be to replace the thin plate model with a more realistic model, such as a wooden instrument body.
 
 % We did an informal test with a lecturer of the Rytmisk Center K{\o}benhavn 
 % The interaction with the bow has been found very natural. Bow force and velocity... 
@@ -575,7 +573,8 @@ NordicSMC, project number 86892.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
+\begin{small}
 \bibliography{smc2019bib}
-
+\end{small}
 \end{document}
 
