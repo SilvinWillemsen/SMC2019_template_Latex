@@ -31,7 +31,7 @@
 
 
 %user defined variables
-\def\papertitle{Real-time Control of Large-scale Modular Physical Models using the Sensel Morph}
+\def\papertitle{REAL-TIME CONTROL OF LARGE-SCALE MODULAR PHYSICAL MODELS USING THE SENSEL MORPH}
 \def\firstauthor{Silvin Willemsen}
 \def\secondauthor{Nikolaj Andersson }
 \def\thirdauthor{Stefania Serafin}
@@ -148,7 +148,7 @@ In this paper, implementation, instrument design and control issues surrounding 
 
 \section{Introduction}\label{sec:introduction}
 
-Physical models for sound synthesis have been researched for several decades to mathematically simulate the sonic behaviour of musical instruments and everyday sounds. Various techniques and methodologies have developed, ranging from mass-spring models \cite{cadoz79, Cadoz83, cadoz1993cordis} to modal synthesis \cite{morrison1993mosaic} and waveguide based models \cite{smith1992physical}. The latter two techniques may be viewed as numerical simulation techniques applied to the systems of partial differential equations (PDEs) which define the dynamics of a musical instrument, either real or imagined. 
+Physical models for sound synthesis have been researched for several decades to mathematically simulate the sonic behaviour of musical instruments and everyday sounds. Various techniques and methodologies have developed, ranging from mass-spring models \cite{cadoz79, Cadoz83, cadoz1993cordis} to modal synthesis \cite{morrison1993mosaic} and waveguide based models \cite{smith1992physical}. The latter two techniques may be viewed as numerical simulation techniques applied to the systems of partial differential equations (PDEs). These equations define the dynamics of a musical instrument, either real or imagined.
 
 Mainstream time-domain simulation techniques, such as, e.g., finite difference (FD) methods, were first applied to the case of string vibration by Ruiz \cite{Ruiz} and Hiller and Ruiz \cite{Hiller, Hiller2}, and then later by other authors \cite{Bacon} including, most notably Chaigne \cite{Chaigne92} and Chaigne and Askenfelt \cite{Chaigne}. The use of finite-difference schemes (FDSs) more generally in sound synthesis is described in \cite{Bilbao2009:NumericalSoundSynthesis}. Modularized physical modelling sound synthesis, whereby the user may construct a virtual instrument using basic canonical components dates back to the work of Cadoz and collaborators \cite{cadoz79, Cadoz83, cadoz1993cordis}; it has been also used as a design principle in the context of FD methods---see, e.g., \cite{Bilbao2009:ModularPercussion, Bilbaosmc14, Webb2015}, where the canonical elements are strings and plates, with a non-linear connection mechanism.  Though computational cost of such methods is high, standard computing power is now approaching a level suitable for real-time performance for simpler systems.  
 
@@ -205,7 +205,7 @@ In terms of dimensionless spatial coordinates $x$ and $y$ scaled by $\sqrt{L_{x}
 \begin{equation}\label{eq:platePDE}
     u_{tt} = -\kappa^2 \Delta\Delta u - 2 \sigma_0 u_{t} + 2\sigma_1 \Delta u_{t}.
 \end{equation}
-Here, $u(x,y,t)$ is the transverse displacement of the plate as a function of dimensionless coordinates $x\in[0, \sqrt{a}]$, $y\in[0,1/\sqrt{a}]$, where $a = L_{x}/L_{y}$ is the plate aspect ratio, as well as time $t$. The subscript $t$ represents partial differentiation with respect to $t$, and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
+Here, $u(x,y,t)$ is the transverse displacement of the plate as a function of dimensionless coordinates $x\in[0, \sqrt{a}\,]$, $y\in[0,1/\sqrt{a}\,]$, where $a = L_{x}/L_{y}$ is the plate aspect ratio, as well as time $t$. The subscript $t$ represents partial differentiation with respect to $t$, and $\Delta$ represents the 2D Laplacian \cite{Bilbao2009:NumericalSoundSynthesis}:
 \begin{equation}
     \Delta  = \frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}.
 \end{equation}
@@ -281,7 +281,7 @@ It can be useful to talk about the \textit{region of operation} of a FDS in term
 \caption{Stencil for a stiff string FDS with grid spacing $h$ and time step $k$. The point $l$ at the next time step (yellow) is calculated using 5 points at the current time step (blue) and 3 at the previous time step (dark blue). \label{fig:stencil1D}}
 \end{figure}
 
-For stability reasons, the grid spacing needs to abide the following condition \cite{Bilbao2009:NumericalSoundSynthesis}
+In order for the scheme to be stable, the grid spacing needs to abide the following condition \cite{Bilbao2009:NumericalSoundSynthesis}
 %section 7.2.3 numerical sound synthesis
 \begin{equation}\label{eq:stabilityString}
     h \geq \sqrt{\frac{\gamma^2 k^2 + 4 \sigma_1 k + \sqrt {(\gamma^2 k^2 + 4 \sigma_1 k)^2 + 16 \kappa^2 k^2}}{2}}.
@@ -365,7 +365,7 @@ As many string properties stay constant, we chose to set the following parameter
 However, as the grid spacing $h$ is dependent on the wave speed $\gamma$ according to the condition found in \eqref{eq:stabilityString}, we must put a lower limit on the number of points $N$ if we plan to dynamically increase $\gamma$.
 %maybe it would be better to move the boundary to a different gridpoint and use interpolation for determination of the values around the boundary
 
-Another way to change frequency is to add damping to the model at specific points acting as a fretting finger. The advantage of this is that the condition \eqref{eq:stabilityString} will never be violated. On top of this, a tapping sound will be introduced when fretting the string making it more realistic than changing the wave speed. If the string is fretted at single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
+Another way to change frequency is to add damping to the model at specific points acting as a (simplified) fretting finger. The advantage of this is that the condition \eqref{eq:stabilityString} will never be violated. On top of this, a tapping sound will be introduced when fretting the string making it more realistic than changing the wave speed. If the string is fretted at single location $x_\text{f} \in [0, 1]$ and $l_\text{f} = \text{floor}(x_\text{f}/h)$ we use
 \begin{equation}
 u_l^n = 
     \begin{cases}
@@ -449,7 +449,7 @@ The lowest priority thread, the graphics-thread is shown by green boxes and runs
 
 Checking and retrieving the Sensel state happens at a rate of 150 Hz and is denoted by blue boxes. The parameters that the user controls by means of the Sensel, such as bowing position, force and velocity, will be updated in the models at the same rate.
 
-The highest priority thread is the audio-thread and runs at commonly-used sample rate 44,100 Hz. The main application gives an `update' (u) instruction to the instrument, which in turn updates the FDSs in its strings and plate. After the FDS update is done, the intermediate state at the connection points $u^\text{I}_{x_\text{c}}$ (where $x_\text{c} = l_{\text{c},\alpha}$ for the string or $x_\text{c} = (l_{\text{c},\beta}, m_{\text{c},\beta})$ for the plate) are sent to the connection (Conn) class which calculates the force-functions $F_\alpha$ and $F_\beta$. These values are then sent back to the string and plate classes and added to their respective states after which their outputs (o) (at arbitrary points) are sent back to the main application. Also see Algorithm \ref{alg:calcOrder} for this 'order of calculation'.
+The highest priority thread is the audio-thread and runs at commonly-used sample rate 44,100 Hz. The main application gives an `update' (u) instruction to the instrument, which in turn updates the FDSs in its strings and plate. After the FDS update is done, the intermediate state at the connection points $u^\text{I}_{x_\text{c}}$ (where $x_\text{c} = l_{\text{c},\alpha}$ for the string or $x_\text{c} = (l_{\text{c},\beta}, m_{\text{c},\beta})$ for the plate) are sent to the connection (Conn) class which calculates the force-functions $F_\alpha$ and $F_\beta$. These values are then sent back to the string and plate classes and added to their respective states after which their outputs (o) (at arbitrary points) are sent back to the main application. See Algorithm \ref{alg:calcOrder} for this `order of calculation'.
 % The most important thing in real-time implementation of FDSs, is to optimise the FDSs themselves as these will be ran at sampling rate. We make sure to only have one multiplication per location of $u$ per time step ($u_l^n$, $u_{l+1}^{n-1}$ etc) (\textbf{SEE APPENDIX DAFX PAPER}) %<-- needs to be more clear
 % Furthermore, it is important to take note of is the order of calculation. First the non-extended schemes (Equations \eqref{eq:stiffString} and \eqref{eq:platePDE}) must be calculated before adding the effects of excitations (including bowing), which - in turn - needs to be calculated before adding the effects of connections (see Algorithm \ref{alg:calcOrder}).
 \begin{algorithm}[h]\label{alg:calcOrder}
